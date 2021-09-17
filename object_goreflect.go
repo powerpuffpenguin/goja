@@ -286,8 +286,18 @@ func (o *objectGoReflect) hasOwnPropertyStr(name unistring.String) bool {
 func (o *objectGoReflect) _toNumber() Value {
 	switch o.value.Kind() {
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
+		if native, ok := o.origValue.Interface().(interface {
+			Native() int64
+		}); ok {
+			return valueInt(native.Native())
+		}
 		return intToValue(o.value.Int())
 	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64:
+		if native, ok := o.origValue.Interface().(interface {
+			Native() int64
+		}); ok {
+			return valueInt(native.Native())
+		}
 		return intToValue(int64(o.value.Uint()))
 	case reflect.Bool:
 		if o.value.Bool() {
@@ -296,6 +306,11 @@ func (o *objectGoReflect) _toNumber() Value {
 			return intToValue(0)
 		}
 	case reflect.Float32, reflect.Float64:
+		if native, ok := o.origValue.Interface().(interface {
+			Native() float64
+		}); ok {
+			return valueFloat(native.Native())
+		}
 		return floatToValue(o.value.Float())
 	}
 	return nil

@@ -1671,7 +1671,7 @@ func (r *Runtime) ToValue(i interface{}) Value {
 		return obj
 	case reflect.Func:
 		name := unistring.NewFromString(runtime.FuncForPC(reflect.ValueOf(i).Pointer()).Name())
-		return r.newNativeFunc(r.wrapReflectFunc(value), nil, name, nil, value.Type().NumIn())
+		return r.newNativeFunc(r.wrapReflectFunc_pp(value), nil, name, nil, value.Type().NumIn())
 	}
 
 	obj := &Object{runtime: r}
