@@ -175,6 +175,34 @@ func (r *Runtime) wrapReflectFunc_ppResultWrap(v reflect.Value) interface{} {
 		return NewFloat32(result.(float32))
 	case reflect.Float64:
 		return NewFloat64(result.(float64))
+
+	case reflect.Slice:
+		switch v.Type().Elem().Kind() {
+		case reflect.Int:
+			return NewIntArray(result.([]int))
+		case reflect.Int8:
+			return NewInt8Array(result.([]int8))
+		case reflect.Int16:
+			return NewInt16Array(result.([]int16))
+		case reflect.Int32:
+			return NewInt32Array(result.([]int32))
+		case reflect.Int64:
+			return NewInt64Array(result.([]int64))
+		case reflect.Uint:
+			return NewUintArray(result.([]uint))
+		case reflect.Uint8:
+			return NewUint8Array(result.([]uint8))
+		case reflect.Uint16:
+			return NewUint16Array(result.([]uint16))
+		case reflect.Uint32:
+			return NewUint32Array(result.([]uint32))
+		case reflect.Uint64:
+			return NewUint64Array(result.([]uint64))
+		case reflect.Float32:
+			return NewFloat32Array(result.([]float32))
+		case reflect.Float64:
+			return NewFloat64Array(result.([]float64))
+		}
 	}
 	return result
 }

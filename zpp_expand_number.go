@@ -2378,52 +2378,508 @@ func (r *Runtime) builtinGo_NewFloat32(call FunctionCall) Value {
 	return r.ToValue(NewFloat32(result))
 }
 
-type IntArray struct {
-	Value []int
+type IntArray []int
+
+func NewIntArray(val []int) IntArray {
+	return IntArray(val)
+}
+func (v IntArray) String() string {
+	return fmt.Sprint([]int(v))
+}
+func (v IntArray) Len() int {
+	return len(v)
+}
+func (v IntArray) Cap() int {
+	return cap(v)
+}
+func (v IntArray) Copy(src []int) int {
+	return copy(v, src)
+}
+func (v IntArray) Slice(start int) []int {
+	count := len(v)
+	if count == 0 {
+		return v[:]
+	}
+	if start < 0 {
+		start = 0
+	}
+	return v[start:]
+}
+func (v IntArray) SliceEnd(start, end int) []int {
+	count := len(v)
+	if count == 0 {
+		return v[:]
+	}
+	if start < 0 {
+		start = 0
+	} else if start >= count {
+		return v[count:]
+	} else if end < start {
+		return v[start:start]
+	}
+	return v[start:end]
 }
 
-type Int64Array struct {
-	Value []int64
+type Int64Array []int64
+
+func NewInt64Array(val []int64) Int64Array {
+	return Int64Array(val)
+}
+func (v Int64Array) String() string {
+	return fmt.Sprint([]int64(v))
+}
+func (v Int64Array) Len() int {
+	return len(v)
+}
+func (v Int64Array) Cap() int {
+	return cap(v)
+}
+func (v Int64Array) Copy(src []int64) int {
+	return copy(v, src)
+}
+func (v Int64Array) Slice(start int) []int64 {
+	count := len(v)
+	if count == 0 {
+		return v[:]
+	}
+	if start < 0 {
+		start = 0
+	}
+	return v[start:]
+}
+func (v Int64Array) SliceEnd(start, end int) []int64 {
+	count := len(v)
+	if count == 0 {
+		return v[:]
+	}
+	if start < 0 {
+		start = 0
+	} else if start >= count {
+		return v[count:]
+	} else if end < start {
+		return v[start:start]
+	}
+	return v[start:end]
 }
 
-type Int32Array struct {
-	Value []int32
+type Int32Array []int32
+
+func NewInt32Array(val []int32) Int32Array {
+	return Int32Array(val)
+}
+func (v Int32Array) String() string {
+	return fmt.Sprint([]int32(v))
+}
+func (v Int32Array) Len() int {
+	return len(v)
+}
+func (v Int32Array) Cap() int {
+	return cap(v)
+}
+func (v Int32Array) Copy(src []int32) int {
+	return copy(v, src)
+}
+func (v Int32Array) Slice(start int) []int32 {
+	count := len(v)
+	if count == 0 {
+		return v[:]
+	}
+	if start < 0 {
+		start = 0
+	}
+	return v[start:]
+}
+func (v Int32Array) SliceEnd(start, end int) []int32 {
+	count := len(v)
+	if count == 0 {
+		return v[:]
+	}
+	if start < 0 {
+		start = 0
+	} else if start >= count {
+		return v[count:]
+	} else if end < start {
+		return v[start:start]
+	}
+	return v[start:end]
 }
 
-type Int16Array struct {
-	Value []int16
+type Int16Array []int16
+
+func NewInt16Array(val []int16) Int16Array {
+	return Int16Array(val)
+}
+func (v Int16Array) String() string {
+	return fmt.Sprint([]int16(v))
+}
+func (v Int16Array) Len() int {
+	return len(v)
+}
+func (v Int16Array) Cap() int {
+	return cap(v)
+}
+func (v Int16Array) Copy(src []int16) int {
+	return copy(v, src)
+}
+func (v Int16Array) Slice(start int) []int16 {
+	count := len(v)
+	if count == 0 {
+		return v[:]
+	}
+	if start < 0 {
+		start = 0
+	}
+	return v[start:]
+}
+func (v Int16Array) SliceEnd(start, end int) []int16 {
+	count := len(v)
+	if count == 0 {
+		return v[:]
+	}
+	if start < 0 {
+		start = 0
+	} else if start >= count {
+		return v[count:]
+	} else if end < start {
+		return v[start:start]
+	}
+	return v[start:end]
 }
 
-type Int8Array struct {
-	Value []int8
+type Int8Array []int8
+
+func NewInt8Array(val []int8) Int8Array {
+	return Int8Array(val)
+}
+func (v Int8Array) String() string {
+	return fmt.Sprint([]int8(v))
+}
+func (v Int8Array) Len() int {
+	return len(v)
+}
+func (v Int8Array) Cap() int {
+	return cap(v)
+}
+func (v Int8Array) Copy(src []int8) int {
+	return copy(v, src)
+}
+func (v Int8Array) Slice(start int) []int8 {
+	count := len(v)
+	if count == 0 {
+		return v[:]
+	}
+	if start < 0 {
+		start = 0
+	}
+	return v[start:]
+}
+func (v Int8Array) SliceEnd(start, end int) []int8 {
+	count := len(v)
+	if count == 0 {
+		return v[:]
+	}
+	if start < 0 {
+		start = 0
+	} else if start >= count {
+		return v[count:]
+	} else if end < start {
+		return v[start:start]
+	}
+	return v[start:end]
 }
 
-type UintArray struct {
-	Value []uint
+type UintArray []uint
+
+func NewUintArray(val []uint) UintArray {
+	return UintArray(val)
+}
+func (v UintArray) String() string {
+	return fmt.Sprint([]uint(v))
+}
+func (v UintArray) Len() int {
+	return len(v)
+}
+func (v UintArray) Cap() int {
+	return cap(v)
+}
+func (v UintArray) Copy(src []uint) int {
+	return copy(v, src)
+}
+func (v UintArray) Slice(start int) []uint {
+	count := len(v)
+	if count == 0 {
+		return v[:]
+	}
+	if start < 0 {
+		start = 0
+	}
+	return v[start:]
+}
+func (v UintArray) SliceEnd(start, end int) []uint {
+	count := len(v)
+	if count == 0 {
+		return v[:]
+	}
+	if start < 0 {
+		start = 0
+	} else if start >= count {
+		return v[count:]
+	} else if end < start {
+		return v[start:start]
+	}
+	return v[start:end]
 }
 
-type Uint64Array struct {
-	Value []uint64
+type Uint64Array []uint64
+
+func NewUint64Array(val []uint64) Uint64Array {
+	return Uint64Array(val)
+}
+func (v Uint64Array) String() string {
+	return fmt.Sprint([]uint64(v))
+}
+func (v Uint64Array) Len() int {
+	return len(v)
+}
+func (v Uint64Array) Cap() int {
+	return cap(v)
+}
+func (v Uint64Array) Copy(src []uint64) int {
+	return copy(v, src)
+}
+func (v Uint64Array) Slice(start int) []uint64 {
+	count := len(v)
+	if count == 0 {
+		return v[:]
+	}
+	if start < 0 {
+		start = 0
+	}
+	return v[start:]
+}
+func (v Uint64Array) SliceEnd(start, end int) []uint64 {
+	count := len(v)
+	if count == 0 {
+		return v[:]
+	}
+	if start < 0 {
+		start = 0
+	} else if start >= count {
+		return v[count:]
+	} else if end < start {
+		return v[start:start]
+	}
+	return v[start:end]
 }
 
-type Uint32Array struct {
-	Value []uint32
+type Uint32Array []uint32
+
+func NewUint32Array(val []uint32) Uint32Array {
+	return Uint32Array(val)
+}
+func (v Uint32Array) String() string {
+	return fmt.Sprint([]uint32(v))
+}
+func (v Uint32Array) Len() int {
+	return len(v)
+}
+func (v Uint32Array) Cap() int {
+	return cap(v)
+}
+func (v Uint32Array) Copy(src []uint32) int {
+	return copy(v, src)
+}
+func (v Uint32Array) Slice(start int) []uint32 {
+	count := len(v)
+	if count == 0 {
+		return v[:]
+	}
+	if start < 0 {
+		start = 0
+	}
+	return v[start:]
+}
+func (v Uint32Array) SliceEnd(start, end int) []uint32 {
+	count := len(v)
+	if count == 0 {
+		return v[:]
+	}
+	if start < 0 {
+		start = 0
+	} else if start >= count {
+		return v[count:]
+	} else if end < start {
+		return v[start:start]
+	}
+	return v[start:end]
 }
 
-type Uint16Array struct {
-	Value []uint16
+type Uint16Array []uint16
+
+func NewUint16Array(val []uint16) Uint16Array {
+	return Uint16Array(val)
+}
+func (v Uint16Array) String() string {
+	return fmt.Sprint([]uint16(v))
+}
+func (v Uint16Array) Len() int {
+	return len(v)
+}
+func (v Uint16Array) Cap() int {
+	return cap(v)
+}
+func (v Uint16Array) Copy(src []uint16) int {
+	return copy(v, src)
+}
+func (v Uint16Array) Slice(start int) []uint16 {
+	count := len(v)
+	if count == 0 {
+		return v[:]
+	}
+	if start < 0 {
+		start = 0
+	}
+	return v[start:]
+}
+func (v Uint16Array) SliceEnd(start, end int) []uint16 {
+	count := len(v)
+	if count == 0 {
+		return v[:]
+	}
+	if start < 0 {
+		start = 0
+	} else if start >= count {
+		return v[count:]
+	} else if end < start {
+		return v[start:start]
+	}
+	return v[start:end]
 }
 
-type Uint8Array struct {
-	Value []uint8
+type Uint8Array []uint8
+
+func NewUint8Array(val []uint8) Uint8Array {
+	return Uint8Array(val)
+}
+func (v Uint8Array) String() string {
+	return fmt.Sprint([]uint8(v))
+}
+func (v Uint8Array) Len() int {
+	return len(v)
+}
+func (v Uint8Array) Cap() int {
+	return cap(v)
+}
+func (v Uint8Array) Copy(src []uint8) int {
+	return copy(v, src)
+}
+func (v Uint8Array) Slice(start int) []uint8 {
+	count := len(v)
+	if count == 0 {
+		return v[:]
+	}
+	if start < 0 {
+		start = 0
+	}
+	return v[start:]
+}
+func (v Uint8Array) SliceEnd(start, end int) []uint8 {
+	count := len(v)
+	if count == 0 {
+		return v[:]
+	}
+	if start < 0 {
+		start = 0
+	} else if start >= count {
+		return v[count:]
+	} else if end < start {
+		return v[start:start]
+	}
+	return v[start:end]
 }
 
-type Float64Array struct {
-	Value []float64
+type Float64Array []float64
+
+func NewFloat64Array(val []float64) Float64Array {
+	return Float64Array(val)
+}
+func (v Float64Array) String() string {
+	return fmt.Sprint([]float64(v))
+}
+func (v Float64Array) Len() int {
+	return len(v)
+}
+func (v Float64Array) Cap() int {
+	return cap(v)
+}
+func (v Float64Array) Copy(src []float64) int {
+	return copy(v, src)
+}
+func (v Float64Array) Slice(start int) []float64 {
+	count := len(v)
+	if count == 0 {
+		return v[:]
+	}
+	if start < 0 {
+		start = 0
+	}
+	return v[start:]
+}
+func (v Float64Array) SliceEnd(start, end int) []float64 {
+	count := len(v)
+	if count == 0 {
+		return v[:]
+	}
+	if start < 0 {
+		start = 0
+	} else if start >= count {
+		return v[count:]
+	} else if end < start {
+		return v[start:start]
+	}
+	return v[start:end]
 }
 
-type Float32Array struct {
-	Value []float32
+type Float32Array []float32
+
+func NewFloat32Array(val []float32) Float32Array {
+	return Float32Array(val)
+}
+func (v Float32Array) String() string {
+	return fmt.Sprint([]float32(v))
+}
+func (v Float32Array) Len() int {
+	return len(v)
+}
+func (v Float32Array) Cap() int {
+	return cap(v)
+}
+func (v Float32Array) Copy(src []float32) int {
+	return copy(v, src)
+}
+func (v Float32Array) Slice(start int) []float32 {
+	count := len(v)
+	if count == 0 {
+		return v[:]
+	}
+	if start < 0 {
+		start = 0
+	}
+	return v[start:]
+}
+func (v Float32Array) SliceEnd(start, end int) []float32 {
+	count := len(v)
+	if count == 0 {
+		return v[:]
+	}
+	if start < 0 {
+		start = 0
+	} else if start >= count {
+		return v[count:]
+	} else if end < start {
+		return v[start:start]
+	}
+	return v[start:end]
 }
 
 func (r *Runtime) pp_expand_init_number() {

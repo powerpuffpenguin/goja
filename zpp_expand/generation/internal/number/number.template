@@ -201,8 +201,46 @@ func (r *Runtime) builtinGo_New{{.Name}}(call FunctionCall) Value {
 	return r.ToValue(New{{.Name}}(result))
 }
 {{end}}{{range .}}
-type {{.Name}}Array struct {
-	Value []{{.Type}}
+type {{.Name}}Array []{{.Type}}
+
+func New{{.Name}}Array(val []{{.Type}}) {{.Name}}Array {
+	return {{.Name}}Array(val)
+}
+func (v {{.Name}}Array) String() string {
+	return fmt.Sprint([]{{.Type}}(v))
+}
+func (v {{.Name}}Array) Len() int {
+	return len(v)
+}
+func (v {{.Name}}Array) Cap() int {
+	return cap(v)
+}
+func (v {{.Name}}Array) Copy(src []{{.Type}}) int {
+	return copy(v, src)
+}
+func (v {{.Name}}Array) Slice(start int) []{{.Type}} {
+	count := len(v)
+	if count == 0 {
+		return v[:]
+	}
+	if start < 0 {
+		start = 0
+	}
+	return v[start:]
+}
+func (v {{.Name}}Array) SliceEnd(start, end int) []{{.Type}} {
+	count := len(v)
+	if count == 0 {
+		return v[:]
+	}
+	if start < 0 {
+		start = 0
+	} else if start >= count {
+		return v[count:]
+	} else if end < start {
+		return v[start:start]
+	}
+	return v[start:end]
 }
 {{end}}
 func (r *Runtime) pp_expand_init_number() {

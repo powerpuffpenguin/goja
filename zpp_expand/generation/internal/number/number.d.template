@@ -1,0 +1,34 @@
+{{with $ctx :=  .}}class Native {
+    private constructor()
+    private readonly __Native: Native
+}
+type NumberLike = number | string | null | undefined{{range .}} | Go{{.Name}}{{end}}
+{{range.}}
+class Go{{.Name}} extends Native {
+    private readonly __Go{{.Name}}: Go{{.Name}}
+    private constructor()
+    String(): string
+    ToNumber(): number{{range $item := $ctx}}
+    To{{$item.Name}}(): Go{{$item.Name}}{{end}}{{if not .Uint}}
+    ABS(): Go{{.Name}}
+    Negate(): Go{{.Name}}{{end}}
+    Add(...value: Array<NumberLike>): Go{{.Name}}
+    Sub(...value: Array<NumberLike>): Go{{.Name}}
+    Mul(...value: Array<NumberLike>): Go{{.Name}}
+    Div(...value: Array<NumberLike>): Go{{.Name}}{{if .Integer}}
+    Mod(...value: Array<NumberLike>): Go{{.Name}}
+    And(...value: Array<NumberLike>): Go{{.Name}}
+    AndNot(...value: Array<NumberLike>): Go{{.Name}}
+    Not(): Go{{.Name}}
+    Or(...value: Array<NumberLike>): Go{{.Name}}
+    Xor(...value: Array<NumberLike>): Go{{.Name}}
+    ShiftLeft(...value: Array<NumberLike>): Go{{.Name}}
+    ShiftRight(...value: Array<NumberLike>): Go{{.Name}}{{else}}
+    Sqrt(): Go{{.Name}}{{end}}
+    Compare(val: NumberLike): number
+    Max(...value: Array<NumberLike>): Go{{.Name}}
+    Min(...value: Array<NumberLike>): Go{{.Name}}
+}
+function New{{.Name}}(val: number): Go{{.Name}}
+function New{{.Name}}(val: string{{if .Integer}}, base: number | string{{end}}): Go{{.Name}}
+{{end}}{{end}}

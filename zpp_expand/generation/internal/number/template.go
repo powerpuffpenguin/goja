@@ -28,6 +28,15 @@ func (t *Template) Serve() {
 	}
 	t.generation(f, tGo)
 	f.Close()
+
+	outTS := filepath.Join(t.dir, "globals.d.ts")
+	tTS := filepath.Join(t.dir, "internal", "number", "number.d.template")
+	f, e = os.Create(outTS)
+	if e != nil {
+		log.Fatalln(e)
+	}
+	t.generation(f, tTS)
+	f.Close()
 }
 func (t *Template) generation(w io.Writer, filename string) {
 	b, e := ioutil.ReadFile(filename)
