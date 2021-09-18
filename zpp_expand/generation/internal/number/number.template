@@ -7,63 +7,62 @@ import (
 	"strconv"
 )
 {{range .}}
-type {{.Name}} struct {
-	Value {{.Type}}
-}
+type {{.Name}} {{.Type}}
 
 func New{{.Name}}(val {{.Type}}) {{.Name}} {
-	return {{.Name}}{val}
+	return {{.Name}}(val)
 }
 func (v {{.Name}}) String() string {
-	return fmt.Sprint(v.Value)
+	return fmt.Sprint({{.Type}}(v))
 }{{if .Integer}}
 func (v {{.Name}}) Native() int64 {
-	return {{typeconv . "int64" "v.Value"}}
+	return int64(v)
 }
 func (v {{.Name}}) ToNumber() Value {
-	return intToValue({{typeconv . "int64" "v.Value"}})
+	return intToValue(int64(v))
 }{{else}}
 func (v {{.Name}}) Native() float64 {
-	return {{typeconv . "float64" "v.Value"}}
+	return float64(v)
 }
 func (v {{.Name}}) ToNumber() Value {
-	return floatToValue({{typeconv . "float64" "v.Value"}})
+	return floatToValue(float64(v))
 }{{end}}{{with $parent :=  .}}{{range $item := $ctx}}
 func (v {{$parent.Name}}) To{{$item.Name}}() {{$item.Type}} {
-	return {{typeconv $parent $item.Type "v.Value"}}
+	return {{$item.Type}}(v)
 }{{end}}{{end}}{{if not .Uint}}
 func (v {{.Name}}) ABS() {{.Type}} {
-	if v.Value < 0 {
-		return -v.Value
+	result := {{.Type}}(v)
+	if result < 0 {
+		return -result
 	}
-	return v.Value
+	return result
 }
 func (v {{.Name}}) Negate() {{.Type}} {
-	return -v.Value
+	return {{.Type}}(-v)
 }{{end}}
 func (v {{.Name}}) Add(vals ...{{.Type}}) {{.Type}} {
-	result := v.Value
+	result := {{.Type}}(v)
 	for _, val := range vals {
 		result += val
 	}
 	return result
 }
 func (v {{.Name}}) Sub(vals ...{{.Type}}) {{.Type}} {
-	result := v.Value
+	result := {{.Type}}(v)
 	for _, val := range vals {
 		result -= val
 	}
 	return result
 }
 func (v {{.Name}}) Mul(vals ...{{.Type}}) {{.Type}} {
-	result := v.Value
+	result := {{.Type}}(v)
 	for _, val := range vals {
 		result *= val
 	}
 	return result
 }
 func (v {{.Name}}) Div(vals ...{{.Type}}) ({{.Type}}, error) {
-	result := v.Value
+	result := {{.Type}}(v)
 	if result == 0 {
 		return 0, nil
 	}
@@ -76,7 +75,7 @@ func (v {{.Name}}) Div(vals ...{{.Type}}) ({{.Type}}, error) {
 	return result, nil
 }{{if .Integer}}
 func (v {{.Name}}) Mod(vals ...{{.Type}}) ({{.Type}}, error) {
-	result := v.Value
+	result := {{.Type}}(v)
 	if result == 0 {
 		return 0, nil
 	}
@@ -92,64 +91,65 @@ func (v {{.Name}}) Mod(vals ...{{.Type}}) ({{.Type}}, error) {
 	return result, nil
 }
 func (v {{.Name}}) And(vals ...{{.Type}}) {{.Type}} {
-	result := v.Value
+	result := {{.Type}}(v)
 	for _, val := range vals {
 		result &= val
 	}
 	return result
 }
 func (v {{.Name}}) AndNot(vals ...{{.Type}}) {{.Type}} {
-	result := v.Value
+	result := {{.Type}}(v)
 	for _, val := range vals {
 		result &= (^val)
 	}
 	return result
 }
 func (v {{.Name}}) Not() {{.Type}} {
-	return ^v.Value
+	return ^{{.Type}}(v)
 }
 func (v {{.Name}}) Or(vals ...{{.Type}}) {{.Type}} {
-	result := v.Value
+	result := {{.Type}}(v)
 	for _, val := range vals {
 		result |= val
 	}
 	return result
 }
 func (v {{.Name}}) Xor(vals ...{{.Type}}) {{.Type}} {
-	result := v.Value
+	result := {{.Type}}(v)
 	for _, val := range vals {
 		result ^= val
 	}
 	return result
 }
 func (v {{.Name}}) ShiftLeft(vals ...int) {{.Type}} {
-	result := v.Value
+	result := {{.Type}}(v)
 	for _, val := range vals {
 		result <<= val
 	}
 	return result
 }
 func (v {{.Name}}) ShiftRight(vals ...int) {{.Type}} {
-	result := v.Value
+	result := {{.Type}}(v)
 	for _, val := range vals {
 		result >>= val
 	}
 	return result
 }{{else}}
 func (v {{.Name}}) Sqrt() {{.Type}} {
-	result := math.Sqrt({{ typeconv . "float64" "v.Value" }})
+	result := math.Sqrt(float64(v))
 	return {{ typeconv2 "float64" .Type "result" }}
 }{{end}}
 func (v {{.Name}}) Compare(val {{.Type}}) Value {
-	if v.Value == val {
+	current := {{.Type}}(v)
+	if current == val {
 		return intToValue(0)
-	} else if v.Value < val {
+	} else if current < val {
 		return intToValue(-1)
 	}
 	return intToValue(1)
 }
 func (v {{.Name}}) Max(vals ...{{.Type}}) {{.Type}} {
-	result := v.Value
+	result := {{.Type}}(v)
 	for _, val := range vals {
 		if val > result {
 			result = val
@@ -158,7 +158,7 @@ func (v {{.Name}}) Max(vals ...{{.Type}}) {{.Type}} {
 	return result
 }
 func (v {{.Name}}) Min(vals ...{{.Type}}) {{.Type}} {
-	result := v.Value
+	result := {{.Type}}(v)
 	for _, val := range vals {
 		if val < result {
 			result = val

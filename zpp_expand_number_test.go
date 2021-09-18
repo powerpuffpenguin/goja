@@ -1,7 +1,9 @@
 package goja_test
 
 import (
+	"errors"
 	"fmt"
+	"math"
 	"testing"
 
 	"github.com/dop251/goja"
@@ -31,7 +33,24 @@ func TestExpandNumber(t *testing.T) {
 	vm := goja.New()
 	vm.Set(`print`, print)
 	vm.Set(`printType`, printType)
-
+	vm.Set(`nativeInt64`, func(x int64) error {
+		if x != math.MaxInt64 {
+			return errors.New(`nativeInt64 err`)
+		}
+		return nil
+	})
+	vm.Set(`nativeUint64`, func(x uint64) error {
+		if x != math.MaxUint64 {
+			return errors.New(`nativeUint64 err`)
+		}
+		return nil
+	})
+	vm.Set(`nativeFloat64`, func(x float64) error {
+		if x != math.MaxFloat64 {
+			return errors.New(`nativeFloat64 err`)
+		}
+		return nil
+	})
 	_, e := vm.RunScript("a.js", `
 function check(ok,msg){
 	if(!ok){
@@ -42,6 +61,9 @@ function check(ok,msg){
 		}
 	}
 }
+nativeInt64(MaxInt64)
+nativeUint64(MaxUint64)
+nativeFloat64(MaxFloat64)
 check(MaxInt64.String()=="9223372036854775807","MaxInt64")
 check(MaxInt32.String()=="2147483647","MaxInt32")
 check(MaxInt16.String()=="32767","MaxInt16")

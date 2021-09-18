@@ -31,9 +31,6 @@ func printType(call goja.FunctionCall) goja.Value {
 }
 
 func TestMain(t *testing.T) {
-	var x []byte
-	fmt.Println(x[0:])
-	return
 	b, e := ioutil.ReadFile("a.js")
 	if e != nil {
 		t.Fatal(e)
