@@ -4,7 +4,9 @@ import (
 	"errors"
 	"fmt"
 	"math"
+	"sort"
 	"strconv"
+	"strings"
 )
 {{range .}}
 type {{.Name}} {{.Type}}
@@ -212,6 +214,12 @@ func (v {{.Name}}Array) String() string {
 func (v {{.Name}}Array) Len() int {
 	return len(v)
 }
+func (v {{.Name}}Array) Swap(i, j int) {
+	v[i], v[j] = v[j], v[i]
+}
+func (v {{.Name}}Array) Less(i, j int) bool {
+	return v[i] < v[j]
+}
 func (v {{.Name}}Array) Cap() int {
 	return cap(v)
 }
@@ -242,11 +250,84 @@ func (v {{.Name}}Array) SliceEnd(start, end int) []{{.Type}} {
 	}
 	return v[start:end]
 }
+func (v {{.Name}}Array) Append(data ...{{.Type}}) []{{.Type}} {
+	return append(v, data...)
+}
+func (v {{.Name}}Array) Get(index int) ({{.Type}}, error) {
+	if index < 0 || index >= len(v) {
+		return 0, fmt.Errorf("slice bounds out of range get(%d)", index)
+	}
+	return {{.Type}}(v[index]), nil
+}
+func (v {{.Name}}Array) Set(index int, val {{.Type}}) error {
+	if index < 0 || index >= len(v) {
+		return fmt.Errorf("slice bounds out of range get(%d)", index)
+	}
+	v[index] = val
+	return nil
+}
+func (v {{.Name}}Array) Join(sep string) string {
+	var (
+		result string
+		count  = len(v)
+	)
+	if count > 0 {
+		strs := make([]string, count)
+		for i, val := range v {
+			strs[i] = fmt.Sprint(val)
+		}
+		result = strings.Join(strs, sep)
+	}
+	return result
+}
+func (v {{.Name}}Array) Asc() {
+	sort.Sort(v)
+}
+func (v {{.Name}}Array) Desc() {
+	sort.Sort(sort{{.Name}}Array(v))
+}
+
+type sort{{.Name}}Array []{{.Type}}
+
+func (a sort{{.Name}}Array) Len() int           { return len(a) }
+func (a sort{{.Name}}Array) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+func (a sort{{.Name}}Array) Less(i, j int) bool { return a[i] > a[j] }
+
+func (r *Runtime) builtinGo_New{{.Name}}Array(call FunctionCall) Value {
+	var (
+		result []{{.Type}}
+		args   = call.Arguments
+		count  = len(call.Arguments)
+	)
+	if count > 0 {
+		var l int
+		e := r.ExportTo(args[0], &l)
+		if e != nil {
+			panic(r.NewGoError(e))
+		} else if l < 0 {
+			l = 0
+		}
+		if count > 1 {
+			var c int
+			e := r.ExportTo(args[1], &c)
+			if e != nil {
+				panic(r.NewGoError(e))
+			} else if c < l {
+				c = l
+			}
+			result = make([]{{.Type}}, l, c)
+		} else {
+			result = make([]{{.Type}}, l)
+		}
+	}
+	return r.ToValue(New{{.Name}}Array(result))
+}
 {{end}}
 func (r *Runtime) pp_expand_init_number() {
 {{range .}}	r.addToGlobal(`New{{.Name}}`, r.newNativeFunc(r.builtinGo_New{{.Name}}, nil, "New{{.Name}}", nil, {{if .Integer}}2{{else}}1{{end}}))
 {{end}}{{range .}}{{if .Max}}	r.addToGlobal(`Max{{.Name}}`, r.ToValue(New{{.Name}}(math.Max{{.Name}})))
 {{end}}{{end}}{{range .}}{{if .Min}}	r.addToGlobal(`Min{{.Name}}`, r.ToValue(New{{.Name}}(math.Min{{.Name}})))
-{{end}}{{end}}	r.addToGlobal(`IntSize`, intToValue(strconv.IntSize))
+{{end}}{{end}}	r.addToGlobal(`IntSize`, intToValue(strconv.IntSize)){{range .}}
+	r.addToGlobal(`New{{.Name}}Array`, r.newNativeFunc(r.builtinGo_New{{.Name}}Array, nil, "New{{.Name}}Array", nil, 2)){{end}}
 }
 {{end}}

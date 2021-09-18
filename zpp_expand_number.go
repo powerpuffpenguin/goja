@@ -4,7 +4,9 @@ import (
 	"errors"
 	"fmt"
 	"math"
+	"sort"
 	"strconv"
+	"strings"
 )
 
 type Int int
@@ -2384,6 +2386,12 @@ func (v IntArray) String() string {
 func (v IntArray) Len() int {
 	return len(v)
 }
+func (v IntArray) Swap(i, j int) {
+	v[i], v[j] = v[j], v[i]
+}
+func (v IntArray) Less(i, j int) bool {
+	return v[i] < v[j]
+}
 func (v IntArray) Cap() int {
 	return cap(v)
 }
@@ -2414,6 +2422,81 @@ func (v IntArray) SliceEnd(start, end int) []int {
 	}
 	return v[start:end]
 }
+func (v IntArray) Append(data ...int) []int {
+	return append(v, data...)
+}
+func (v IntArray) Push(data []int) []int {
+	return append(v, data...)
+}
+func (v IntArray) Get(index int) (int, error) {
+	if index < 0 || index >= len(v) {
+		return 0, fmt.Errorf("slice bounds out of range get(%d)", index)
+	}
+	return int(v[index]), nil
+}
+func (v IntArray) Set(index int, val int) error {
+	if index < 0 || index >= len(v) {
+		return fmt.Errorf("slice bounds out of range get(%d)", index)
+	}
+	v[index] = val
+	return nil
+}
+func (v IntArray) Join(sep string) string {
+	var (
+		result string
+		count  = len(v)
+	)
+	if count > 0 {
+		strs := make([]string, count)
+		for i, val := range v {
+			strs[i] = fmt.Sprint(val)
+		}
+		result = strings.Join(strs, sep)
+	}
+	return result
+}
+func (v IntArray) Asc() {
+	sort.Sort(v)
+}
+func (v IntArray) Desc() {
+	sort.Sort(sortIntArray(v))
+}
+
+type sortIntArray []int
+
+func (a sortIntArray) Len() int           { return len(a) }
+func (a sortIntArray) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+func (a sortIntArray) Less(i, j int) bool { return a[i] > a[j] }
+
+func (r *Runtime) builtinGo_NewIntArray(call FunctionCall) Value {
+	var (
+		result []int
+		args   = call.Arguments
+		count  = len(call.Arguments)
+	)
+	if count > 0 {
+		var l int
+		e := r.ExportTo(args[0], &l)
+		if e != nil {
+			panic(r.NewGoError(e))
+		} else if l < 0 {
+			l = 0
+		}
+		if count > 1 {
+			var c int
+			e := r.ExportTo(args[1], &c)
+			if e != nil {
+				panic(r.NewGoError(e))
+			} else if c < l {
+				c = l
+			}
+			result = make([]int, l, c)
+		} else {
+			result = make([]int, l)
+		}
+	}
+	return r.ToValue(NewIntArray(result))
+}
 
 type Int64Array []int64
 
@@ -2425,6 +2508,12 @@ func (v Int64Array) String() string {
 }
 func (v Int64Array) Len() int {
 	return len(v)
+}
+func (v Int64Array) Swap(i, j int) {
+	v[i], v[j] = v[j], v[i]
+}
+func (v Int64Array) Less(i, j int) bool {
+	return v[i] < v[j]
 }
 func (v Int64Array) Cap() int {
 	return cap(v)
@@ -2456,6 +2545,81 @@ func (v Int64Array) SliceEnd(start, end int) []int64 {
 	}
 	return v[start:end]
 }
+func (v Int64Array) Append(data ...int64) []int64 {
+	return append(v, data...)
+}
+func (v Int64Array) Push(data []int64) []int64 {
+	return append(v, data...)
+}
+func (v Int64Array) Get(index int) (int64, error) {
+	if index < 0 || index >= len(v) {
+		return 0, fmt.Errorf("slice bounds out of range get(%d)", index)
+	}
+	return int64(v[index]), nil
+}
+func (v Int64Array) Set(index int, val int64) error {
+	if index < 0 || index >= len(v) {
+		return fmt.Errorf("slice bounds out of range get(%d)", index)
+	}
+	v[index] = val
+	return nil
+}
+func (v Int64Array) Join(sep string) string {
+	var (
+		result string
+		count  = len(v)
+	)
+	if count > 0 {
+		strs := make([]string, count)
+		for i, val := range v {
+			strs[i] = fmt.Sprint(val)
+		}
+		result = strings.Join(strs, sep)
+	}
+	return result
+}
+func (v Int64Array) Asc() {
+	sort.Sort(v)
+}
+func (v Int64Array) Desc() {
+	sort.Sort(sortInt64Array(v))
+}
+
+type sortInt64Array []int64
+
+func (a sortInt64Array) Len() int           { return len(a) }
+func (a sortInt64Array) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+func (a sortInt64Array) Less(i, j int) bool { return a[i] > a[j] }
+
+func (r *Runtime) builtinGo_NewInt64Array(call FunctionCall) Value {
+	var (
+		result []int64
+		args   = call.Arguments
+		count  = len(call.Arguments)
+	)
+	if count > 0 {
+		var l int
+		e := r.ExportTo(args[0], &l)
+		if e != nil {
+			panic(r.NewGoError(e))
+		} else if l < 0 {
+			l = 0
+		}
+		if count > 1 {
+			var c int
+			e := r.ExportTo(args[1], &c)
+			if e != nil {
+				panic(r.NewGoError(e))
+			} else if c < l {
+				c = l
+			}
+			result = make([]int64, l, c)
+		} else {
+			result = make([]int64, l)
+		}
+	}
+	return r.ToValue(NewInt64Array(result))
+}
 
 type Int32Array []int32
 
@@ -2467,6 +2631,12 @@ func (v Int32Array) String() string {
 }
 func (v Int32Array) Len() int {
 	return len(v)
+}
+func (v Int32Array) Swap(i, j int) {
+	v[i], v[j] = v[j], v[i]
+}
+func (v Int32Array) Less(i, j int) bool {
+	return v[i] < v[j]
 }
 func (v Int32Array) Cap() int {
 	return cap(v)
@@ -2498,6 +2668,81 @@ func (v Int32Array) SliceEnd(start, end int) []int32 {
 	}
 	return v[start:end]
 }
+func (v Int32Array) Append(data ...int32) []int32 {
+	return append(v, data...)
+}
+func (v Int32Array) Push(data []int32) []int32 {
+	return append(v, data...)
+}
+func (v Int32Array) Get(index int) (int32, error) {
+	if index < 0 || index >= len(v) {
+		return 0, fmt.Errorf("slice bounds out of range get(%d)", index)
+	}
+	return int32(v[index]), nil
+}
+func (v Int32Array) Set(index int, val int32) error {
+	if index < 0 || index >= len(v) {
+		return fmt.Errorf("slice bounds out of range get(%d)", index)
+	}
+	v[index] = val
+	return nil
+}
+func (v Int32Array) Join(sep string) string {
+	var (
+		result string
+		count  = len(v)
+	)
+	if count > 0 {
+		strs := make([]string, count)
+		for i, val := range v {
+			strs[i] = fmt.Sprint(val)
+		}
+		result = strings.Join(strs, sep)
+	}
+	return result
+}
+func (v Int32Array) Asc() {
+	sort.Sort(v)
+}
+func (v Int32Array) Desc() {
+	sort.Sort(sortInt32Array(v))
+}
+
+type sortInt32Array []int32
+
+func (a sortInt32Array) Len() int           { return len(a) }
+func (a sortInt32Array) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+func (a sortInt32Array) Less(i, j int) bool { return a[i] > a[j] }
+
+func (r *Runtime) builtinGo_NewInt32Array(call FunctionCall) Value {
+	var (
+		result []int32
+		args   = call.Arguments
+		count  = len(call.Arguments)
+	)
+	if count > 0 {
+		var l int
+		e := r.ExportTo(args[0], &l)
+		if e != nil {
+			panic(r.NewGoError(e))
+		} else if l < 0 {
+			l = 0
+		}
+		if count > 1 {
+			var c int
+			e := r.ExportTo(args[1], &c)
+			if e != nil {
+				panic(r.NewGoError(e))
+			} else if c < l {
+				c = l
+			}
+			result = make([]int32, l, c)
+		} else {
+			result = make([]int32, l)
+		}
+	}
+	return r.ToValue(NewInt32Array(result))
+}
 
 type Int16Array []int16
 
@@ -2509,6 +2754,12 @@ func (v Int16Array) String() string {
 }
 func (v Int16Array) Len() int {
 	return len(v)
+}
+func (v Int16Array) Swap(i, j int) {
+	v[i], v[j] = v[j], v[i]
+}
+func (v Int16Array) Less(i, j int) bool {
+	return v[i] < v[j]
 }
 func (v Int16Array) Cap() int {
 	return cap(v)
@@ -2540,6 +2791,81 @@ func (v Int16Array) SliceEnd(start, end int) []int16 {
 	}
 	return v[start:end]
 }
+func (v Int16Array) Append(data ...int16) []int16 {
+	return append(v, data...)
+}
+func (v Int16Array) Push(data []int16) []int16 {
+	return append(v, data...)
+}
+func (v Int16Array) Get(index int) (int16, error) {
+	if index < 0 || index >= len(v) {
+		return 0, fmt.Errorf("slice bounds out of range get(%d)", index)
+	}
+	return int16(v[index]), nil
+}
+func (v Int16Array) Set(index int, val int16) error {
+	if index < 0 || index >= len(v) {
+		return fmt.Errorf("slice bounds out of range get(%d)", index)
+	}
+	v[index] = val
+	return nil
+}
+func (v Int16Array) Join(sep string) string {
+	var (
+		result string
+		count  = len(v)
+	)
+	if count > 0 {
+		strs := make([]string, count)
+		for i, val := range v {
+			strs[i] = fmt.Sprint(val)
+		}
+		result = strings.Join(strs, sep)
+	}
+	return result
+}
+func (v Int16Array) Asc() {
+	sort.Sort(v)
+}
+func (v Int16Array) Desc() {
+	sort.Sort(sortInt16Array(v))
+}
+
+type sortInt16Array []int16
+
+func (a sortInt16Array) Len() int           { return len(a) }
+func (a sortInt16Array) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+func (a sortInt16Array) Less(i, j int) bool { return a[i] > a[j] }
+
+func (r *Runtime) builtinGo_NewInt16Array(call FunctionCall) Value {
+	var (
+		result []int16
+		args   = call.Arguments
+		count  = len(call.Arguments)
+	)
+	if count > 0 {
+		var l int
+		e := r.ExportTo(args[0], &l)
+		if e != nil {
+			panic(r.NewGoError(e))
+		} else if l < 0 {
+			l = 0
+		}
+		if count > 1 {
+			var c int
+			e := r.ExportTo(args[1], &c)
+			if e != nil {
+				panic(r.NewGoError(e))
+			} else if c < l {
+				c = l
+			}
+			result = make([]int16, l, c)
+		} else {
+			result = make([]int16, l)
+		}
+	}
+	return r.ToValue(NewInt16Array(result))
+}
 
 type Int8Array []int8
 
@@ -2551,6 +2877,12 @@ func (v Int8Array) String() string {
 }
 func (v Int8Array) Len() int {
 	return len(v)
+}
+func (v Int8Array) Swap(i, j int) {
+	v[i], v[j] = v[j], v[i]
+}
+func (v Int8Array) Less(i, j int) bool {
+	return v[i] < v[j]
 }
 func (v Int8Array) Cap() int {
 	return cap(v)
@@ -2582,6 +2914,81 @@ func (v Int8Array) SliceEnd(start, end int) []int8 {
 	}
 	return v[start:end]
 }
+func (v Int8Array) Append(data ...int8) []int8 {
+	return append(v, data...)
+}
+func (v Int8Array) Push(data []int8) []int8 {
+	return append(v, data...)
+}
+func (v Int8Array) Get(index int) (int8, error) {
+	if index < 0 || index >= len(v) {
+		return 0, fmt.Errorf("slice bounds out of range get(%d)", index)
+	}
+	return int8(v[index]), nil
+}
+func (v Int8Array) Set(index int, val int8) error {
+	if index < 0 || index >= len(v) {
+		return fmt.Errorf("slice bounds out of range get(%d)", index)
+	}
+	v[index] = val
+	return nil
+}
+func (v Int8Array) Join(sep string) string {
+	var (
+		result string
+		count  = len(v)
+	)
+	if count > 0 {
+		strs := make([]string, count)
+		for i, val := range v {
+			strs[i] = fmt.Sprint(val)
+		}
+		result = strings.Join(strs, sep)
+	}
+	return result
+}
+func (v Int8Array) Asc() {
+	sort.Sort(v)
+}
+func (v Int8Array) Desc() {
+	sort.Sort(sortInt8Array(v))
+}
+
+type sortInt8Array []int8
+
+func (a sortInt8Array) Len() int           { return len(a) }
+func (a sortInt8Array) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+func (a sortInt8Array) Less(i, j int) bool { return a[i] > a[j] }
+
+func (r *Runtime) builtinGo_NewInt8Array(call FunctionCall) Value {
+	var (
+		result []int8
+		args   = call.Arguments
+		count  = len(call.Arguments)
+	)
+	if count > 0 {
+		var l int
+		e := r.ExportTo(args[0], &l)
+		if e != nil {
+			panic(r.NewGoError(e))
+		} else if l < 0 {
+			l = 0
+		}
+		if count > 1 {
+			var c int
+			e := r.ExportTo(args[1], &c)
+			if e != nil {
+				panic(r.NewGoError(e))
+			} else if c < l {
+				c = l
+			}
+			result = make([]int8, l, c)
+		} else {
+			result = make([]int8, l)
+		}
+	}
+	return r.ToValue(NewInt8Array(result))
+}
 
 type UintArray []uint
 
@@ -2593,6 +3000,12 @@ func (v UintArray) String() string {
 }
 func (v UintArray) Len() int {
 	return len(v)
+}
+func (v UintArray) Swap(i, j int) {
+	v[i], v[j] = v[j], v[i]
+}
+func (v UintArray) Less(i, j int) bool {
+	return v[i] < v[j]
 }
 func (v UintArray) Cap() int {
 	return cap(v)
@@ -2624,6 +3037,81 @@ func (v UintArray) SliceEnd(start, end int) []uint {
 	}
 	return v[start:end]
 }
+func (v UintArray) Append(data ...uint) []uint {
+	return append(v, data...)
+}
+func (v UintArray) Push(data []uint) []uint {
+	return append(v, data...)
+}
+func (v UintArray) Get(index int) (uint, error) {
+	if index < 0 || index >= len(v) {
+		return 0, fmt.Errorf("slice bounds out of range get(%d)", index)
+	}
+	return uint(v[index]), nil
+}
+func (v UintArray) Set(index int, val uint) error {
+	if index < 0 || index >= len(v) {
+		return fmt.Errorf("slice bounds out of range get(%d)", index)
+	}
+	v[index] = val
+	return nil
+}
+func (v UintArray) Join(sep string) string {
+	var (
+		result string
+		count  = len(v)
+	)
+	if count > 0 {
+		strs := make([]string, count)
+		for i, val := range v {
+			strs[i] = fmt.Sprint(val)
+		}
+		result = strings.Join(strs, sep)
+	}
+	return result
+}
+func (v UintArray) Asc() {
+	sort.Sort(v)
+}
+func (v UintArray) Desc() {
+	sort.Sort(sortUintArray(v))
+}
+
+type sortUintArray []uint
+
+func (a sortUintArray) Len() int           { return len(a) }
+func (a sortUintArray) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+func (a sortUintArray) Less(i, j int) bool { return a[i] > a[j] }
+
+func (r *Runtime) builtinGo_NewUintArray(call FunctionCall) Value {
+	var (
+		result []uint
+		args   = call.Arguments
+		count  = len(call.Arguments)
+	)
+	if count > 0 {
+		var l int
+		e := r.ExportTo(args[0], &l)
+		if e != nil {
+			panic(r.NewGoError(e))
+		} else if l < 0 {
+			l = 0
+		}
+		if count > 1 {
+			var c int
+			e := r.ExportTo(args[1], &c)
+			if e != nil {
+				panic(r.NewGoError(e))
+			} else if c < l {
+				c = l
+			}
+			result = make([]uint, l, c)
+		} else {
+			result = make([]uint, l)
+		}
+	}
+	return r.ToValue(NewUintArray(result))
+}
 
 type Uint64Array []uint64
 
@@ -2635,6 +3123,12 @@ func (v Uint64Array) String() string {
 }
 func (v Uint64Array) Len() int {
 	return len(v)
+}
+func (v Uint64Array) Swap(i, j int) {
+	v[i], v[j] = v[j], v[i]
+}
+func (v Uint64Array) Less(i, j int) bool {
+	return v[i] < v[j]
 }
 func (v Uint64Array) Cap() int {
 	return cap(v)
@@ -2666,6 +3160,81 @@ func (v Uint64Array) SliceEnd(start, end int) []uint64 {
 	}
 	return v[start:end]
 }
+func (v Uint64Array) Append(data ...uint64) []uint64 {
+	return append(v, data...)
+}
+func (v Uint64Array) Push(data []uint64) []uint64 {
+	return append(v, data...)
+}
+func (v Uint64Array) Get(index int) (uint64, error) {
+	if index < 0 || index >= len(v) {
+		return 0, fmt.Errorf("slice bounds out of range get(%d)", index)
+	}
+	return uint64(v[index]), nil
+}
+func (v Uint64Array) Set(index int, val uint64) error {
+	if index < 0 || index >= len(v) {
+		return fmt.Errorf("slice bounds out of range get(%d)", index)
+	}
+	v[index] = val
+	return nil
+}
+func (v Uint64Array) Join(sep string) string {
+	var (
+		result string
+		count  = len(v)
+	)
+	if count > 0 {
+		strs := make([]string, count)
+		for i, val := range v {
+			strs[i] = fmt.Sprint(val)
+		}
+		result = strings.Join(strs, sep)
+	}
+	return result
+}
+func (v Uint64Array) Asc() {
+	sort.Sort(v)
+}
+func (v Uint64Array) Desc() {
+	sort.Sort(sortUint64Array(v))
+}
+
+type sortUint64Array []uint64
+
+func (a sortUint64Array) Len() int           { return len(a) }
+func (a sortUint64Array) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+func (a sortUint64Array) Less(i, j int) bool { return a[i] > a[j] }
+
+func (r *Runtime) builtinGo_NewUint64Array(call FunctionCall) Value {
+	var (
+		result []uint64
+		args   = call.Arguments
+		count  = len(call.Arguments)
+	)
+	if count > 0 {
+		var l int
+		e := r.ExportTo(args[0], &l)
+		if e != nil {
+			panic(r.NewGoError(e))
+		} else if l < 0 {
+			l = 0
+		}
+		if count > 1 {
+			var c int
+			e := r.ExportTo(args[1], &c)
+			if e != nil {
+				panic(r.NewGoError(e))
+			} else if c < l {
+				c = l
+			}
+			result = make([]uint64, l, c)
+		} else {
+			result = make([]uint64, l)
+		}
+	}
+	return r.ToValue(NewUint64Array(result))
+}
 
 type Uint32Array []uint32
 
@@ -2677,6 +3246,12 @@ func (v Uint32Array) String() string {
 }
 func (v Uint32Array) Len() int {
 	return len(v)
+}
+func (v Uint32Array) Swap(i, j int) {
+	v[i], v[j] = v[j], v[i]
+}
+func (v Uint32Array) Less(i, j int) bool {
+	return v[i] < v[j]
 }
 func (v Uint32Array) Cap() int {
 	return cap(v)
@@ -2708,6 +3283,81 @@ func (v Uint32Array) SliceEnd(start, end int) []uint32 {
 	}
 	return v[start:end]
 }
+func (v Uint32Array) Append(data ...uint32) []uint32 {
+	return append(v, data...)
+}
+func (v Uint32Array) Push(data []uint32) []uint32 {
+	return append(v, data...)
+}
+func (v Uint32Array) Get(index int) (uint32, error) {
+	if index < 0 || index >= len(v) {
+		return 0, fmt.Errorf("slice bounds out of range get(%d)", index)
+	}
+	return uint32(v[index]), nil
+}
+func (v Uint32Array) Set(index int, val uint32) error {
+	if index < 0 || index >= len(v) {
+		return fmt.Errorf("slice bounds out of range get(%d)", index)
+	}
+	v[index] = val
+	return nil
+}
+func (v Uint32Array) Join(sep string) string {
+	var (
+		result string
+		count  = len(v)
+	)
+	if count > 0 {
+		strs := make([]string, count)
+		for i, val := range v {
+			strs[i] = fmt.Sprint(val)
+		}
+		result = strings.Join(strs, sep)
+	}
+	return result
+}
+func (v Uint32Array) Asc() {
+	sort.Sort(v)
+}
+func (v Uint32Array) Desc() {
+	sort.Sort(sortUint32Array(v))
+}
+
+type sortUint32Array []uint32
+
+func (a sortUint32Array) Len() int           { return len(a) }
+func (a sortUint32Array) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+func (a sortUint32Array) Less(i, j int) bool { return a[i] > a[j] }
+
+func (r *Runtime) builtinGo_NewUint32Array(call FunctionCall) Value {
+	var (
+		result []uint32
+		args   = call.Arguments
+		count  = len(call.Arguments)
+	)
+	if count > 0 {
+		var l int
+		e := r.ExportTo(args[0], &l)
+		if e != nil {
+			panic(r.NewGoError(e))
+		} else if l < 0 {
+			l = 0
+		}
+		if count > 1 {
+			var c int
+			e := r.ExportTo(args[1], &c)
+			if e != nil {
+				panic(r.NewGoError(e))
+			} else if c < l {
+				c = l
+			}
+			result = make([]uint32, l, c)
+		} else {
+			result = make([]uint32, l)
+		}
+	}
+	return r.ToValue(NewUint32Array(result))
+}
 
 type Uint16Array []uint16
 
@@ -2719,6 +3369,12 @@ func (v Uint16Array) String() string {
 }
 func (v Uint16Array) Len() int {
 	return len(v)
+}
+func (v Uint16Array) Swap(i, j int) {
+	v[i], v[j] = v[j], v[i]
+}
+func (v Uint16Array) Less(i, j int) bool {
+	return v[i] < v[j]
 }
 func (v Uint16Array) Cap() int {
 	return cap(v)
@@ -2750,6 +3406,81 @@ func (v Uint16Array) SliceEnd(start, end int) []uint16 {
 	}
 	return v[start:end]
 }
+func (v Uint16Array) Append(data ...uint16) []uint16 {
+	return append(v, data...)
+}
+func (v Uint16Array) Push(data []uint16) []uint16 {
+	return append(v, data...)
+}
+func (v Uint16Array) Get(index int) (uint16, error) {
+	if index < 0 || index >= len(v) {
+		return 0, fmt.Errorf("slice bounds out of range get(%d)", index)
+	}
+	return uint16(v[index]), nil
+}
+func (v Uint16Array) Set(index int, val uint16) error {
+	if index < 0 || index >= len(v) {
+		return fmt.Errorf("slice bounds out of range get(%d)", index)
+	}
+	v[index] = val
+	return nil
+}
+func (v Uint16Array) Join(sep string) string {
+	var (
+		result string
+		count  = len(v)
+	)
+	if count > 0 {
+		strs := make([]string, count)
+		for i, val := range v {
+			strs[i] = fmt.Sprint(val)
+		}
+		result = strings.Join(strs, sep)
+	}
+	return result
+}
+func (v Uint16Array) Asc() {
+	sort.Sort(v)
+}
+func (v Uint16Array) Desc() {
+	sort.Sort(sortUint16Array(v))
+}
+
+type sortUint16Array []uint16
+
+func (a sortUint16Array) Len() int           { return len(a) }
+func (a sortUint16Array) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+func (a sortUint16Array) Less(i, j int) bool { return a[i] > a[j] }
+
+func (r *Runtime) builtinGo_NewUint16Array(call FunctionCall) Value {
+	var (
+		result []uint16
+		args   = call.Arguments
+		count  = len(call.Arguments)
+	)
+	if count > 0 {
+		var l int
+		e := r.ExportTo(args[0], &l)
+		if e != nil {
+			panic(r.NewGoError(e))
+		} else if l < 0 {
+			l = 0
+		}
+		if count > 1 {
+			var c int
+			e := r.ExportTo(args[1], &c)
+			if e != nil {
+				panic(r.NewGoError(e))
+			} else if c < l {
+				c = l
+			}
+			result = make([]uint16, l, c)
+		} else {
+			result = make([]uint16, l)
+		}
+	}
+	return r.ToValue(NewUint16Array(result))
+}
 
 type Uint8Array []uint8
 
@@ -2761,6 +3492,12 @@ func (v Uint8Array) String() string {
 }
 func (v Uint8Array) Len() int {
 	return len(v)
+}
+func (v Uint8Array) Swap(i, j int) {
+	v[i], v[j] = v[j], v[i]
+}
+func (v Uint8Array) Less(i, j int) bool {
+	return v[i] < v[j]
 }
 func (v Uint8Array) Cap() int {
 	return cap(v)
@@ -2792,6 +3529,81 @@ func (v Uint8Array) SliceEnd(start, end int) []uint8 {
 	}
 	return v[start:end]
 }
+func (v Uint8Array) Append(data ...uint8) []uint8 {
+	return append(v, data...)
+}
+func (v Uint8Array) Push(data []uint8) []uint8 {
+	return append(v, data...)
+}
+func (v Uint8Array) Get(index int) (uint8, error) {
+	if index < 0 || index >= len(v) {
+		return 0, fmt.Errorf("slice bounds out of range get(%d)", index)
+	}
+	return uint8(v[index]), nil
+}
+func (v Uint8Array) Set(index int, val uint8) error {
+	if index < 0 || index >= len(v) {
+		return fmt.Errorf("slice bounds out of range get(%d)", index)
+	}
+	v[index] = val
+	return nil
+}
+func (v Uint8Array) Join(sep string) string {
+	var (
+		result string
+		count  = len(v)
+	)
+	if count > 0 {
+		strs := make([]string, count)
+		for i, val := range v {
+			strs[i] = fmt.Sprint(val)
+		}
+		result = strings.Join(strs, sep)
+	}
+	return result
+}
+func (v Uint8Array) Asc() {
+	sort.Sort(v)
+}
+func (v Uint8Array) Desc() {
+	sort.Sort(sortUint8Array(v))
+}
+
+type sortUint8Array []uint8
+
+func (a sortUint8Array) Len() int           { return len(a) }
+func (a sortUint8Array) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+func (a sortUint8Array) Less(i, j int) bool { return a[i] > a[j] }
+
+func (r *Runtime) builtinGo_NewUint8Array(call FunctionCall) Value {
+	var (
+		result []uint8
+		args   = call.Arguments
+		count  = len(call.Arguments)
+	)
+	if count > 0 {
+		var l int
+		e := r.ExportTo(args[0], &l)
+		if e != nil {
+			panic(r.NewGoError(e))
+		} else if l < 0 {
+			l = 0
+		}
+		if count > 1 {
+			var c int
+			e := r.ExportTo(args[1], &c)
+			if e != nil {
+				panic(r.NewGoError(e))
+			} else if c < l {
+				c = l
+			}
+			result = make([]uint8, l, c)
+		} else {
+			result = make([]uint8, l)
+		}
+	}
+	return r.ToValue(NewUint8Array(result))
+}
 
 type Float64Array []float64
 
@@ -2803,6 +3615,12 @@ func (v Float64Array) String() string {
 }
 func (v Float64Array) Len() int {
 	return len(v)
+}
+func (v Float64Array) Swap(i, j int) {
+	v[i], v[j] = v[j], v[i]
+}
+func (v Float64Array) Less(i, j int) bool {
+	return v[i] < v[j]
 }
 func (v Float64Array) Cap() int {
 	return cap(v)
@@ -2834,6 +3652,81 @@ func (v Float64Array) SliceEnd(start, end int) []float64 {
 	}
 	return v[start:end]
 }
+func (v Float64Array) Append(data ...float64) []float64 {
+	return append(v, data...)
+}
+func (v Float64Array) Push(data []float64) []float64 {
+	return append(v, data...)
+}
+func (v Float64Array) Get(index int) (float64, error) {
+	if index < 0 || index >= len(v) {
+		return 0, fmt.Errorf("slice bounds out of range get(%d)", index)
+	}
+	return float64(v[index]), nil
+}
+func (v Float64Array) Set(index int, val float64) error {
+	if index < 0 || index >= len(v) {
+		return fmt.Errorf("slice bounds out of range get(%d)", index)
+	}
+	v[index] = val
+	return nil
+}
+func (v Float64Array) Join(sep string) string {
+	var (
+		result string
+		count  = len(v)
+	)
+	if count > 0 {
+		strs := make([]string, count)
+		for i, val := range v {
+			strs[i] = fmt.Sprint(val)
+		}
+		result = strings.Join(strs, sep)
+	}
+	return result
+}
+func (v Float64Array) Asc() {
+	sort.Sort(v)
+}
+func (v Float64Array) Desc() {
+	sort.Sort(sortFloat64Array(v))
+}
+
+type sortFloat64Array []float64
+
+func (a sortFloat64Array) Len() int           { return len(a) }
+func (a sortFloat64Array) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+func (a sortFloat64Array) Less(i, j int) bool { return a[i] > a[j] }
+
+func (r *Runtime) builtinGo_NewFloat64Array(call FunctionCall) Value {
+	var (
+		result []float64
+		args   = call.Arguments
+		count  = len(call.Arguments)
+	)
+	if count > 0 {
+		var l int
+		e := r.ExportTo(args[0], &l)
+		if e != nil {
+			panic(r.NewGoError(e))
+		} else if l < 0 {
+			l = 0
+		}
+		if count > 1 {
+			var c int
+			e := r.ExportTo(args[1], &c)
+			if e != nil {
+				panic(r.NewGoError(e))
+			} else if c < l {
+				c = l
+			}
+			result = make([]float64, l, c)
+		} else {
+			result = make([]float64, l)
+		}
+	}
+	return r.ToValue(NewFloat64Array(result))
+}
 
 type Float32Array []float32
 
@@ -2845,6 +3738,12 @@ func (v Float32Array) String() string {
 }
 func (v Float32Array) Len() int {
 	return len(v)
+}
+func (v Float32Array) Swap(i, j int) {
+	v[i], v[j] = v[j], v[i]
+}
+func (v Float32Array) Less(i, j int) bool {
+	return v[i] < v[j]
 }
 func (v Float32Array) Cap() int {
 	return cap(v)
@@ -2876,6 +3775,81 @@ func (v Float32Array) SliceEnd(start, end int) []float32 {
 	}
 	return v[start:end]
 }
+func (v Float32Array) Append(data ...float32) []float32 {
+	return append(v, data...)
+}
+func (v Float32Array) Push(data []float32) []float32 {
+	return append(v, data...)
+}
+func (v Float32Array) Get(index int) (float32, error) {
+	if index < 0 || index >= len(v) {
+		return 0, fmt.Errorf("slice bounds out of range get(%d)", index)
+	}
+	return float32(v[index]), nil
+}
+func (v Float32Array) Set(index int, val float32) error {
+	if index < 0 || index >= len(v) {
+		return fmt.Errorf("slice bounds out of range get(%d)", index)
+	}
+	v[index] = val
+	return nil
+}
+func (v Float32Array) Join(sep string) string {
+	var (
+		result string
+		count  = len(v)
+	)
+	if count > 0 {
+		strs := make([]string, count)
+		for i, val := range v {
+			strs[i] = fmt.Sprint(val)
+		}
+		result = strings.Join(strs, sep)
+	}
+	return result
+}
+func (v Float32Array) Asc() {
+	sort.Sort(v)
+}
+func (v Float32Array) Desc() {
+	sort.Sort(sortFloat32Array(v))
+}
+
+type sortFloat32Array []float32
+
+func (a sortFloat32Array) Len() int           { return len(a) }
+func (a sortFloat32Array) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+func (a sortFloat32Array) Less(i, j int) bool { return a[i] > a[j] }
+
+func (r *Runtime) builtinGo_NewFloat32Array(call FunctionCall) Value {
+	var (
+		result []float32
+		args   = call.Arguments
+		count  = len(call.Arguments)
+	)
+	if count > 0 {
+		var l int
+		e := r.ExportTo(args[0], &l)
+		if e != nil {
+			panic(r.NewGoError(e))
+		} else if l < 0 {
+			l = 0
+		}
+		if count > 1 {
+			var c int
+			e := r.ExportTo(args[1], &c)
+			if e != nil {
+				panic(r.NewGoError(e))
+			} else if c < l {
+				c = l
+			}
+			result = make([]float32, l, c)
+		} else {
+			result = make([]float32, l)
+		}
+	}
+	return r.ToValue(NewFloat32Array(result))
+}
 
 func (r *Runtime) pp_expand_init_number() {
 	r.addToGlobal(`NewInt`, r.newNativeFunc(r.builtinGo_NewInt, nil, "NewInt", nil, 2))
@@ -2905,4 +3879,16 @@ func (r *Runtime) pp_expand_init_number() {
 	r.addToGlobal(`MinInt16`, r.ToValue(NewInt16(math.MinInt16)))
 	r.addToGlobal(`MinInt8`, r.ToValue(NewInt8(math.MinInt8)))
 	r.addToGlobal(`IntSize`, intToValue(strconv.IntSize))
+	r.addToGlobal(`NewIntArray`, r.newNativeFunc(r.builtinGo_NewIntArray, nil, "NewIntArray", nil, 2))
+	r.addToGlobal(`NewInt64Array`, r.newNativeFunc(r.builtinGo_NewInt64Array, nil, "NewInt64Array", nil, 2))
+	r.addToGlobal(`NewInt32Array`, r.newNativeFunc(r.builtinGo_NewInt32Array, nil, "NewInt32Array", nil, 2))
+	r.addToGlobal(`NewInt16Array`, r.newNativeFunc(r.builtinGo_NewInt16Array, nil, "NewInt16Array", nil, 2))
+	r.addToGlobal(`NewInt8Array`, r.newNativeFunc(r.builtinGo_NewInt8Array, nil, "NewInt8Array", nil, 2))
+	r.addToGlobal(`NewUintArray`, r.newNativeFunc(r.builtinGo_NewUintArray, nil, "NewUintArray", nil, 2))
+	r.addToGlobal(`NewUint64Array`, r.newNativeFunc(r.builtinGo_NewUint64Array, nil, "NewUint64Array", nil, 2))
+	r.addToGlobal(`NewUint32Array`, r.newNativeFunc(r.builtinGo_NewUint32Array, nil, "NewUint32Array", nil, 2))
+	r.addToGlobal(`NewUint16Array`, r.newNativeFunc(r.builtinGo_NewUint16Array, nil, "NewUint16Array", nil, 2))
+	r.addToGlobal(`NewUint8Array`, r.newNativeFunc(r.builtinGo_NewUint8Array, nil, "NewUint8Array", nil, 2))
+	r.addToGlobal(`NewFloat64Array`, r.newNativeFunc(r.builtinGo_NewFloat64Array, nil, "NewFloat64Array", nil, 2))
+	r.addToGlobal(`NewFloat32Array`, r.newNativeFunc(r.builtinGo_NewFloat32Array, nil, "NewFloat32Array", nil, 2))
 }

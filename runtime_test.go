@@ -1241,8 +1241,8 @@ func TestReflectCallExtraArgs(t *testing.T) {
 	const SCRIPT = `
 	f(41, "extra")
 	`
-	f := func(x int) int {
-		return x + 1
+	f := func(x int) Value {
+		return intToValue(int64(x + 1))
 	}
 
 	vm := New()
@@ -1265,14 +1265,14 @@ func TestReflectCallNotEnoughArgs(t *testing.T) {
 	`
 	vm := New()
 
-	f := func(x, y int, z *int, s string) (int, error) {
+	f := func(x, y int, z *int, s string) (Value, error) {
 		if z != nil {
-			return 0, fmt.Errorf("z is not nil")
+			return intToValue(0), fmt.Errorf("z is not nil")
 		}
 		if s != "" {
-			return 0, fmt.Errorf("s is not \"\"")
+			return intToValue(0), fmt.Errorf("s is not \"\"")
 		}
-		return x + y, nil
+		return intToValue(int64(x + y)), nil
 	}
 
 	vm.Set("f", f)

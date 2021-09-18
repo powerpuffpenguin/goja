@@ -29,6 +29,27 @@ class Go{{.Name}} extends Native {
     Max(...value: Array<NumberLike>): Go{{.Name}}
     Min(...value: Array<NumberLike>): Go{{.Name}}
 }
-function New{{.Name}}(val: number): Go{{.Name}}
+function New{{.Name}}(val: NumberLike): Go{{.Name}}
 function New{{.Name}}(val: string{{if .Integer}}, base: number | string{{end}}): Go{{.Name}}
-{{end}}{{end}}
+{{end}}{{range.}}
+class Go{{.Name}}Array extends Native {
+    private readonly __Go{{.Name}}Array: Go{{.Name}}Array
+    private constructor()
+    String(): string
+    Len(): GoInt
+    Swap(i: NumberLike, j: NumberLike)
+    Less(i: NumberLike, j: NumberLike): boolean
+    Cap(): GoInt
+    Copy(src: Go{{.Name}}Array): GoInt
+    Slice(start: NumberLike): Go{{.Name}}Array
+    SliceEnd(start: NumberLike, end: NumberLike): Go{{.Name}}Array
+    Append(...data: Array<NumberLike>): Go{{.Name}}Array
+    Get(index: NumberLike): Go{{.Name}}
+    Set(index: NumberLike, val: NumberLike)
+    Join(sep: string): string
+    Asc()
+    Desc()
+}
+function New{{.Name}}Array(): Go{{.Name}}Array
+function New{{.Name}}Array(len: NumberLike): Go{{.Name}}Array
+function New{{.Name}}Array(len: NumberLike, cap: NumberLike): Go{{.Name}}Array{{end}}{{end}}

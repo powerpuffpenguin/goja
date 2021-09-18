@@ -39,7 +39,7 @@ class GoInt extends Native {
     Max(...value: Array<NumberLike>): GoInt
     Min(...value: Array<NumberLike>): GoInt
 }
-function NewInt(val: number): GoInt
+function NewInt(val: NumberLike): GoInt
 function NewInt(val: string, base: number | string): GoInt
 
 class GoInt64 extends Native {
@@ -77,7 +77,7 @@ class GoInt64 extends Native {
     Max(...value: Array<NumberLike>): GoInt64
     Min(...value: Array<NumberLike>): GoInt64
 }
-function NewInt64(val: number): GoInt64
+function NewInt64(val: NumberLike): GoInt64
 function NewInt64(val: string, base: number | string): GoInt64
 
 class GoInt32 extends Native {
@@ -115,7 +115,7 @@ class GoInt32 extends Native {
     Max(...value: Array<NumberLike>): GoInt32
     Min(...value: Array<NumberLike>): GoInt32
 }
-function NewInt32(val: number): GoInt32
+function NewInt32(val: NumberLike): GoInt32
 function NewInt32(val: string, base: number | string): GoInt32
 
 class GoInt16 extends Native {
@@ -153,7 +153,7 @@ class GoInt16 extends Native {
     Max(...value: Array<NumberLike>): GoInt16
     Min(...value: Array<NumberLike>): GoInt16
 }
-function NewInt16(val: number): GoInt16
+function NewInt16(val: NumberLike): GoInt16
 function NewInt16(val: string, base: number | string): GoInt16
 
 class GoInt8 extends Native {
@@ -191,7 +191,7 @@ class GoInt8 extends Native {
     Max(...value: Array<NumberLike>): GoInt8
     Min(...value: Array<NumberLike>): GoInt8
 }
-function NewInt8(val: number): GoInt8
+function NewInt8(val: NumberLike): GoInt8
 function NewInt8(val: string, base: number | string): GoInt8
 
 class GoUint extends Native {
@@ -227,7 +227,7 @@ class GoUint extends Native {
     Max(...value: Array<NumberLike>): GoUint
     Min(...value: Array<NumberLike>): GoUint
 }
-function NewUint(val: number): GoUint
+function NewUint(val: NumberLike): GoUint
 function NewUint(val: string, base: number | string): GoUint
 
 class GoUint64 extends Native {
@@ -263,7 +263,7 @@ class GoUint64 extends Native {
     Max(...value: Array<NumberLike>): GoUint64
     Min(...value: Array<NumberLike>): GoUint64
 }
-function NewUint64(val: number): GoUint64
+function NewUint64(val: NumberLike): GoUint64
 function NewUint64(val: string, base: number | string): GoUint64
 
 class GoUint32 extends Native {
@@ -299,7 +299,7 @@ class GoUint32 extends Native {
     Max(...value: Array<NumberLike>): GoUint32
     Min(...value: Array<NumberLike>): GoUint32
 }
-function NewUint32(val: number): GoUint32
+function NewUint32(val: NumberLike): GoUint32
 function NewUint32(val: string, base: number | string): GoUint32
 
 class GoUint16 extends Native {
@@ -335,7 +335,7 @@ class GoUint16 extends Native {
     Max(...value: Array<NumberLike>): GoUint16
     Min(...value: Array<NumberLike>): GoUint16
 }
-function NewUint16(val: number): GoUint16
+function NewUint16(val: NumberLike): GoUint16
 function NewUint16(val: string, base: number | string): GoUint16
 
 class GoUint8 extends Native {
@@ -371,7 +371,7 @@ class GoUint8 extends Native {
     Max(...value: Array<NumberLike>): GoUint8
     Min(...value: Array<NumberLike>): GoUint8
 }
-function NewUint8(val: number): GoUint8
+function NewUint8(val: NumberLike): GoUint8
 function NewUint8(val: string, base: number | string): GoUint8
 
 class GoFloat64 extends Native {
@@ -402,7 +402,7 @@ class GoFloat64 extends Native {
     Max(...value: Array<NumberLike>): GoFloat64
     Min(...value: Array<NumberLike>): GoFloat64
 }
-function NewFloat64(val: number): GoFloat64
+function NewFloat64(val: NumberLike): GoFloat64
 function NewFloat64(val: string): GoFloat64
 
 class GoFloat32 extends Native {
@@ -433,5 +433,270 @@ class GoFloat32 extends Native {
     Max(...value: Array<NumberLike>): GoFloat32
     Min(...value: Array<NumberLike>): GoFloat32
 }
-function NewFloat32(val: number): GoFloat32
+function NewFloat32(val: NumberLike): GoFloat32
 function NewFloat32(val: string): GoFloat32
+
+class GoIntArray extends Native {
+    private readonly __GoIntArray: GoIntArray
+    private constructor()
+    String(): string
+    Len(): GoInt
+    Swap(i: NumberLike, j: NumberLike)
+    Less(i: NumberLike, j: NumberLike): boolean
+    Cap(): GoInt
+    Copy(src: GoIntArray): GoInt
+    Slice(start: NumberLike): GoIntArray
+    SliceEnd(start: NumberLike, end: NumberLike): GoIntArray
+    Append(...data: Array<NumberLike>): GoIntArray
+    Push(valus: GoIntArray): GoIntArray
+    Get(index: NumberLike): GoInt
+    Set(index: NumberLike, val: NumberLike)
+    Join(sep: string): string
+    Asc()
+    Desc()
+}
+function NewIntArray(): GoIntArray
+function NewIntArray(len: NumberLike): GoIntArray
+function NewIntArray(len: NumberLike, cap: NumberLike): GoIntArray
+class GoInt64Array extends Native {
+    private readonly __GoInt64Array: GoInt64Array
+    private constructor()
+    String(): string
+    Len(): GoInt
+    Swap(i: NumberLike, j: NumberLike)
+    Less(i: NumberLike, j: NumberLike): boolean
+    Cap(): GoInt
+    Copy(src: GoInt64Array): GoInt
+    Slice(start: NumberLike): GoInt64Array
+    SliceEnd(start: NumberLike, end: NumberLike): GoInt64Array
+    Append(...data: Array<NumberLike>): GoInt64Array
+    Push(valus: GoInt64Array): GoInt64Array
+    Get(index: NumberLike): GoInt64
+    Set(index: NumberLike, val: NumberLike)
+    Join(sep: string): string
+    Asc()
+    Desc()
+}
+function NewInt64Array(): GoInt64Array
+function NewInt64Array(len: NumberLike): GoInt64Array
+function NewInt64Array(len: NumberLike, cap: NumberLike): GoInt64Array
+class GoInt32Array extends Native {
+    private readonly __GoInt32Array: GoInt32Array
+    private constructor()
+    String(): string
+    Len(): GoInt
+    Swap(i: NumberLike, j: NumberLike)
+    Less(i: NumberLike, j: NumberLike): boolean
+    Cap(): GoInt
+    Copy(src: GoInt32Array): GoInt
+    Slice(start: NumberLike): GoInt32Array
+    SliceEnd(start: NumberLike, end: NumberLike): GoInt32Array
+    Append(...data: Array<NumberLike>): GoInt32Array
+    Push(valus: GoInt32Array): GoInt32Array
+    Get(index: NumberLike): GoInt32
+    Set(index: NumberLike, val: NumberLike)
+    Join(sep: string): string
+    Asc()
+    Desc()
+}
+function NewInt32Array(): GoInt32Array
+function NewInt32Array(len: NumberLike): GoInt32Array
+function NewInt32Array(len: NumberLike, cap: NumberLike): GoInt32Array
+class GoInt16Array extends Native {
+    private readonly __GoInt16Array: GoInt16Array
+    private constructor()
+    String(): string
+    Len(): GoInt
+    Swap(i: NumberLike, j: NumberLike)
+    Less(i: NumberLike, j: NumberLike): boolean
+    Cap(): GoInt
+    Copy(src: GoInt16Array): GoInt
+    Slice(start: NumberLike): GoInt16Array
+    SliceEnd(start: NumberLike, end: NumberLike): GoInt16Array
+    Append(...data: Array<NumberLike>): GoInt16Array
+    Push(valus: GoInt16Array): GoInt16Array
+    Get(index: NumberLike): GoInt16
+    Set(index: NumberLike, val: NumberLike)
+    Join(sep: string): string
+    Asc()
+    Desc()
+}
+function NewInt16Array(): GoInt16Array
+function NewInt16Array(len: NumberLike): GoInt16Array
+function NewInt16Array(len: NumberLike, cap: NumberLike): GoInt16Array
+class GoInt8Array extends Native {
+    private readonly __GoInt8Array: GoInt8Array
+    private constructor()
+    String(): string
+    Len(): GoInt
+    Swap(i: NumberLike, j: NumberLike)
+    Less(i: NumberLike, j: NumberLike): boolean
+    Cap(): GoInt
+    Copy(src: GoInt8Array): GoInt
+    Slice(start: NumberLike): GoInt8Array
+    SliceEnd(start: NumberLike, end: NumberLike): GoInt8Array
+    Append(...data: Array<NumberLike>): GoInt8Array
+    Push(valus: GoInt8Array): GoInt8Array
+    Get(index: NumberLike): GoInt8
+    Set(index: NumberLike, val: NumberLike)
+    Join(sep: string): string
+    Asc()
+    Desc()
+}
+function NewInt8Array(): GoInt8Array
+function NewInt8Array(len: NumberLike): GoInt8Array
+function NewInt8Array(len: NumberLike, cap: NumberLike): GoInt8Array
+class GoUintArray extends Native {
+    private readonly __GoUintArray: GoUintArray
+    private constructor()
+    String(): string
+    Len(): GoInt
+    Swap(i: NumberLike, j: NumberLike)
+    Less(i: NumberLike, j: NumberLike): boolean
+    Cap(): GoInt
+    Copy(src: GoUintArray): GoInt
+    Slice(start: NumberLike): GoUintArray
+    SliceEnd(start: NumberLike, end: NumberLike): GoUintArray
+    Append(...data: Array<NumberLike>): GoUintArray
+    Push(valus: GoUintArray): GoUintArray
+    Get(index: NumberLike): GoUint
+    Set(index: NumberLike, val: NumberLike)
+    Join(sep: string): string
+    Asc()
+    Desc()
+}
+function NewUintArray(): GoUintArray
+function NewUintArray(len: NumberLike): GoUintArray
+function NewUintArray(len: NumberLike, cap: NumberLike): GoUintArray
+class GoUint64Array extends Native {
+    private readonly __GoUint64Array: GoUint64Array
+    private constructor()
+    String(): string
+    Len(): GoInt
+    Swap(i: NumberLike, j: NumberLike)
+    Less(i: NumberLike, j: NumberLike): boolean
+    Cap(): GoInt
+    Copy(src: GoUint64Array): GoInt
+    Slice(start: NumberLike): GoUint64Array
+    SliceEnd(start: NumberLike, end: NumberLike): GoUint64Array
+    Append(...data: Array<NumberLike>): GoUint64Array
+    Push(valus: GoUint64Array): GoUint64Array
+    Get(index: NumberLike): GoUint64
+    Set(index: NumberLike, val: NumberLike)
+    Join(sep: string): string
+    Asc()
+    Desc()
+}
+function NewUint64Array(): GoUint64Array
+function NewUint64Array(len: NumberLike): GoUint64Array
+function NewUint64Array(len: NumberLike, cap: NumberLike): GoUint64Array
+class GoUint32Array extends Native {
+    private readonly __GoUint32Array: GoUint32Array
+    private constructor()
+    String(): string
+    Len(): GoInt
+    Swap(i: NumberLike, j: NumberLike)
+    Less(i: NumberLike, j: NumberLike): boolean
+    Cap(): GoInt
+    Copy(src: GoUint32Array): GoInt
+    Slice(start: NumberLike): GoUint32Array
+    SliceEnd(start: NumberLike, end: NumberLike): GoUint32Array
+    Append(...data: Array<NumberLike>): GoUint32Array
+    Push(valus: GoUint32Array): GoUint32Array
+    Get(index: NumberLike): GoUint32
+    Set(index: NumberLike, val: NumberLike)
+    Join(sep: string): string
+    Asc()
+    Desc()
+}
+function NewUint32Array(): GoUint32Array
+function NewUint32Array(len: NumberLike): GoUint32Array
+function NewUint32Array(len: NumberLike, cap: NumberLike): GoUint32Array
+class GoUint16Array extends Native {
+    private readonly __GoUint16Array: GoUint16Array
+    private constructor()
+    String(): string
+    Len(): GoInt
+    Swap(i: NumberLike, j: NumberLike)
+    Less(i: NumberLike, j: NumberLike): boolean
+    Cap(): GoInt
+    Copy(src: GoUint16Array): GoInt
+    Slice(start: NumberLike): GoUint16Array
+    SliceEnd(start: NumberLike, end: NumberLike): GoUint16Array
+    Append(...data: Array<NumberLike>): GoUint16Array
+    Push(valus: GoUint16Array): GoUint16Array
+    Get(index: NumberLike): GoUint16
+    Set(index: NumberLike, val: NumberLike)
+    Join(sep: string): string
+    Asc()
+    Desc()
+}
+function NewUint16Array(): GoUint16Array
+function NewUint16Array(len: NumberLike): GoUint16Array
+function NewUint16Array(len: NumberLike, cap: NumberLike): GoUint16Array
+class GoUint8Array extends Native {
+    private readonly __GoUint8Array: GoUint8Array
+    private constructor()
+    String(): string
+    Len(): GoInt
+    Swap(i: NumberLike, j: NumberLike)
+    Less(i: NumberLike, j: NumberLike): boolean
+    Cap(): GoInt
+    Copy(src: GoUint8Array): GoInt
+    Slice(start: NumberLike): GoUint8Array
+    SliceEnd(start: NumberLike, end: NumberLike): GoUint8Array
+    Append(...data: Array<NumberLike>): GoUint8Array
+    Push(valus: GoUint8Array): GoUint8Array
+    Get(index: NumberLike): GoUint8
+    Set(index: NumberLike, val: NumberLike)
+    Join(sep: string): string
+    Asc()
+    Desc()
+}
+function NewUint8Array(): GoUint8Array
+function NewUint8Array(len: NumberLike): GoUint8Array
+function NewUint8Array(len: NumberLike, cap: NumberLike): GoUint8Array
+class GoFloat64Array extends Native {
+    private readonly __GoFloat64Array: GoFloat64Array
+    private constructor()
+    String(): string
+    Len(): GoInt
+    Swap(i: NumberLike, j: NumberLike)
+    Less(i: NumberLike, j: NumberLike): boolean
+    Cap(): GoInt
+    Copy(src: GoFloat64Array): GoInt
+    Slice(start: NumberLike): GoFloat64Array
+    SliceEnd(start: NumberLike, end: NumberLike): GoFloat64Array
+    Append(...data: Array<NumberLike>): GoFloat64Array
+    Push(valus: GoFloat64Array): GoFloat64Array
+    Get(index: NumberLike): GoFloat64
+    Set(index: NumberLike, val: NumberLike)
+    Join(sep: string): string
+    Asc()
+    Desc()
+}
+function NewFloat64Array(): GoFloat64Array
+function NewFloat64Array(len: NumberLike): GoFloat64Array
+function NewFloat64Array(len: NumberLike, cap: NumberLike): GoFloat64Array
+class GoFloat32Array extends Native {
+    private readonly __GoFloat32Array: GoFloat32Array
+    private constructor()
+    String(): string
+    Len(): GoInt
+    Swap(i: NumberLike, j: NumberLike)
+    Less(i: NumberLike, j: NumberLike): boolean
+    Cap(): GoInt
+    Copy(src: GoFloat32Array): GoInt
+    Slice(start: NumberLike): GoFloat32Array
+    SliceEnd(start: NumberLike, end: NumberLike): GoFloat32Array
+    Append(...data: Array<NumberLike>): GoFloat32Array
+    Push(valus: GoFloat32Array): GoFloat32Array
+    Get(index: NumberLike): GoFloat32
+    Set(index: NumberLike, val: NumberLike)
+    Join(sep: string): string
+    Asc()
+    Desc()
+}
+function NewFloat32Array(): GoFloat32Array
+function NewFloat32Array(len: NumberLike): GoFloat32Array
+function NewFloat32Array(len: NumberLike, cap: NumberLike): GoFloat32Array
