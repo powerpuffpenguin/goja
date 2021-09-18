@@ -20,6 +20,7 @@ import (
 	js_ast "github.com/dop251/goja/ast"
 	"github.com/dop251/goja/parser"
 	"github.com/dop251/goja/unistring"
+	"github.com/dop251/goja/zpp_expand/loop"
 )
 
 const (
@@ -176,6 +177,7 @@ type Runtime struct {
 	vm    *vm
 	hash  *maphash.Hash
 	idSeq uint64
+	loop * loop.Loop
 }
 
 type StackFrame struct {
