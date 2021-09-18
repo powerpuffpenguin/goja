@@ -6,6 +6,7 @@ import (
 )
 
 func (r *Runtime) wrapReflectFunc_pp(value reflect.Value) func(FunctionCall) Value {
+	New()
 	return func(call FunctionCall) Value {
 		typ := value.Type()
 		nargs := typ.NumIn()
@@ -137,13 +138,43 @@ func (r *Runtime) wrapReflectFunc_ppResult(out []reflect.Value) (result Value, e
 	case 0:
 		result = _undefined
 	case 1:
-		result = r.ToValue(out[0].Interface())
+		result = r.ToValue(r.wrapReflectFunc_ppResultWrap(out[0]))
 	default:
 		s := make([]interface{}, len(out))
 		for i, v := range out {
-			s[i] = v.Interface()
+			s[i] = r.wrapReflectFunc_ppResultWrap(v)
 		}
 		result = r.ToValue(s)
 	}
 	return
+}
+func (r *Runtime) wrapReflectFunc_ppResultWrap(v reflect.Value) interface{} {
+	result := v.Interface()
+	switch v.Kind() {
+	case reflect.Int:
+		return NewInt(result.(int))
+	case reflect.Int8:
+		return NewInt8(result.(int8))
+	case reflect.Int16:
+		return NewInt16(result.(int16))
+	case reflect.Int32:
+		return NewInt32(result.(int32))
+	case reflect.Int64:
+		return NewInt64(result.(int64))
+	case reflect.Uint:
+		return NewUint(result.(uint))
+	case reflect.Uint8:
+		return NewUint8(result.(uint8))
+	case reflect.Uint16:
+		return NewUint16(result.(uint16))
+	case reflect.Uint32:
+		return NewUint32(result.(uint32))
+	case reflect.Uint64:
+		return NewUint64(result.(uint64))
+	case reflect.Float32:
+		return NewFloat32(result.(float32))
+	case reflect.Float64:
+		return NewFloat64(result.(float64))
+	}
+	return result
 }

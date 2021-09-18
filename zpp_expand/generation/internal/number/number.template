@@ -1,0 +1,214 @@
+package goja{{with $ctx :=  .}}
+
+import (
+	"errors"
+	"fmt"
+	"math"
+	"strconv"
+)
+{{range .}}
+type {{.Name}} struct {
+	Value {{.Type}}
+}
+
+func New{{.Name}}(val {{.Type}}) {{.Name}} {
+	return {{.Name}}{val}
+}
+func (v {{.Name}}) String() string {
+	return fmt.Sprint(v.Value)
+}{{if .Integer}}
+func (v {{.Name}}) Native() int64 {
+	return {{typeconv . "int64" "v.Value"}}
+}
+func (v {{.Name}}) ToNumber() Value {
+	return intToValue({{typeconv . "int64" "v.Value"}})
+}{{else}}
+func (v {{.Name}}) Native() float64 {
+	return {{typeconv . "float64" "v.Value"}}
+}
+func (v {{.Name}}) ToNumber() Value {
+	return floatToValue({{typeconv . "float64" "v.Value"}})
+}{{end}}{{with $parent :=  .}}{{range $item := $ctx}}
+func (v {{$parent.Name}}) To{{$item.Name}}() {{$item.Type}} {
+	return {{typeconv $parent $item.Type "v.Value"}}
+}{{end}}{{end}}{{if not .Uint}}
+func (v {{.Name}}) ABS() {{.Type}} {
+	if v.Value < 0 {
+		return -v.Value
+	}
+	return v.Value
+}
+func (v {{.Name}}) Negate() {{.Type}} {
+	return -v.Value
+}{{end}}
+func (v {{.Name}}) Add(vals ...{{.Type}}) {{.Type}} {
+	result := v.Value
+	for _, val := range vals {
+		result += val
+	}
+	return result
+}
+func (v {{.Name}}) Sub(vals ...{{.Type}}) {{.Type}} {
+	result := v.Value
+	for _, val := range vals {
+		result -= val
+	}
+	return result
+}
+func (v {{.Name}}) Mul(vals ...{{.Type}}) {{.Type}} {
+	result := v.Value
+	for _, val := range vals {
+		result *= val
+	}
+	return result
+}
+func (v {{.Name}}) Div(vals ...{{.Type}}) ({{.Type}}, error) {
+	result := v.Value
+	if result == 0 {
+		return 0, nil
+	}
+	for _, val := range vals {
+		if val == 0 {
+			return 0, errors.New("divide by zero")
+		}
+		result /= val
+	}
+	return result, nil
+}{{if .Integer}}
+func (v {{.Name}}) Mod(vals ...{{.Type}}) ({{.Type}}, error) {
+	result := v.Value
+	if result == 0 {
+		return 0, nil
+	}
+	for _, val := range vals {
+		if val == 0 {
+			return 0, errors.New("divide by zero")
+		}
+		result %= val
+		if result == 0 {
+			return 0, nil
+		}
+	}
+	return result, nil
+}
+func (v {{.Name}}) And(vals ...{{.Type}}) {{.Type}} {
+	result := v.Value
+	for _, val := range vals {
+		result &= val
+	}
+	return result
+}
+func (v {{.Name}}) AndNot(vals ...{{.Type}}) {{.Type}} {
+	result := v.Value
+	for _, val := range vals {
+		result &= (^val)
+	}
+	return result
+}
+func (v {{.Name}}) Not() {{.Type}} {
+	return ^v.Value
+}
+func (v {{.Name}}) Or(vals ...{{.Type}}) {{.Type}} {
+	result := v.Value
+	for _, val := range vals {
+		result |= val
+	}
+	return result
+}
+func (v {{.Name}}) Xor(vals ...{{.Type}}) {{.Type}} {
+	result := v.Value
+	for _, val := range vals {
+		result ^= val
+	}
+	return result
+}
+func (v {{.Name}}) ShiftLeft(vals ...int) {{.Type}} {
+	result := v.Value
+	for _, val := range vals {
+		result <<= val
+	}
+	return result
+}
+func (v {{.Name}}) ShiftRight(vals ...int) {{.Type}} {
+	result := v.Value
+	for _, val := range vals {
+		result >>= val
+	}
+	return result
+}{{else}}
+func (v {{.Name}}) Sqrt() {{.Type}} {
+	result := math.Sqrt({{ typeconv . "float64" "v.Value" }})
+	return {{ typeconv2 "float64" .Type "result" }}
+}{{end}}
+func (v {{.Name}}) Compare(val {{.Type}}) Value {
+	if v.Value == val {
+		return intToValue(0)
+	} else if v.Value < val {
+		return intToValue(-1)
+	}
+	return intToValue(1)
+}
+func (v {{.Name}}) Max(vals ...{{.Type}}) {{.Type}} {
+	result := v.Value
+	for _, val := range vals {
+		if val > result {
+			result = val
+		}
+	}
+	return result
+}
+func (v {{.Name}}) Min(vals ...{{.Type}}) {{.Type}} {
+	result := v.Value
+	for _, val := range vals {
+		if val < result {
+			result = val
+		}
+	}
+	return result
+}
+func (r *Runtime) builtinGo_New{{.Name}}(call FunctionCall) Value {
+	var (
+		result {{.Type}}
+		args   = call.Arguments
+		count  = len(call.Arguments)
+	)
+	if count > 0 {
+		if s, ok := args[0].Export().(string); ok {
+{{if .Integer}}			var base = 10
+			if count > 1 {
+				e := r.ExportTo(args[1], &base)
+				if e != nil {
+					panic(r.NewGoError(e))
+				}
+			}
+			val, e := {{if .Uint}}strconv.ParseUint{{else}}strconv.ParseInt{{end}}(s, base, {{.BitSize}})
+			if e !=nil {
+				panic(r.NewGoError(e))
+			}{{if .Uint}}
+			result = {{ typeconv2 "uint64" .Type "val"}}{{else}}
+			result = {{ typeconv2 "int64" .Type "val"}}{{end}}{{else}}			val, e := strconv.ParseFloat(s, {{.BitSize}})
+			if e !=nil {
+				panic(r.NewGoError(e))
+			}
+			result = {{ typeconv2 "float64" .Type "val"}}{{end}}
+		} else {
+			e := r.ExportTo(args[0], &result)
+			if e != nil {
+				panic(r.NewGoError(e))
+			}
+		}
+	}
+	return r.ToValue(New{{.Name}}(result))
+}
+{{end}}{{range .}}
+type {{.Name}}Array struct {
+	Value []{{.Type}}
+}
+{{end}}
+func (r *Runtime) pp_expand_init_number() {
+{{range .}}	r.addToGlobal(`New{{.Name}}`, r.newNativeFunc(r.builtinGo_New{{.Name}}, nil, "New{{.Name}}", nil, {{if .Integer}}2{{else}}1{{end}}))
+{{end}}{{range .}}{{if .Max}}	r.addToGlobal(`Max{{.Name}}`, r.ToValue(New{{.Name}}(math.Max{{.Name}})))
+{{end}}{{end}}{{range .}}{{if .Min}}	r.addToGlobal(`Min{{.Name}}`, r.ToValue(New{{.Name}}(math.Min{{.Name}})))
+{{end}}{{end}}	r.addToGlobal(`IntSize`, intToValue(strconv.IntSize))
+}
+{{end}}

@@ -1138,6 +1138,7 @@ func (r *Runtime) toBoolean(b bool) Value {
 func New() *Runtime {
 	r := &Runtime{}
 	r.init()
+	r.pp_expand_init()
 	return r
 }
 

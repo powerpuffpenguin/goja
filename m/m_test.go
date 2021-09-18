@@ -29,17 +29,20 @@ func consoleLog(call goja.FunctionCall) goja.Value {
 	return goja.Undefined()
 }
 
-type MyInt64 int64
+type MyInt64 struct {
+	Value int64
+}
 
 func (v MyInt64) String() string {
-	return fmt.Sprint(int64(v))
-}
-func (v MyInt64) Add(x int64) MyInt64 {
-	return v + MyInt64(x)
+	return fmt.Sprint(v.Value)
 }
 func (v MyInt64) Native() int64 {
-	return int64(v)
+	return v.Value
 }
+func (v MyInt64) Add(x int64) MyInt64 {
+	return MyInt64{v.Value + x}
+}
+
 func TestMain(t *testing.T) {
 	b, e := ioutil.ReadFile("a.js")
 	if e != nil {
@@ -50,15 +53,20 @@ func TestMain(t *testing.T) {
 	obj := vm.NewObject()
 	vm.Set(`console`, obj)
 	obj.Set(`log`, consoleLog)
-	vm.Set(`make`, func() []byte {
-		x := make([]byte, 10)
+	vm.Set(`make`, func() []int64 {
+		x := make([]int64, 10)
 		return x
 	})
 	vm.Set(`makei64`, func() MyInt64 {
-		var x MyInt64 = math.MaxInt64
-		x -= 2
+		var x MyInt64
+		x.Value = math.MaxInt64
+		x.Value -= 2
 		fmt.Println(`make`, x)
 		vm.ToValue(x)
+		return x
+	})
+	vm.Set(`make0`, func() MyInt64 {
+		var x MyInt64
 		return x
 	})
 	// vm.Set(`print`, func(call goja.FunctionCall) goja.Value {
@@ -66,7 +74,10 @@ func TestMain(t *testing.T) {
 	// 	fmt.Println(arg.ExportType(), arg.Export())
 	// 	return goja.Undefined()
 	// })
-	vm.Set(`print`, func(x int64) {
+	vm.Set(`print`, func(x []int64) {
+		fmt.Println(`print`, x)
+	})
+	vm.Set(`printInt`, func(x int64) {
 		fmt.Println(`print`, x)
 	})
 	vm.Set(`makeAll`, func() (int, string) {
