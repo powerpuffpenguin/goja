@@ -448,7 +448,6 @@ class GoIntArray extends Native {
     Slice(start: NumberLike): GoIntArray
     SliceEnd(start: NumberLike, end: NumberLike): GoIntArray
     Append(...data: Array<NumberLike>): GoIntArray
-    Push(valus: GoIntArray): GoIntArray
     Get(index: NumberLike): GoInt
     Set(index: NumberLike, val: NumberLike)
     Join(sep: string): string
@@ -470,7 +469,6 @@ class GoInt64Array extends Native {
     Slice(start: NumberLike): GoInt64Array
     SliceEnd(start: NumberLike, end: NumberLike): GoInt64Array
     Append(...data: Array<NumberLike>): GoInt64Array
-    Push(valus: GoInt64Array): GoInt64Array
     Get(index: NumberLike): GoInt64
     Set(index: NumberLike, val: NumberLike)
     Join(sep: string): string
@@ -492,7 +490,6 @@ class GoInt32Array extends Native {
     Slice(start: NumberLike): GoInt32Array
     SliceEnd(start: NumberLike, end: NumberLike): GoInt32Array
     Append(...data: Array<NumberLike>): GoInt32Array
-    Push(valus: GoInt32Array): GoInt32Array
     Get(index: NumberLike): GoInt32
     Set(index: NumberLike, val: NumberLike)
     Join(sep: string): string
@@ -514,7 +511,6 @@ class GoInt16Array extends Native {
     Slice(start: NumberLike): GoInt16Array
     SliceEnd(start: NumberLike, end: NumberLike): GoInt16Array
     Append(...data: Array<NumberLike>): GoInt16Array
-    Push(valus: GoInt16Array): GoInt16Array
     Get(index: NumberLike): GoInt16
     Set(index: NumberLike, val: NumberLike)
     Join(sep: string): string
@@ -536,7 +532,6 @@ class GoInt8Array extends Native {
     Slice(start: NumberLike): GoInt8Array
     SliceEnd(start: NumberLike, end: NumberLike): GoInt8Array
     Append(...data: Array<NumberLike>): GoInt8Array
-    Push(valus: GoInt8Array): GoInt8Array
     Get(index: NumberLike): GoInt8
     Set(index: NumberLike, val: NumberLike)
     Join(sep: string): string
@@ -558,7 +553,6 @@ class GoUintArray extends Native {
     Slice(start: NumberLike): GoUintArray
     SliceEnd(start: NumberLike, end: NumberLike): GoUintArray
     Append(...data: Array<NumberLike>): GoUintArray
-    Push(valus: GoUintArray): GoUintArray
     Get(index: NumberLike): GoUint
     Set(index: NumberLike, val: NumberLike)
     Join(sep: string): string
@@ -580,7 +574,6 @@ class GoUint64Array extends Native {
     Slice(start: NumberLike): GoUint64Array
     SliceEnd(start: NumberLike, end: NumberLike): GoUint64Array
     Append(...data: Array<NumberLike>): GoUint64Array
-    Push(valus: GoUint64Array): GoUint64Array
     Get(index: NumberLike): GoUint64
     Set(index: NumberLike, val: NumberLike)
     Join(sep: string): string
@@ -602,7 +595,6 @@ class GoUint32Array extends Native {
     Slice(start: NumberLike): GoUint32Array
     SliceEnd(start: NumberLike, end: NumberLike): GoUint32Array
     Append(...data: Array<NumberLike>): GoUint32Array
-    Push(valus: GoUint32Array): GoUint32Array
     Get(index: NumberLike): GoUint32
     Set(index: NumberLike, val: NumberLike)
     Join(sep: string): string
@@ -624,7 +616,6 @@ class GoUint16Array extends Native {
     Slice(start: NumberLike): GoUint16Array
     SliceEnd(start: NumberLike, end: NumberLike): GoUint16Array
     Append(...data: Array<NumberLike>): GoUint16Array
-    Push(valus: GoUint16Array): GoUint16Array
     Get(index: NumberLike): GoUint16
     Set(index: NumberLike, val: NumberLike)
     Join(sep: string): string
@@ -646,7 +637,6 @@ class GoUint8Array extends Native {
     Slice(start: NumberLike): GoUint8Array
     SliceEnd(start: NumberLike, end: NumberLike): GoUint8Array
     Append(...data: Array<NumberLike>): GoUint8Array
-    Push(valus: GoUint8Array): GoUint8Array
     Get(index: NumberLike): GoUint8
     Set(index: NumberLike, val: NumberLike)
     Join(sep: string): string
@@ -668,7 +658,6 @@ class GoFloat64Array extends Native {
     Slice(start: NumberLike): GoFloat64Array
     SliceEnd(start: NumberLike, end: NumberLike): GoFloat64Array
     Append(...data: Array<NumberLike>): GoFloat64Array
-    Push(valus: GoFloat64Array): GoFloat64Array
     Get(index: NumberLike): GoFloat64
     Set(index: NumberLike, val: NumberLike)
     Join(sep: string): string
@@ -690,7 +679,6 @@ class GoFloat32Array extends Native {
     Slice(start: NumberLike): GoFloat32Array
     SliceEnd(start: NumberLike, end: NumberLike): GoFloat32Array
     Append(...data: Array<NumberLike>): GoFloat32Array
-    Push(valus: GoFloat32Array): GoFloat32Array
     Get(index: NumberLike): GoFloat32
     Set(index: NumberLike, val: NumberLike)
     Join(sep: string): string

@@ -2425,9 +2425,6 @@ func (v IntArray) SliceEnd(start, end int) []int {
 func (v IntArray) Append(data ...int) []int {
 	return append(v, data...)
 }
-func (v IntArray) Push(data []int) []int {
-	return append(v, data...)
-}
 func (v IntArray) Get(index int) (int, error) {
 	if index < 0 || index >= len(v) {
 		return 0, fmt.Errorf("slice bounds out of range get(%d)", index)
@@ -2546,9 +2543,6 @@ func (v Int64Array) SliceEnd(start, end int) []int64 {
 	return v[start:end]
 }
 func (v Int64Array) Append(data ...int64) []int64 {
-	return append(v, data...)
-}
-func (v Int64Array) Push(data []int64) []int64 {
 	return append(v, data...)
 }
 func (v Int64Array) Get(index int) (int64, error) {
@@ -2671,9 +2665,6 @@ func (v Int32Array) SliceEnd(start, end int) []int32 {
 func (v Int32Array) Append(data ...int32) []int32 {
 	return append(v, data...)
 }
-func (v Int32Array) Push(data []int32) []int32 {
-	return append(v, data...)
-}
 func (v Int32Array) Get(index int) (int32, error) {
 	if index < 0 || index >= len(v) {
 		return 0, fmt.Errorf("slice bounds out of range get(%d)", index)
@@ -2792,9 +2783,6 @@ func (v Int16Array) SliceEnd(start, end int) []int16 {
 	return v[start:end]
 }
 func (v Int16Array) Append(data ...int16) []int16 {
-	return append(v, data...)
-}
-func (v Int16Array) Push(data []int16) []int16 {
 	return append(v, data...)
 }
 func (v Int16Array) Get(index int) (int16, error) {
@@ -2917,9 +2905,6 @@ func (v Int8Array) SliceEnd(start, end int) []int8 {
 func (v Int8Array) Append(data ...int8) []int8 {
 	return append(v, data...)
 }
-func (v Int8Array) Push(data []int8) []int8 {
-	return append(v, data...)
-}
 func (v Int8Array) Get(index int) (int8, error) {
 	if index < 0 || index >= len(v) {
 		return 0, fmt.Errorf("slice bounds out of range get(%d)", index)
@@ -3038,9 +3023,6 @@ func (v UintArray) SliceEnd(start, end int) []uint {
 	return v[start:end]
 }
 func (v UintArray) Append(data ...uint) []uint {
-	return append(v, data...)
-}
-func (v UintArray) Push(data []uint) []uint {
 	return append(v, data...)
 }
 func (v UintArray) Get(index int) (uint, error) {
@@ -3163,9 +3145,6 @@ func (v Uint64Array) SliceEnd(start, end int) []uint64 {
 func (v Uint64Array) Append(data ...uint64) []uint64 {
 	return append(v, data...)
 }
-func (v Uint64Array) Push(data []uint64) []uint64 {
-	return append(v, data...)
-}
 func (v Uint64Array) Get(index int) (uint64, error) {
 	if index < 0 || index >= len(v) {
 		return 0, fmt.Errorf("slice bounds out of range get(%d)", index)
@@ -3284,9 +3263,6 @@ func (v Uint32Array) SliceEnd(start, end int) []uint32 {
 	return v[start:end]
 }
 func (v Uint32Array) Append(data ...uint32) []uint32 {
-	return append(v, data...)
-}
-func (v Uint32Array) Push(data []uint32) []uint32 {
 	return append(v, data...)
 }
 func (v Uint32Array) Get(index int) (uint32, error) {
@@ -3409,9 +3385,6 @@ func (v Uint16Array) SliceEnd(start, end int) []uint16 {
 func (v Uint16Array) Append(data ...uint16) []uint16 {
 	return append(v, data...)
 }
-func (v Uint16Array) Push(data []uint16) []uint16 {
-	return append(v, data...)
-}
 func (v Uint16Array) Get(index int) (uint16, error) {
 	if index < 0 || index >= len(v) {
 		return 0, fmt.Errorf("slice bounds out of range get(%d)", index)
@@ -3530,9 +3503,6 @@ func (v Uint8Array) SliceEnd(start, end int) []uint8 {
 	return v[start:end]
 }
 func (v Uint8Array) Append(data ...uint8) []uint8 {
-	return append(v, data...)
-}
-func (v Uint8Array) Push(data []uint8) []uint8 {
 	return append(v, data...)
 }
 func (v Uint8Array) Get(index int) (uint8, error) {
@@ -3655,9 +3625,6 @@ func (v Float64Array) SliceEnd(start, end int) []float64 {
 func (v Float64Array) Append(data ...float64) []float64 {
 	return append(v, data...)
 }
-func (v Float64Array) Push(data []float64) []float64 {
-	return append(v, data...)
-}
 func (v Float64Array) Get(index int) (float64, error) {
 	if index < 0 || index >= len(v) {
 		return 0, fmt.Errorf("slice bounds out of range get(%d)", index)
@@ -3776,9 +3743,6 @@ func (v Float32Array) SliceEnd(start, end int) []float32 {
 	return v[start:end]
 }
 func (v Float32Array) Append(data ...float32) []float32 {
-	return append(v, data...)
-}
-func (v Float32Array) Push(data []float32) []float32 {
 	return append(v, data...)
 }
 func (v Float32Array) Get(index int) (float32, error) {

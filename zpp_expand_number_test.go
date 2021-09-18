@@ -104,6 +104,7 @@ b.Set(0,3)
 b.Set(1,MaxInt64)
 check(a.Append(b).String()=="[1 2 3 9223372036854775807]","Append")
 check(a.Append(3,MaxInt64).String()=="[1 2 3 9223372036854775807]","Append")
+check(a.Append(3,MaxInt64).Join(",")=="1,2,3,9223372036854775807","Join")
 `)
 	if e != nil {
 		t.Fatal(e)
