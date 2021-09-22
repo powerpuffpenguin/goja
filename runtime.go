@@ -20,7 +20,7 @@ import (
 	js_ast "github.com/dop251/goja/ast"
 	"github.com/dop251/goja/parser"
 	"github.com/dop251/goja/unistring"
-	"github.com/dop251/goja/zpp_expand/loop"
+	"github.com/dop251/goja/loop"
 )
 
 const (

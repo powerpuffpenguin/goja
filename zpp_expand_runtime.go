@@ -3,7 +3,7 @@ package goja
 import (
 	"reflect"
 
-	"github.com/dop251/goja/zpp_expand/loop"
+	"github.com/dop251/goja/loop"
 )
 
 func (r *Runtime) wrapReflectFunc_pp(value reflect.Value) func(FunctionCall) Value {

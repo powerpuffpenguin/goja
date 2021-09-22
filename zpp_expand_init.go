@@ -3,7 +3,7 @@ package goja
 import (
 	go_context "context"
 
-	"github.com/dop251/goja/zpp_expand/loop"
+	"github.com/dop251/goja/loop"
 )
 
 type Future struct {
