@@ -414,6 +414,9 @@ func (c *Completer) getCompleted(call FunctionCall) Value {
 	}
 	return valueFalse
 }
+func (r *Runtime) pp_expand_get_scheduler(call FunctionCall) Value {
+	return r.ToValue(r.Loop().GetScheduler())
+}
 func (r *Runtime) pp_expand_init_promise() {
 	var factory factoryPromise
 	factory.runtime = r
@@ -421,5 +424,9 @@ func (r *Runtime) pp_expand_init_promise() {
 	r.addToGlobal(`Promise`, factory.ctor)
 	factory.register()
 	r.addToGlobal(`Completer`, r.newNativeConstructor(factory.completer, "Completer", 0))
-
+	r.GlobalObject().self.setOwnStr("defaultScheduler", &valueProperty{
+		configurable: true,
+		getterFunc:   r.newNativeFunc(r.pp_expand_get_scheduler, nil, "defaultScheduler", nil, 0),
+		accessor:     true,
+	}, false)
 }

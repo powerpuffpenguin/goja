@@ -12,11 +12,14 @@ type Scheduler interface {
 	Stop()
 }
 
-var defaultScheduler Scheduler = goScheduler(0)
+var defaultScheduler Scheduler = goScheduler{}
 
-type goScheduler int
+type goScheduler struct{}
 
-func (g goScheduler) Go(w Worker) {
+func (goScheduler) String() string {
+	return `defaultScheduler`
+}
+func (goScheduler) Go(w Worker) {
 	go w.Serve()
 }
 func (g goScheduler) Stop() {}

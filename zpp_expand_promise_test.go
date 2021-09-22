@@ -9,6 +9,13 @@ import (
 func TestExpandPromise(t *testing.T) {
 	vm := goja.New()
 	vm.Set(`print`, print)
+	vm.Set(`add`, func(val ...int) int {
+		var result int
+		for _, v := range val {
+			result += v
+		}
+		return result
+	})
 	result, e := vm.RunScriptAndServe("promise.js", `
 function check(ok,msg){
 	if(!ok){
@@ -19,9 +26,12 @@ function check(ok,msg){
 		}
 	}
 }
+check(add(1,2,3),6)
 var result = {
 	val:0
 };
+add(1,2,3,defaultScheduler).then(function(v){
+	check(v==6,6)
 var completer=new Completer();
 completer.resolve(1);
 completer.promise.then(function(v){
@@ -41,6 +51,7 @@ completer.promise.then(function(v){
 }).then(function(v){
 	check(v==5,"v5")
 	result.val = v
+})
 })
 result
 `)

@@ -2,22 +2,23 @@ package goja
 
 import (
 	"reflect"
+
+	"github.com/dop251/goja/zpp_expand/loop"
 )
 
 func (r *Runtime) wrapReflectFunc_pp(value reflect.Value) func(FunctionCall) Value {
-	New()
 	return func(call FunctionCall) Value {
 		typ := value.Type()
 		nargs := typ.NumIn()
 		var in []reflect.Value
 		args := call.Arguments
-		async := false
+		var scheduler loop.Scheduler
 		if len(args) != 0 {
 			offset := len(args) - 1
 			arg := args[offset]
-			if str, ok := arg.Export().(string); ok && str == "async" {
+			if tmp, ok := arg.Export().(loop.Scheduler); ok {
 				call.Arguments = args[:offset]
-				async = true
+				scheduler = tmp
 			}
 		}
 
@@ -76,32 +77,63 @@ func (r *Runtime) wrapReflectFunc_pp(value reflect.Value) func(FunctionCall) Val
 			in[i] = v
 		}
 
-		if async {
-			return r.wrapReflectFunc_ppCallAsync(callSlice, value, in)
+		if scheduler == nil {
+			return r.wrapReflectFunc_ppCall(callSlice, value, in)
 		}
-		return r.wrapReflectFunc_ppCall(callSlice, value, in)
+		return r.wrapReflectFunc_ppCallAsync(scheduler, callSlice, value, in)
 	}
 }
-func (r *Runtime) wrapReflectFunc_ppCallAsync(callSlice bool, value reflect.Value, in []reflect.Value) Value {
+func (r *Runtime) wrapReflectFunc_ppCallAsync(scheduler loop.Scheduler, callSlice bool, value reflect.Value, in []reflect.Value) Value {
 	completer, e := NewCompleter(r)
 	if e != nil {
 		panic(r.NewGoError(e))
 	}
-	go func() {
-		var out []reflect.Value
-		if callSlice {
-			out = value.CallSlice(in)
-		} else {
-			out = value.Call(in)
-		}
-		result, e := r.wrapReflectFunc_ppResult(out)
-		if e == nil {
-			completer.Resolve(result)
-		} else {
-			completer.Reject(r.ToValue(e))
-		}
-	}()
+	r.loop.Async(nil)
+	scheduler.Go(newAsyncImpl(r, completer, callSlice, value, in))
 	return completer.promise
+}
+
+type asyncImpl struct {
+	runtime   *Runtime
+	completer *Completer
+
+	callSlice bool
+	value     reflect.Value
+	in        []reflect.Value
+
+	result []reflect.Value
+}
+
+func newAsyncImpl(runtime *Runtime,
+	completer *Completer,
+	callSlice bool, value reflect.Value, in []reflect.Value,
+) *asyncImpl {
+	return &asyncImpl{
+		runtime:   runtime,
+		completer: completer,
+		callSlice: callSlice,
+		value:     value,
+		in:        in,
+	}
+}
+func (a *asyncImpl) Serve() {
+	if a.callSlice {
+		a.result = a.value.CallSlice(a.in)
+	} else {
+		a.result = a.value.Call(a.in)
+	}
+	a.runtime.loop.Result(a)
+}
+func (a *asyncImpl) OnResult(closed bool) (completed bool) {
+	completed = true
+	runtime := a.runtime
+	result, e := runtime.wrapReflectFunc_ppResult(a.result)
+	if e == nil {
+		a.completer.Resolve(result)
+	} else {
+		a.completer.Reject(runtime.ToValue(e))
+	}
+	return
 }
 func (r *Runtime) wrapReflectFunc_ppCall(callSlice bool, value reflect.Value, in []reflect.Value) (result Value) {
 	var out []reflect.Value
