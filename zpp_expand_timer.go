@@ -179,5 +179,4 @@ func (r *Runtime) pp_expand_init_timer() {
 	r.addToGlobal(`clearTimeout`, r.newNativeFunc(r.builtinGo_ClearTimeout, nil, "clearTimeout", nil, 1))
 	r.addToGlobal(`setInterval`, r.newNativeFunc(r.builtinGo_SetInterval, nil, "setInterval", nil, 2))
 	r.addToGlobal(`clearInterval`, r.newNativeFunc(r.builtinGo_ClearInterval, nil, "clearInterval", nil, 1))
-	r.addToGlobal(`clearInterval`, r.newNativeFunc(r.builtinGo_ClearInterval, nil, "clearInterval", nil, 1))
 }

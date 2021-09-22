@@ -26,38 +26,42 @@ function check(ok,msg){
 		}
 	}
 }
-check(add(1,2,3),6)
 var result = {
 	val:0
 };
+
+
+// Call the go function synchronously
+check(add(1,2,3),6)
+
+// The last parameter is passed into the Scheduler to asynchronously call the go function
 add(1,2,3,defaultScheduler).then(function(v){
 	check(v==6,6)
-var completer=new Completer();
-completer.resolve(1);
-completer.promise.then(function(v){
-	check(v==1,"v1")
-	return Promise.resolve(2)
-}).then(function(v){
-	check(v==2,"v2")
-	return new Promise(function(resolve){
-		resolve(3)
+
+	// test Promise
+	var completer=new Completer();
+	completer.resolve(1);
+	completer.promise.then(function(v){
+		check(v==1,"v1")
+		return Promise.resolve(2)
+	}).then(function(v){
+		check(v==2,"v2")
+		return new Promise(function(resolve){
+			resolve(3)
+		})
+	}).then(function(v){
+		check(v==3,"v3")
+		return 4
+	}).then(function(v){
+		check(v==4,"v4")
+		return 5
+	}).then(function(v){
+		check(v==5,"v5")
+		result.val = v
 	})
-}).then(function(v){
-	check(v==3,"v3")
-	return 4
-}).then(function(v){
-	check(v==4,"v4")
-	return 5
-}).then(function(v){
-	check(v==5,"v5")
-	result.val = v
-})
 })
 result
 `)
-	if e != nil {
-		t.Fatal(e)
-	}
 	if e != nil {
 		t.Fatal(e)
 	}
