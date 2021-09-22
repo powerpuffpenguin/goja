@@ -6,7 +6,7 @@ import (
 	"math"
 	"testing"
 
-	"github.com/dop251/goja"
+	"github.com/powerpuffpenguin/goja"
 )
 
 func print(call goja.FunctionCall) goja.Value {

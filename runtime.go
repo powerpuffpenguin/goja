@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"github.com/dop251/goja/file"
+	"github.com/powerpuffpenguin/goja/file"
 	"go/ast"
 	"hash/maphash"
 	"math"
@@ -17,10 +17,10 @@ import (
 
 	"golang.org/x/text/collate"
 
-	js_ast "github.com/dop251/goja/ast"
-	"github.com/dop251/goja/parser"
-	"github.com/dop251/goja/unistring"
-	"github.com/dop251/goja/loop"
+	js_ast "github.com/powerpuffpenguin/goja/ast"
+	"github.com/powerpuffpenguin/goja/loop"
+	"github.com/powerpuffpenguin/goja/parser"
+	"github.com/powerpuffpenguin/goja/unistring"
 )
 
 const (
@@ -177,7 +177,7 @@ type Runtime struct {
 	vm    *vm
 	hash  *maphash.Hash
 	idSeq uint64
-	loop * loop.Loop
+	loop  *loop.Loop
 }
 
 type StackFrame struct {

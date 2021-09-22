@@ -3,7 +3,7 @@ package goja_test
 import (
 	"testing"
 
-	"github.com/dop251/goja"
+	"github.com/powerpuffpenguin/goja"
 )
 
 func TestExpandTimer(t *testing.T) {

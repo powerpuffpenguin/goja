@@ -1,6 +1,6 @@
 # file
 --
-    import "github.com/dop251/goja/file"
+    import "github.com/powerpuffpenguin/goja/file"
 
 Package file encapsulates the file abstractions used by the ast & parser.
 

@@ -3,10 +3,10 @@ package parser
 import (
 	"encoding/base64"
 	"fmt"
-	"github.com/dop251/goja/ast"
-	"github.com/dop251/goja/file"
-	"github.com/dop251/goja/token"
 	"github.com/go-sourcemap/sourcemap"
+	"github.com/powerpuffpenguin/goja/ast"
+	"github.com/powerpuffpenguin/goja/file"
+	"github.com/powerpuffpenguin/goja/token"
 	"io/ioutil"
 	"net/url"
 	"path"

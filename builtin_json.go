@@ -9,7 +9,7 @@ import (
 	"strings"
 	"unicode/utf16"
 
-	"github.com/dop251/goja/unistring"
+	"github.com/powerpuffpenguin/goja/unistring"
 )
 
 const hex = "0123456789abcdef"

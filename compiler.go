@@ -2,12 +2,12 @@ package goja
 
 import (
 	"fmt"
-	"github.com/dop251/goja/token"
+	"github.com/powerpuffpenguin/goja/token"
 	"sort"
 
-	"github.com/dop251/goja/ast"
-	"github.com/dop251/goja/file"
-	"github.com/dop251/goja/unistring"
+	"github.com/powerpuffpenguin/goja/ast"
+	"github.com/powerpuffpenguin/goja/file"
+	"github.com/powerpuffpenguin/goja/unistring"
 )
 
 type blockType int
