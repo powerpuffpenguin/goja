@@ -51,7 +51,7 @@ func TestExpandNumber(t *testing.T) {
 		}
 		return nil
 	})
-	_, e := vm.RunScript("a.js", `
+	_, e := vm.RunScript("number.js", `
 function check(ok,msg){
 	if(!ok){
 		if(msg){
