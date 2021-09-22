@@ -273,15 +273,153 @@ func (f *factoryPromise) constructor(call ConstructorCall) *Object {
 	newPromiseImpl(runtime, f.ctor, call.This).register(executor)
 	return nil
 }
+func (f *factoryPromise) register() {
+	self := f.ctor
+	runtime := f.runtime
+	e := self.Set(`resolve`, f.resolve)
+	if e != nil {
+		panic(runtime.NewGoError(e))
+	}
+	e = self.Set(`reject`, f.reject)
+	if e != nil {
+		panic(runtime.NewGoError(e))
+	}
+}
+func (f *factoryPromise) resolve(call FunctionCall) Value {
+	runtime := f.runtime
+	completer, e := NewCompleter(runtime)
+	if e != nil {
+		panic(runtime.NewGoError(e))
+	}
+	completer.Resolve(call.Argument(0))
+	return completer.promise
+}
+func (f *factoryPromise) reject(call FunctionCall) Value {
+	runtime := f.runtime
+	completer, e := NewCompleter(runtime)
+	if e != nil {
+		panic(runtime.NewGoError(e))
+	}
+	completer.Reject(call.Argument(0))
+	return completer.promise
+}
+func (f *factoryPromise) completer(call ConstructorCall) *Object {
+	runtime := f.runtime
+	completer, e := NewCompleter(runtime)
+	if e != nil {
+		panic(runtime.NewGoError(e))
+	}
+	completer.register(call.This)
+	return nil
+}
 
 type factoryPromise struct {
 	runtime *Runtime
 	ctor    *Object
 }
+type Completer struct {
+	runtime         *Runtime
+	resolve, reject Callable
+	promise         Value
+	completed       bool
+}
 
+func NewCompleter(runtime *Runtime) (completer *Completer, e error) {
+	completer = &Completer{
+		runtime: runtime,
+	}
+	promise, e := runtime.New(runtime.Get(`Promise`),
+		runtime.newNativeFunc(completer.handle, nil, "executor", nil, 2),
+	)
+	if e != nil {
+		completer = nil
+		return
+	}
+	completer.promise = promise
+	return
+}
+func (c *Completer) handle(call FunctionCall) Value {
+	c.resolve, _ = AssertFunction(call.Argument(0))
+	c.reject, _ = AssertFunction(call.Argument(1))
+	return _undefined
+}
+func (c *Completer) Resolve(v Value) {
+	if !c.completed {
+		c.resolve(_undefined, v)
+		c.completed = true
+	}
+}
+func (c *Completer) Reject(reason Value) {
+	if !c.completed {
+		c.reject(_undefined, reason)
+		c.completed = true
+	}
+}
+func (c *Completer) register(self *Object) {
+	runtime := c.runtime
+	e := self.Set(`toString`, c.toString)
+	if e != nil {
+		panic(runtime.NewGoError(e))
+	}
+	e = self.Set(`resolve`, c.jsResolve)
+	if e != nil {
+		panic(runtime.NewGoError(e))
+	}
+	e = self.Set(`reject`, c.jsReject)
+	if e != nil {
+		panic(runtime.NewGoError(e))
+	}
+	e = self.DefineAccessorProperty(`promise`,
+		runtime.ToValue(c.getPromise),
+		nil,
+		FLAG_TRUE, FLAG_TRUE,
+	)
+	if e != nil {
+		panic(runtime.NewGoError(e))
+	}
+	e = self.DefineAccessorProperty(`completed`,
+		runtime.ToValue(c.getCompleted),
+		nil,
+		FLAG_TRUE, FLAG_TRUE,
+	)
+	if e != nil {
+		panic(runtime.NewGoError(e))
+	}
+}
+
+func (c *Completer) String() string {
+	if c.completed {
+		return `Completer { completed:true }`
+	} else {
+		return `Completer { completed:false }`
+	}
+}
+func (c *Completer) toString(call FunctionCall) Value {
+	return newStringValue(c.String())
+}
+func (c *Completer) jsResolve(call FunctionCall) Value {
+	c.Resolve(call.Argument(0))
+	return _undefined
+}
+func (c *Completer) jsReject(call FunctionCall) Value {
+	c.Reject(call.Argument(0))
+	return _undefined
+}
+func (c *Completer) getPromise(call FunctionCall) Value {
+	return c.promise
+}
+func (c *Completer) getCompleted(call FunctionCall) Value {
+	if c.completed {
+		return valueTrue
+	}
+	return valueFalse
+}
 func (r *Runtime) pp_expand_init_promise() {
 	var factory factoryPromise
 	factory.runtime = r
 	factory.ctor = r.newNativeConstructor(factory.constructor, "Promise", 1)
 	r.addToGlobal(`Promise`, factory.ctor)
+	factory.register()
+	r.addToGlobal(`Completer`, r.newNativeConstructor(factory.completer, "Completer", 0))
+
 }

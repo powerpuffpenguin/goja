@@ -1,7 +1,6 @@
 package goja
 
 import (
-	"fmt"
 	"reflect"
 )
 
@@ -83,9 +82,12 @@ func (r *Runtime) wrapReflectFunc_pp(value reflect.Value) func(FunctionCall) Val
 		return r.wrapReflectFunc_ppCall(callSlice, value, in)
 	}
 }
-func (r *Runtime) wrapReflectFunc_ppCallAsync(callSlice bool, value reflect.Value, in []reflect.Value) (result Value) {
+func (r *Runtime) wrapReflectFunc_ppCallAsync(callSlice bool, value reflect.Value, in []reflect.Value) Value {
+	completer, e := NewCompleter(r)
+	if e != nil {
+		panic(r.NewGoError(e))
+	}
 	go func() {
-		fmt.Println("async call")
 		var out []reflect.Value
 		if callSlice {
 			out = value.CallSlice(in)
@@ -94,13 +96,12 @@ func (r *Runtime) wrapReflectFunc_ppCallAsync(callSlice bool, value reflect.Valu
 		}
 		result, e := r.wrapReflectFunc_ppResult(out)
 		if e == nil {
-			fmt.Println("resolve", result)
+			completer.Resolve(result)
 		} else {
-			fmt.Println("reject", e)
+			completer.Reject(r.ToValue(e))
 		}
 	}()
-	// return promise
-	return _undefined
+	return completer.promise
 }
 func (r *Runtime) wrapReflectFunc_ppCall(callSlice bool, value reflect.Value, in []reflect.Value) (result Value) {
 	var out []reflect.Value

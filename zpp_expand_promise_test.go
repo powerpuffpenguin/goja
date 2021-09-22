@@ -22,13 +22,11 @@ function check(ok,msg){
 var result = {
 	val:0
 };
-new Promise(function(resolve,reject){
-	resolve(1)
-}).then(function(v){
+var completer=new Completer();
+completer.resolve(1);
+completer.promise.then(function(v){
 	check(v==1,"v1")
-	return new Promise(function(resolve){
-		resolve(2)
-	})
+	return Promise.resolve(2)
 }).then(function(v){
 	check(v==2,"v2")
 	return new Promise(function(resolve){
