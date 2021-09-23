@@ -17,15 +17,9 @@ func New{{.Name}}(val {{.Type}}) {{.Name}} {
 func (v {{.Name}}) String() string {
 	return fmt.Sprint({{.Type}}(v))
 }{{if .Integer}}
-func (v {{.Name}}) Native() int64 {
-	return int64(v)
-}
 func (v {{.Name}}) ToNumber() Value {
 	return intToValue(int64(v))
 }{{else}}
-func (v {{.Name}}) Native() float64 {
-	return float64(v)
-}
 func (v {{.Name}}) ToNumber() Value {
 	return floatToValue(float64(v))
 }{{end}}{{with $parent :=  .}}{{range $item := $ctx}}

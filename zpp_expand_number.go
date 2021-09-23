@@ -17,9 +17,6 @@ func NewInt(val int) Int {
 func (v Int) String() string {
 	return fmt.Sprint(int(v))
 }
-func (v Int) Native() int64 {
-	return int64(v)
-}
 func (v Int) ToNumber() Value {
 	return intToValue(int64(v))
 }
@@ -228,9 +225,6 @@ func NewInt64(val int64) Int64 {
 }
 func (v Int64) String() string {
 	return fmt.Sprint(int64(v))
-}
-func (v Int64) Native() int64 {
-	return int64(v)
 }
 func (v Int64) ToNumber() Value {
 	return intToValue(int64(v))
@@ -441,9 +435,6 @@ func NewInt32(val int32) Int32 {
 func (v Int32) String() string {
 	return fmt.Sprint(int32(v))
 }
-func (v Int32) Native() int64 {
-	return int64(v)
-}
 func (v Int32) ToNumber() Value {
 	return intToValue(int64(v))
 }
@@ -652,9 +643,6 @@ func NewInt16(val int16) Int16 {
 }
 func (v Int16) String() string {
 	return fmt.Sprint(int16(v))
-}
-func (v Int16) Native() int64 {
-	return int64(v)
 }
 func (v Int16) ToNumber() Value {
 	return intToValue(int64(v))
@@ -865,9 +853,6 @@ func NewInt8(val int8) Int8 {
 func (v Int8) String() string {
 	return fmt.Sprint(int8(v))
 }
-func (v Int8) Native() int64 {
-	return int64(v)
-}
 func (v Int8) ToNumber() Value {
 	return intToValue(int64(v))
 }
@@ -1077,9 +1062,6 @@ func NewUint(val uint) Uint {
 func (v Uint) String() string {
 	return fmt.Sprint(uint(v))
 }
-func (v Uint) Native() int64 {
-	return int64(v)
-}
 func (v Uint) ToNumber() Value {
 	return intToValue(int64(v))
 }
@@ -1278,9 +1260,6 @@ func NewUint64(val uint64) Uint64 {
 }
 func (v Uint64) String() string {
 	return fmt.Sprint(uint64(v))
-}
-func (v Uint64) Native() int64 {
-	return int64(v)
 }
 func (v Uint64) ToNumber() Value {
 	return intToValue(int64(v))
@@ -1481,9 +1460,6 @@ func NewUint32(val uint32) Uint32 {
 func (v Uint32) String() string {
 	return fmt.Sprint(uint32(v))
 }
-func (v Uint32) Native() int64 {
-	return int64(v)
-}
 func (v Uint32) ToNumber() Value {
 	return intToValue(int64(v))
 }
@@ -1682,9 +1658,6 @@ func NewUint16(val uint16) Uint16 {
 }
 func (v Uint16) String() string {
 	return fmt.Sprint(uint16(v))
-}
-func (v Uint16) Native() int64 {
-	return int64(v)
 }
 func (v Uint16) ToNumber() Value {
 	return intToValue(int64(v))
@@ -1885,9 +1858,6 @@ func NewUint8(val uint8) Uint8 {
 func (v Uint8) String() string {
 	return fmt.Sprint(uint8(v))
 }
-func (v Uint8) Native() int64 {
-	return int64(v)
-}
 func (v Uint8) ToNumber() Value {
 	return intToValue(int64(v))
 }
@@ -2087,9 +2057,6 @@ func NewFloat64(val float64) Float64 {
 func (v Float64) String() string {
 	return fmt.Sprint(float64(v))
 }
-func (v Float64) Native() float64 {
-	return float64(v)
-}
 func (v Float64) ToNumber() Value {
 	return floatToValue(float64(v))
 }
@@ -2234,9 +2201,6 @@ func NewFloat32(val float32) Float32 {
 }
 func (v Float32) String() string {
 	return fmt.Sprint(float32(v))
-}
-func (v Float32) Native() float64 {
-	return float64(v)
 }
 func (v Float32) ToNumber() Value {
 	return floatToValue(float64(v))
