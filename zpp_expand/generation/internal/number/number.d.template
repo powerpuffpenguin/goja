@@ -3,6 +3,35 @@
     private readonly __Native: Native
 }
 type NumberLike = number | string | null | undefined{{range .}} | Go{{.Name}}{{end}}
+
+class Scheduler extends Native {
+    private readonly __Scheduler: Scheduler
+    private constructor() { }
+}
+const defaultScheduler: Scheduler
+class GoError extends Native {
+    private readonly __GoError: GoError
+    private constructor()
+}
+class Completer<T> {
+    constructor()
+    get promise(): Promise<T>
+    resolve(value?: T | PromiseLike<T>)
+    reject(reason?: any)
+    toString(): string
+}
+class GoMap extends Native {
+    private readonly __GoMap: GoMap
+    private constructor()
+}
+class GoSlice extends Native {
+    private readonly __GoSlice: GoSlice
+    private constructor()
+}
+function goLen(v: GoMap | GoSlice): GoInt
+function goHasKey(v: GoMap, key: any): boolean
+function isGoSlice(v: GoSlice): boolean
+function isGoMap(v: GoMap): boolean
 {{range.}}
 class Go{{.Name}} extends Native {
     private readonly __Go{{.Name}}: Go{{.Name}}
@@ -32,7 +61,7 @@ class Go{{.Name}} extends Native {
 function New{{.Name}}(val: NumberLike): Go{{.Name}}
 function New{{.Name}}(val: string{{if .Integer}}, base: number | string{{end}}): Go{{.Name}}
 {{end}}{{range.}}
-class Go{{.Name}}Array extends Native {
+class Go{{.Name}}Array extends GoSlice {
     private readonly __Go{{.Name}}Array: Go{{.Name}}Array
     private constructor()
     String(): string

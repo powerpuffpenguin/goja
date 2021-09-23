@@ -51,6 +51,11 @@ func TestExpandNumber(t *testing.T) {
 		}
 		return nil
 	})
+	vm.Set(`make`, func() map[string]string {
+		return map[string]string{
+			"id": "1",
+		}
+	})
 	_, e := vm.RunScript("number.js", `
 function check(ok,msg){
 	if(!ok){
@@ -105,6 +110,11 @@ b.Set(1,MaxInt64)
 check(a.Append(b).String()=="[1 2 3 9223372036854775807]","Append")
 check(a.Append(3,MaxInt64).String()=="[1 2 3 9223372036854775807]","Append")
 check(a.Append(3,MaxInt64).Join(",")=="1,2,3,9223372036854775807","Join")
+check(goLen(a)==2,'goLen')
+var m =make()
+check(goLen(m)==1,'goLen map')
+check(goHasKey(m,"id"),'goLen has id')
+check(!goHasKey(m,"name"),'goLen has name')
 `)
 	if e != nil {
 		t.Fatal(e)

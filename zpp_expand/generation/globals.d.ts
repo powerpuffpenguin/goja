@@ -4,6 +4,34 @@ class Native {
 }
 type NumberLike = number | string | null | undefined | GoInt | GoInt64 | GoInt32 | GoInt16 | GoInt8 | GoUint | GoUint64 | GoUint32 | GoUint16 | GoUint8 | GoFloat64 | GoFloat32
 
+class Scheduler extends Native {
+    private readonly __Scheduler: Scheduler
+    private constructor() { }
+}
+const defaultScheduler: Scheduler
+class GoError extends Native {
+    private readonly __GoError: GoError
+    private constructor()
+}
+class Completer<T> {
+    constructor()
+    get promise(): Promise<T>
+    resolve(value?: T | PromiseLike<T>)
+    reject(reason?: any)
+    toString(): string
+}
+class GoMap extends Native {
+    private readonly __GoMap: GoMap
+    private constructor()
+}
+class GoSlice extends Native {
+    private readonly __GoSlice: GoSlice
+    private constructor()
+}
+function goLen(v: GoMap | GoSlice): GoInt
+function goHasKey(v: GoMap, key: any): boolean
+
+
 class GoInt extends Native {
     private readonly __GoInt: GoInt
     private constructor()
@@ -436,7 +464,7 @@ class GoFloat32 extends Native {
 function NewFloat32(val: NumberLike): GoFloat32
 function NewFloat32(val: string): GoFloat32
 
-class GoIntArray extends Native {
+class GoIntArray extends GoSlice {
     private readonly __GoIntArray: GoIntArray
     private constructor()
     String(): string
@@ -457,7 +485,7 @@ class GoIntArray extends Native {
 function NewIntArray(): GoIntArray
 function NewIntArray(len: NumberLike): GoIntArray
 function NewIntArray(len: NumberLike, cap: NumberLike): GoIntArray
-class GoInt64Array extends Native {
+class GoInt64Array extends GoSlice {
     private readonly __GoInt64Array: GoInt64Array
     private constructor()
     String(): string
@@ -478,7 +506,7 @@ class GoInt64Array extends Native {
 function NewInt64Array(): GoInt64Array
 function NewInt64Array(len: NumberLike): GoInt64Array
 function NewInt64Array(len: NumberLike, cap: NumberLike): GoInt64Array
-class GoInt32Array extends Native {
+class GoInt32Array extends GoSlice {
     private readonly __GoInt32Array: GoInt32Array
     private constructor()
     String(): string
@@ -499,7 +527,7 @@ class GoInt32Array extends Native {
 function NewInt32Array(): GoInt32Array
 function NewInt32Array(len: NumberLike): GoInt32Array
 function NewInt32Array(len: NumberLike, cap: NumberLike): GoInt32Array
-class GoInt16Array extends Native {
+class GoInt16Array extends GoSlice {
     private readonly __GoInt16Array: GoInt16Array
     private constructor()
     String(): string
@@ -520,7 +548,7 @@ class GoInt16Array extends Native {
 function NewInt16Array(): GoInt16Array
 function NewInt16Array(len: NumberLike): GoInt16Array
 function NewInt16Array(len: NumberLike, cap: NumberLike): GoInt16Array
-class GoInt8Array extends Native {
+class GoInt8Array extends GoSlice {
     private readonly __GoInt8Array: GoInt8Array
     private constructor()
     String(): string
@@ -541,7 +569,7 @@ class GoInt8Array extends Native {
 function NewInt8Array(): GoInt8Array
 function NewInt8Array(len: NumberLike): GoInt8Array
 function NewInt8Array(len: NumberLike, cap: NumberLike): GoInt8Array
-class GoUintArray extends Native {
+class GoUintArray extends GoSlice {
     private readonly __GoUintArray: GoUintArray
     private constructor()
     String(): string
@@ -562,7 +590,7 @@ class GoUintArray extends Native {
 function NewUintArray(): GoUintArray
 function NewUintArray(len: NumberLike): GoUintArray
 function NewUintArray(len: NumberLike, cap: NumberLike): GoUintArray
-class GoUint64Array extends Native {
+class GoUint64Array extends GoSlice {
     private readonly __GoUint64Array: GoUint64Array
     private constructor()
     String(): string
@@ -583,7 +611,7 @@ class GoUint64Array extends Native {
 function NewUint64Array(): GoUint64Array
 function NewUint64Array(len: NumberLike): GoUint64Array
 function NewUint64Array(len: NumberLike, cap: NumberLike): GoUint64Array
-class GoUint32Array extends Native {
+class GoUint32Array extends GoSlice {
     private readonly __GoUint32Array: GoUint32Array
     private constructor()
     String(): string
@@ -604,7 +632,7 @@ class GoUint32Array extends Native {
 function NewUint32Array(): GoUint32Array
 function NewUint32Array(len: NumberLike): GoUint32Array
 function NewUint32Array(len: NumberLike, cap: NumberLike): GoUint32Array
-class GoUint16Array extends Native {
+class GoUint16Array extends GoSlice {
     private readonly __GoUint16Array: GoUint16Array
     private constructor()
     String(): string
@@ -625,7 +653,7 @@ class GoUint16Array extends Native {
 function NewUint16Array(): GoUint16Array
 function NewUint16Array(len: NumberLike): GoUint16Array
 function NewUint16Array(len: NumberLike, cap: NumberLike): GoUint16Array
-class GoUint8Array extends Native {
+class GoUint8Array extends GoSlice {
     private readonly __GoUint8Array: GoUint8Array
     private constructor()
     String(): string
@@ -646,7 +674,7 @@ class GoUint8Array extends Native {
 function NewUint8Array(): GoUint8Array
 function NewUint8Array(len: NumberLike): GoUint8Array
 function NewUint8Array(len: NumberLike, cap: NumberLike): GoUint8Array
-class GoFloat64Array extends Native {
+class GoFloat64Array extends GoSlice {
     private readonly __GoFloat64Array: GoFloat64Array
     private constructor()
     String(): string
@@ -667,7 +695,7 @@ class GoFloat64Array extends Native {
 function NewFloat64Array(): GoFloat64Array
 function NewFloat64Array(len: NumberLike): GoFloat64Array
 function NewFloat64Array(len: NumberLike, cap: NumberLike): GoFloat64Array
-class GoFloat32Array extends Native {
+class GoFloat32Array extends GoSlice {
     private readonly __GoFloat32Array: GoFloat32Array
     private constructor()
     String(): string
