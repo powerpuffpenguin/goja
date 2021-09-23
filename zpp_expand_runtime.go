@@ -185,56 +185,104 @@ func (r *Runtime) wrapReflectFunc_ppResultWrap(v reflect.Value) interface{} {
 	result := v.Interface()
 	switch v.Kind() {
 	case reflect.Int:
-		return NewInt(result.(int))
+		if val, ok := result.(int); ok {
+			return NewInt(val)
+		}
 	case reflect.Int8:
-		return NewInt8(result.(int8))
+		if val, ok := result.(int8); ok {
+			return NewInt8(val)
+		}
 	case reflect.Int16:
-		return NewInt16(result.(int16))
+		if val, ok := result.(int16); ok {
+			return NewInt16(val)
+		}
 	case reflect.Int32:
-		return NewInt32(result.(int32))
+		if val, ok := result.(int32); ok {
+			return NewInt32(val)
+		}
 	case reflect.Int64:
-		return NewInt64(result.(int64))
+		if val, ok := result.(int64); ok {
+			return NewInt64(val)
+		}
 	case reflect.Uint:
-		return NewUint(result.(uint))
+		if val, ok := result.(uint); ok {
+			return NewUint(val)
+		}
 	case reflect.Uint8:
-		return NewUint8(result.(uint8))
+		if val, ok := result.(uint8); ok {
+			return NewUint8(val)
+		}
 	case reflect.Uint16:
-		return NewUint16(result.(uint16))
+		if val, ok := result.(uint16); ok {
+			return NewUint16(val)
+		}
 	case reflect.Uint32:
-		return NewUint32(result.(uint32))
+		if val, ok := result.(uint32); ok {
+			return NewUint32(val)
+		}
 	case reflect.Uint64:
-		return NewUint64(result.(uint64))
+		if val, ok := result.(uint64); ok {
+			return NewUint64(val)
+		}
 	case reflect.Float32:
-		return NewFloat32(result.(float32))
+		if val, ok := result.(float32); ok {
+			return NewFloat32(val)
+		}
 	case reflect.Float64:
-		return NewFloat64(result.(float64))
+		if val, ok := result.(float64); ok {
+			return NewFloat64(val)
+		}
 
 	case reflect.Slice:
 		switch v.Type().Elem().Kind() {
 		case reflect.Int:
-			return NewIntArray(result.([]int))
+			if val, ok := result.([]int); ok {
+				return NewIntArray(val)
+			}
 		case reflect.Int8:
-			return NewInt8Array(result.([]int8))
+			if val, ok := result.([]int8); ok {
+				return NewInt8Array(val)
+			}
 		case reflect.Int16:
-			return NewInt16Array(result.([]int16))
+			if val, ok := result.([]int16); ok {
+				return NewInt16Array(val)
+			}
 		case reflect.Int32:
-			return NewInt32Array(result.([]int32))
+			if val, ok := result.([]int32); ok {
+				return NewInt32Array(val)
+			}
 		case reflect.Int64:
-			return NewInt64Array(result.([]int64))
+			if val, ok := result.([]int64); ok {
+				return NewInt64Array(val)
+			}
 		case reflect.Uint:
-			return NewUintArray(result.([]uint))
+			if val, ok := result.([]uint); ok {
+				return NewUintArray(val)
+			}
 		case reflect.Uint8:
-			return NewUint8Array(result.([]uint8))
+			if val, ok := result.([]uint8); ok {
+				return NewUint8Array(val)
+			}
 		case reflect.Uint16:
-			return NewUint16Array(result.([]uint16))
+			if val, ok := result.([]uint16); ok {
+				return NewUint16Array(val)
+			}
 		case reflect.Uint32:
-			return NewUint32Array(result.([]uint32))
+			if val, ok := result.([]uint32); ok {
+				return NewUint32Array(val)
+			}
 		case reflect.Uint64:
-			return NewUint64Array(result.([]uint64))
+			if val, ok := result.([]uint64); ok {
+				return NewUint64Array(val)
+			}
 		case reflect.Float32:
-			return NewFloat32Array(result.([]float32))
+			if val, ok := result.([]float32); ok {
+				return NewFloat32Array(val)
+			}
 		case reflect.Float64:
-			return NewFloat64Array(result.([]float64))
+			if val, ok := result.([]float64); ok {
+				return NewFloat64Array(val)
+			}
 		}
 	}
 	return result
