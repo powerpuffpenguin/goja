@@ -9,9 +9,21 @@ class Scheduler extends Native {
     private constructor() { }
 }
 const defaultScheduler: Scheduler
+class GoRune extends Native {
+    private readonly __GoRune: GoRune
+    private constructor()
+}
+class GoErrorNative extends Native {
+    private readonly __GoErrorNative: GoErrorNative
+    private constructor()
+}
 class GoError extends Native {
     private readonly __GoError: GoError
     private constructor()
+    name: string
+    message: string
+    stack?: string
+    value: GoErrorNative
 }
 class Completer<T> {
     constructor()
@@ -32,6 +44,9 @@ function goLen(v: GoMap | GoSlice): GoInt
 function goHasKey(v: GoMap, key: any): boolean
 function isGoSlice(v: GoSlice): boolean
 function isGoMap(v: GoMap): boolean
+{{range.}}{{if .Max}}
+const Max{{.Name}}: Go{{.Name}}{{end}}{{end}}{{range.}}{{if .Min}}
+const Min{{.Name}}: Go{{.Name}}{{end}}{{end}}
 {{range.}}
 class Go{{.Name}} extends Native {
     private readonly __Go{{.Name}}: Go{{.Name}}
