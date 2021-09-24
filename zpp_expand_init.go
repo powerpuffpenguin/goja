@@ -76,6 +76,7 @@ func (r *Runtime) RunStringAndServe(source string) (val Value, e error) {
 func (r *Runtime) pp_expand_init() {
 	r.pp_expand_init_number()
 	r.pp_expand_init_go()
+	r.pp_expand_init_chan()
 	r.loop = loop.NewLoop()
 	r.pp_expand_init_timer()
 	r.pp_expand_init_promise()

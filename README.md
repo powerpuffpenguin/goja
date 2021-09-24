@@ -53,7 +53,7 @@ var result = {
 check(add(1,2,3),6)
 
 // The last parameter is passed into the Scheduler to asynchronously call the go function
-add(1,2,3,defaultScheduler).then(function(v){
+add(1,2,3,DefaultScheduler).then(function(v){
 	check(v==6,6)
 
 	// test Promise
@@ -89,6 +89,10 @@ result
 	}
 }
 ```
+.d.ts
+====
+
+**zpp_expand/generation/globals.d.ts** declares the functions that can be called in js
 
 GoJS
 ====

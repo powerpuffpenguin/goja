@@ -424,9 +424,9 @@ func (r *Runtime) pp_expand_init_promise() {
 	r.addToGlobal(`Promise`, factory.ctor)
 	factory.register()
 	r.addToGlobal(`Completer`, r.newNativeConstructor(factory.completer, "Completer", 0))
-	r.GlobalObject().self.setOwnStr("defaultScheduler", &valueProperty{
+	r.GlobalObject().self.setOwnStr("DefaultScheduler", &valueProperty{
 		configurable: true,
-		getterFunc:   r.newNativeFunc(r.pp_expand_get_scheduler, nil, "defaultScheduler", nil, 0),
+		getterFunc:   r.newNativeFunc(r.pp_expand_get_scheduler, nil, "DefaultScheduler", nil, 0),
 		accessor:     true,
 	}, false)
 }

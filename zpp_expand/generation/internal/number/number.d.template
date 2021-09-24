@@ -2,13 +2,57 @@
     private constructor()
     private readonly __Native: Native
 }
-type NumberLike = number | string | null | undefined{{range .}} | Go{{.Name}}{{end}}
+class GoNumber extends Native {
+    private constructor()
+    private readonly __GoNumber: GoNumber
+}
+type NumberLike = number | string | null | undefined | GoNumber
+
+interface GoReadChannel<T> extends Native {
+    private readonly __GoReadChannel: GoReadChannel<T>
+}
+interface GoWriteChannel<T> extends Native {
+    private readonly __WriteChannel: GoWriteChannel<T>
+}
+interface GoChannel<T> extends Native implements GoReadChannel<T>, GoWriteChannel<T> {
+    private readonly __GoReadChannel: GoReadChannel<T>
+    private readonly __GoWriteChannel: GoWriteChannel<T>
+    private readonly __GoChannel: GoChannel<T>
+}
+function goRecv<T>(ch: GoReadChannel<T>): [T, boolean]
+function goTryRecv<T>(ch: GoReadChannel<T>): [T, boolean]
+function goSend<T>(ch: GoWriteChannel<T>, x: any)
+function goTrySend<T>(ch: GoWriteChannel<T>, x: any): boolean
+function goClose<T>(ch: GoWriteChannel<T>)
+function goRecv<T>(ch: GoReadChannel<T>, scheduler: Scheduler): Promise<[T, boolean]>
+function goTryRecv<T>(ch: GoReadChannel<T>, scheduler: Scheduler): Promise<[T, boolean]>
+function goSend<T>(ch: GoWriteChannel<T>, x: any, scheduler: Scheduler): Promise<undefined>
+function goTrySend<T>(ch: GoWriteChannel<T>, x: any, scheduler: Scheduler): Promise<boolean>
+function goClose<T>(ch: GoWriteChannel<T>, scheduler: Scheduler): Promise<undefined>
+class SelectDir extends Native {
+    private readonly __SelectDir: SelectDir
+    private constructor() { }
+}
+const SelectSend: SelectDir
+const SelectRecv: SelectDir
+const SelectDefault: SelectDir
+function NewSendCase(ch: GoWriteChannel, val: any): SelectCase
+function NewRecvCase(ch: GoReadChannel): SelectCase
+function NewSendCase(ch: GoWriteChannel, val: any, scheduler: Scheduler): Promise<SelectCase>
+function NewRecvCase(ch: GoReadChannel, scheduler: Scheduler): Promise<SelectCase>
+class SelectCase extends Native {
+    private readonly __SelectCase: SelectCase
+    private constructor() { }
+}
+const DefaultCase: SelectCase
+function goSelect(...cases: Array<SelectCase>): [GoInt, any, boolean]
+function goSelect(...cases: Array<SelectCase>, scheduler: Scheduler): Promise<[GoInt, any, boolean]>
 
 class Scheduler extends Native {
     private readonly __Scheduler: Scheduler
     private constructor() { }
 }
-const defaultScheduler: Scheduler
+const DefaultScheduler: Scheduler
 class GoRune extends Native {
     private readonly __GoRune: GoRune
     private constructor()
@@ -48,7 +92,7 @@ function isGoMap(v: GoMap): boolean
 const Max{{.Name}}: Go{{.Name}}{{end}}{{end}}{{range.}}{{if .Min}}
 const Min{{.Name}}: Go{{.Name}}{{end}}{{end}}
 {{range.}}
-class Go{{.Name}} extends Native {
+class Go{{.Name}} extends GoNumber {
     private readonly __Go{{.Name}}: Go{{.Name}}
     private constructor()
     String(): string

@@ -16,6 +16,9 @@ func New{{.Name}}(val {{.Type}}) {{.Name}} {
 }
 func (v {{.Name}}) String() string {
 	return fmt.Sprint({{.Type}}(v))
+}
+func (v {{.Name}}) Native() interface{} {
+	return {{.Type}}(v)
 }{{if .Integer}}
 func (v {{.Name}}) ToNumber() Value {
 	return intToValue(int64(v))
@@ -204,6 +207,9 @@ func New{{.Name}}Array(val []{{.Type}}) {{.Name}}Array {
 }
 func (v {{.Name}}Array) String() string {
 	return fmt.Sprint([]{{.Type}}(v))
+}
+func (v {{.Name}}Array) Native() interface{} {
+	return []{{.Type}}(v)
 }
 func (v {{.Name}}Array) Len() int {
 	return len(v)

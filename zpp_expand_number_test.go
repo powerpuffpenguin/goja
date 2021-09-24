@@ -29,10 +29,12 @@ func printType(call goja.FunctionCall) goja.Value {
 	fmt.Println()
 	return goja.Undefined()
 }
+
 func TestExpandNumber(t *testing.T) {
 	vm := goja.New()
 	vm.Set(`print`, print)
 	vm.Set(`printType`, printType)
+
 	vm.Set(`nativeInt64`, func(x int64) error {
 		if x != math.MaxInt64 {
 			return errors.New(`nativeInt64 err`)

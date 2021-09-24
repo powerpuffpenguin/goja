@@ -17,7 +17,7 @@ var defaultScheduler Scheduler = goScheduler{}
 type goScheduler struct{}
 
 func (goScheduler) String() string {
-	return `defaultScheduler`
+	return `DefaultScheduler`
 }
 func (goScheduler) Go(w Worker) {
 	go w.Serve()

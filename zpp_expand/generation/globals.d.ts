@@ -2,13 +2,57 @@ class Native {
     private constructor()
     private readonly __Native: Native
 }
-type NumberLike = number | string | null | undefined | GoInt | GoInt64 | GoInt32 | GoInt16 | GoInt8 | GoUint | GoUint64 | GoUint32 | GoUint16 | GoUint8 | GoFloat64 | GoFloat32
+class GoNumber extends Native {
+    private constructor()
+    private readonly __GoNumber: GoNumber
+}
+type NumberLike = number | string | null | undefined | GoNumber
+
+interface GoReadChannel<T> extends Native {
+    private readonly __GoReadChannel: GoReadChannel<T>
+}
+interface GoWriteChannel<T> extends Native {
+    private readonly __WriteChannel: GoWriteChannel<T>
+}
+interface GoChannel<T> extends Native implements GoReadChannel<T>, GoWriteChannel<T> {
+    private readonly __GoReadChannel: GoReadChannel<T>
+    private readonly __GoWriteChannel: GoWriteChannel<T>
+    private readonly __GoChannel: GoChannel<T>
+}
+function goRecv<T>(ch: GoReadChannel<T>): [T, boolean]
+function goTryRecv<T>(ch: GoReadChannel<T>): [T, boolean]
+function goSend<T>(ch: GoWriteChannel<T>, x: any)
+function goTrySend<T>(ch: GoWriteChannel<T>, x: any): boolean
+function goClose<T>(ch: GoWriteChannel<T>)
+function goRecv<T>(ch: GoReadChannel<T>, scheduler: Scheduler): Promise<[T, boolean]>
+function goTryRecv<T>(ch: GoReadChannel<T>, scheduler: Scheduler): Promise<[T, boolean]>
+function goSend<T>(ch: GoWriteChannel<T>, x: any, scheduler: Scheduler): Promise<undefined>
+function goTrySend<T>(ch: GoWriteChannel<T>, x: any, scheduler: Scheduler): Promise<boolean>
+function goClose<T>(ch: GoWriteChannel<T>, scheduler: Scheduler): Promise<undefined>
+class SelectDir extends Native {
+    private readonly __SelectDir: SelectDir
+    private constructor() { }
+}
+const SelectSend: SelectDir
+const SelectRecv: SelectDir
+const SelectDefault: SelectDir
+function NewSendCase(ch: GoWriteChannel, val: any): SelectCase
+function NewRecvCase(ch: GoReadChannel): SelectCase
+function NewSendCase(ch: GoWriteChannel, val: any, scheduler: Scheduler): Promise<SelectCase>
+function NewRecvCase(ch: GoReadChannel, scheduler: Scheduler): Promise<SelectCase>
+class SelectCase extends Native {
+    private readonly __SelectCase: SelectCase
+    private constructor() { }
+}
+const DefaultCase: SelectCase
+function goSelect(...cases: Array<SelectCase>): [GoInt, any, boolean]
+function goSelect(...cases: Array<SelectCase>, scheduler: Scheduler): Promise<[GoInt, any, boolean]>
 
 class Scheduler extends Native {
     private readonly __Scheduler: Scheduler
     private constructor() { }
 }
-const defaultScheduler: Scheduler
+const DefaultScheduler: Scheduler
 class GoRune extends Native {
     private readonly __GoRune: GoRune
     private constructor()
@@ -60,7 +104,7 @@ const MinInt32: GoInt32
 const MinInt16: GoInt16
 const MinInt8: GoInt8
 
-class GoInt extends Native {
+class GoInt extends GoNumber {
     private readonly __GoInt: GoInt
     private constructor()
     String(): string
@@ -98,7 +142,7 @@ class GoInt extends Native {
 function NewInt(val: NumberLike): GoInt
 function NewInt(val: string, base: number | string): GoInt
 
-class GoInt64 extends Native {
+class GoInt64 extends GoNumber {
     private readonly __GoInt64: GoInt64
     private constructor()
     String(): string
@@ -136,7 +180,7 @@ class GoInt64 extends Native {
 function NewInt64(val: NumberLike): GoInt64
 function NewInt64(val: string, base: number | string): GoInt64
 
-class GoInt32 extends Native {
+class GoInt32 extends GoNumber {
     private readonly __GoInt32: GoInt32
     private constructor()
     String(): string
@@ -174,7 +218,7 @@ class GoInt32 extends Native {
 function NewInt32(val: NumberLike): GoInt32
 function NewInt32(val: string, base: number | string): GoInt32
 
-class GoInt16 extends Native {
+class GoInt16 extends GoNumber {
     private readonly __GoInt16: GoInt16
     private constructor()
     String(): string
@@ -212,7 +256,7 @@ class GoInt16 extends Native {
 function NewInt16(val: NumberLike): GoInt16
 function NewInt16(val: string, base: number | string): GoInt16
 
-class GoInt8 extends Native {
+class GoInt8 extends GoNumber {
     private readonly __GoInt8: GoInt8
     private constructor()
     String(): string
@@ -250,7 +294,7 @@ class GoInt8 extends Native {
 function NewInt8(val: NumberLike): GoInt8
 function NewInt8(val: string, base: number | string): GoInt8
 
-class GoUint extends Native {
+class GoUint extends GoNumber {
     private readonly __GoUint: GoUint
     private constructor()
     String(): string
@@ -286,7 +330,7 @@ class GoUint extends Native {
 function NewUint(val: NumberLike): GoUint
 function NewUint(val: string, base: number | string): GoUint
 
-class GoUint64 extends Native {
+class GoUint64 extends GoNumber {
     private readonly __GoUint64: GoUint64
     private constructor()
     String(): string
@@ -322,7 +366,7 @@ class GoUint64 extends Native {
 function NewUint64(val: NumberLike): GoUint64
 function NewUint64(val: string, base: number | string): GoUint64
 
-class GoUint32 extends Native {
+class GoUint32 extends GoNumber {
     private readonly __GoUint32: GoUint32
     private constructor()
     String(): string
@@ -358,7 +402,7 @@ class GoUint32 extends Native {
 function NewUint32(val: NumberLike): GoUint32
 function NewUint32(val: string, base: number | string): GoUint32
 
-class GoUint16 extends Native {
+class GoUint16 extends GoNumber {
     private readonly __GoUint16: GoUint16
     private constructor()
     String(): string
@@ -394,7 +438,7 @@ class GoUint16 extends Native {
 function NewUint16(val: NumberLike): GoUint16
 function NewUint16(val: string, base: number | string): GoUint16
 
-class GoUint8 extends Native {
+class GoUint8 extends GoNumber {
     private readonly __GoUint8: GoUint8
     private constructor()
     String(): string
@@ -430,7 +474,7 @@ class GoUint8 extends Native {
 function NewUint8(val: NumberLike): GoUint8
 function NewUint8(val: string, base: number | string): GoUint8
 
-class GoFloat64 extends Native {
+class GoFloat64 extends GoNumber {
     private readonly __GoFloat64: GoFloat64
     private constructor()
     String(): string
@@ -461,7 +505,7 @@ class GoFloat64 extends Native {
 function NewFloat64(val: NumberLike): GoFloat64
 function NewFloat64(val: string): GoFloat64
 
-class GoFloat32 extends Native {
+class GoFloat32 extends GoNumber {
     private readonly __GoFloat32: GoFloat32
     private constructor()
     String(): string

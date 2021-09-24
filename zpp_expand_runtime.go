@@ -2,10 +2,21 @@ package goja
 
 import (
 	"reflect"
+	"runtime"
 
 	"github.com/powerpuffpenguin/goja/loop"
+	"github.com/powerpuffpenguin/goja/unistring"
 )
 
+func (r *Runtime) pp_expand_wrapReflectFunc_pp(i interface{}) Value {
+	origValue := reflect.ValueOf(i)
+	value := origValue
+	for value.Kind() == reflect.Ptr {
+		value = reflect.Indirect(value)
+	}
+	name := unistring.NewFromString(runtime.FuncForPC(reflect.ValueOf(i).Pointer()).Name())
+	return r.newNativeFunc(r.wrapReflectFunc_pp(value), nil, name, nil, value.Type().NumIn())
+}
 func (r *Runtime) wrapReflectFunc_pp(value reflect.Value) func(FunctionCall) Value {
 	return func(call FunctionCall) Value {
 		typ := value.Type()
