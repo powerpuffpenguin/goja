@@ -3,15 +3,21 @@ package goja
 import (
 	"errors"
 	"reflect"
+
+	"github.com/powerpuffpenguin/goja/loop"
 )
 
 func (r *Runtime) pp_expand_init_go() {
+	r.addToGlobal(`NewAsyncController`, r.newNativeFunc(r.builtinGo_NewAsyncController, nil, "NewAsyncController", nil, 0))
+
 	r.addToGlobal(`isGoSlice`, r.newNativeFunc(r.builtinGo_isGoSlice, nil, "isGoSlice", nil, 1))
 	r.addToGlobal(`isGoMap`, r.newNativeFunc(r.builtinGo_isGoMap, nil, "isGoMap", nil, 1))
 	r.addToGlobal(`goLen`, r.newNativeFunc(r.builtinGo_goLen, nil, "goLen", nil, 1))
 	r.addToGlobal(`goHasKey`, r.newNativeFunc(r.builtinGo_goHasKey, nil, "goHasKey", nil, 2))
 }
-
+func (r *Runtime) builtinGo_NewAsyncController(call FunctionCall) Value {
+	return r.ToValue(loop.NewAsyncController(r.Loop()))
+}
 func (r *Runtime) builtinGo_isGoSlice(call FunctionCall) Value {
 	export := call.Argument(0).Export()
 	kind := reflect.ValueOf(export).Kind()

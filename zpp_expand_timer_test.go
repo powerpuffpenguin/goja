@@ -2,6 +2,7 @@ package goja_test
 
 import (
 	"testing"
+	"time"
 
 	"github.com/powerpuffpenguin/goja"
 )
@@ -30,5 +31,33 @@ result
 	obj := result.(*goja.Object)
 	if obj.Get(`val`).ToInteger() != 6 {
 		t.Fatal("result not equal 6")
+	}
+}
+func TestAsyncController(t *testing.T) {
+	vm := goja.New()
+	vm.Set(`print`, print)
+	vm.Set(`after`, func(f func()) {
+		time.AfterFunc(time.Millisecond, f)
+	})
+	result, e := vm.RunScriptAndServe("async_controller.js", `
+var result = {
+	val:0
+};
+var c = NewAsyncController()
+c.Async()
+after(function(){
+	c.Call(function(){
+		result.val++
+		c.Complete()
+	})
+})
+result
+`)
+	if e != nil {
+		t.Fatal(e)
+	}
+	obj := result.(*goja.Object)
+	if obj.Get(`val`).ToInteger() != 1 {
+		t.Fatal("result not equal 1")
 	}
 }

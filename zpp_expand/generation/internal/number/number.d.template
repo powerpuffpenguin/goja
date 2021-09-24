@@ -2,6 +2,14 @@
     private constructor()
     private readonly __Native: Native
 }
+function NewAsyncController(): AsyncController
+class AsyncController extends Native {
+    private constructor()
+    private readonly __AsyncController: AsyncController
+    Async(): boolean
+    Complete(): boolean
+    Call(f: () => void)
+}
 class GoNumber extends Native {
     private constructor()
     private readonly __GoNumber: GoNumber

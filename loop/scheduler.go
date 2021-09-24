@@ -7,6 +7,21 @@ import (
 type Worker interface {
 	Serve()
 }
+type funcWorker struct {
+	f func()
+}
+
+func (f funcWorker) Serve() {
+	if f.f != nil {
+		f.f()
+	}
+}
+func NewWorker(f func()) Worker {
+	return funcWorker{
+		f: f,
+	}
+}
+
 type Scheduler interface {
 	Go(w Worker)
 	Stop()
