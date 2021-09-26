@@ -10,6 +10,10 @@ class AsyncController extends Native {
     Complete(): boolean
     Call(f: () => void)
 }
+class GoUintptr extends Native {
+    private readonly __GoUintptr: GoUintptr
+    private constructor()
+}
 class GoNumber extends Native {
     private constructor()
     private readonly __GoNumber: GoNumber
@@ -17,16 +21,12 @@ class GoNumber extends Native {
 type NumberLike = number | string | null | undefined | GoNumber
 
 interface GoReadChannel<T> extends Native {
-    private readonly __GoReadChannel: GoReadChannel<T>
+    private readonly __iGoReadChannel: GoReadChannel<T>
 }
 interface GoWriteChannel<T> extends Native {
-    private readonly __WriteChannel: GoWriteChannel<T>
+    private readonly __iWriteChannel: GoWriteChannel<T>
 }
-interface GoChannel<T> extends Native implements GoReadChannel<T>, GoWriteChannel<T> {
-    private readonly __GoReadChannel: GoReadChannel<T>
-    private readonly __GoWriteChannel: GoWriteChannel<T>
-    private readonly __GoChannel: GoChannel<T>
-}
+interface GoChannel<T> extends Native implements GoReadChannel<T>, GoWriteChannel<T> {}
 function goRecv<T>(ch: GoReadChannel<T>): [T, boolean]
 function goTryRecv<T>(ch: GoReadChannel<T>): [T, boolean]
 function goSend<T>(ch: GoWriteChannel<T>, x: any)
