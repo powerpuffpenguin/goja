@@ -1,6 +1,11 @@
 {{with $ctx :=  .}}class Native {
     private constructor()
     private readonly __Native: Native
+    /**
+     * get native field only work for struct to get numbers value without loss of precision
+     * @param field 
+     */
+    get(field: string): any
 }
 function NewAsyncController(): AsyncController
 class AsyncController extends Native {

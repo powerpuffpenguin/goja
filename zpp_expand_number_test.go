@@ -30,6 +30,46 @@ func printType(call goja.FunctionCall) goja.Value {
 	return goja.Undefined()
 }
 
+type Number struct {
+	Value int64
+}
+
+func TestExpandNumberField(t *testing.T) {
+	vm := goja.New()
+	vm.Set(`print`, print)
+	vm.Set(`printType`, printType)
+
+	vm.Set(`nativeInt64`, func(x int64) error {
+		if x != math.MaxInt64 {
+			return errors.New(`nativeInt64 err`)
+		}
+		return nil
+	})
+	vm.Set(`make`, func() *Number {
+		return &Number{
+			Value: math.MaxInt64,
+		}
+	})
+	_, e := vm.RunScript("number_get.js", `
+function check(ok,msg){
+	if(!ok){
+		if(msg){
+			throw new Error("not pass -> "+msg)
+		}else{
+			throw new Error("not pass")
+		}
+	}
+}
+var n = make();
+var v = n.get("Value")
+nativeInt64(v)
+n.Value = v.Sub(1)
+check(n.Value == v.Sub(1))
+`)
+	if e != nil {
+		t.Fatal(e)
+	}
+}
 func TestExpandNumber(t *testing.T) {
 	vm := goja.New()
 	vm.Set(`print`, print)

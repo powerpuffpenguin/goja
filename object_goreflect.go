@@ -146,7 +146,7 @@ func (o *objectGoReflect) _getMethod(jsName string) reflect.Value {
 		return o.origValue.Method(idx)
 	}
 
-	return reflect.Value{}
+	return o._zpp_getFieldMethod(jsName)
 }
 
 func (o *objectGoReflect) getAddr(v reflect.Value) reflect.Value {

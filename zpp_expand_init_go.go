@@ -15,6 +15,7 @@ func (r *Runtime) pp_expand_init_go() {
 	r.addToGlobal(`goLen`, r.newNativeFunc(r.builtinGo_goLen, nil, "goLen", nil, 1))
 	r.addToGlobal(`goHasKey`, r.newNativeFunc(r.builtinGo_goHasKey, nil, "goHasKey", nil, 2))
 }
+
 func (r *Runtime) builtinGo_NewAsyncController(call FunctionCall) Value {
 	return r.ToValue(loop.NewAsyncController(r.Loop()))
 }
