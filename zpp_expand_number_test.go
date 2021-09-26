@@ -62,6 +62,7 @@ function check(ok,msg){
 }
 var n = make();
 var v = n.get("Value")
+check(isInt64(v))
 nativeInt64(v)
 n.Value = v.Sub(1)
 check(n.Value == v.Sub(1))

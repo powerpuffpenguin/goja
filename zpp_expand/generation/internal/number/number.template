@@ -165,6 +165,13 @@ func (v {{.Name}}) Min(vals ...{{.Type}}) {{.Type}} {
 	}
 	return result
 }
+func (r *Runtime) builtinGo_is{{.Name}}(call FunctionCall) Value {
+	_, result := call.Argument(0).Export().({{.Name}})
+	if result {
+		return valueTrue
+	}
+	return valueFalse
+}
 func (r *Runtime) builtinGo_New{{.Name}}(call FunctionCall) Value {
 	var (
 		result {{.Type}}
@@ -293,6 +300,13 @@ func (a sort{{.Name}}Array) Len() int           { return len(a) }
 func (a sort{{.Name}}Array) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a sort{{.Name}}Array) Less(i, j int) bool { return a[i] > a[j] }
 
+func (r *Runtime) builtinGo_is{{.Name}}Array(call FunctionCall) Value {
+	_, result := call.Argument(0).Export().({{.Name}}Array)
+	if result {
+		return valueTrue
+	}
+	return valueFalse
+}
 func (r *Runtime) builtinGo_New{{.Name}}Array(call FunctionCall) Value {
 	var (
 		result []{{.Type}}
@@ -329,5 +343,8 @@ func (r *Runtime) pp_expand_init_number() {
 {{end}}{{end}}{{range .}}{{if .Min}}	r.addToGlobal(`Min{{.Name}}`, r.ToValue(New{{.Name}}(math.Min{{.Name}})))
 {{end}}{{end}}	r.addToGlobal(`IntSize`, intToValue(strconv.IntSize)){{range .}}
 	r.addToGlobal(`New{{.Name}}Array`, r.newNativeFunc(r.builtinGo_New{{.Name}}Array, nil, "New{{.Name}}Array", nil, 2)){{end}}
+{{range .}}
+	r.addToGlobal(`is{{.Name}}`, r.newNativeFunc(r.builtinGo_is{{.Name}}, nil, "is{{.Name}}", nil, 1))
+	r.addToGlobal(`is{{.Name}}Array`, r.newNativeFunc(r.builtinGo_is{{.Name}}Array, nil, "is{{.Name}}Array", nil, 1)){{end}}
 }
 {{end}}

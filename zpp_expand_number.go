@@ -191,6 +191,13 @@ func (v Int) Min(vals ...int) int {
 	}
 	return result
 }
+func (r *Runtime) builtinGo_isInt(call FunctionCall) Value {
+	_, result := call.Argument(0).Export().(Int)
+	if result {
+		return valueTrue
+	}
+	return valueFalse
+}
 func (r *Runtime) builtinGo_NewInt(call FunctionCall) Value {
 	var (
 		result int
@@ -402,6 +409,13 @@ func (v Int64) Min(vals ...int64) int64 {
 		}
 	}
 	return result
+}
+func (r *Runtime) builtinGo_isInt64(call FunctionCall) Value {
+	_, result := call.Argument(0).Export().(Int64)
+	if result {
+		return valueTrue
+	}
+	return valueFalse
 }
 func (r *Runtime) builtinGo_NewInt64(call FunctionCall) Value {
 	var (
@@ -615,6 +629,13 @@ func (v Int32) Min(vals ...int32) int32 {
 	}
 	return result
 }
+func (r *Runtime) builtinGo_isInt32(call FunctionCall) Value {
+	_, result := call.Argument(0).Export().(Int32)
+	if result {
+		return valueTrue
+	}
+	return valueFalse
+}
 func (r *Runtime) builtinGo_NewInt32(call FunctionCall) Value {
 	var (
 		result int32
@@ -826,6 +847,13 @@ func (v Int16) Min(vals ...int16) int16 {
 		}
 	}
 	return result
+}
+func (r *Runtime) builtinGo_isInt16(call FunctionCall) Value {
+	_, result := call.Argument(0).Export().(Int16)
+	if result {
+		return valueTrue
+	}
+	return valueFalse
 }
 func (r *Runtime) builtinGo_NewInt16(call FunctionCall) Value {
 	var (
@@ -1039,6 +1067,13 @@ func (v Int8) Min(vals ...int8) int8 {
 	}
 	return result
 }
+func (r *Runtime) builtinGo_isInt8(call FunctionCall) Value {
+	_, result := call.Argument(0).Export().(Int8)
+	if result {
+		return valueTrue
+	}
+	return valueFalse
+}
 func (r *Runtime) builtinGo_NewInt8(call FunctionCall) Value {
 	var (
 		result int8
@@ -1240,6 +1275,13 @@ func (v Uint) Min(vals ...uint) uint {
 		}
 	}
 	return result
+}
+func (r *Runtime) builtinGo_isUint(call FunctionCall) Value {
+	_, result := call.Argument(0).Export().(Uint)
+	if result {
+		return valueTrue
+	}
+	return valueFalse
 }
 func (r *Runtime) builtinGo_NewUint(call FunctionCall) Value {
 	var (
@@ -1443,6 +1485,13 @@ func (v Uint64) Min(vals ...uint64) uint64 {
 	}
 	return result
 }
+func (r *Runtime) builtinGo_isUint64(call FunctionCall) Value {
+	_, result := call.Argument(0).Export().(Uint64)
+	if result {
+		return valueTrue
+	}
+	return valueFalse
+}
 func (r *Runtime) builtinGo_NewUint64(call FunctionCall) Value {
 	var (
 		result uint64
@@ -1644,6 +1693,13 @@ func (v Uint32) Min(vals ...uint32) uint32 {
 		}
 	}
 	return result
+}
+func (r *Runtime) builtinGo_isUint32(call FunctionCall) Value {
+	_, result := call.Argument(0).Export().(Uint32)
+	if result {
+		return valueTrue
+	}
+	return valueFalse
 }
 func (r *Runtime) builtinGo_NewUint32(call FunctionCall) Value {
 	var (
@@ -1847,6 +1903,13 @@ func (v Uint16) Min(vals ...uint16) uint16 {
 	}
 	return result
 }
+func (r *Runtime) builtinGo_isUint16(call FunctionCall) Value {
+	_, result := call.Argument(0).Export().(Uint16)
+	if result {
+		return valueTrue
+	}
+	return valueFalse
+}
 func (r *Runtime) builtinGo_NewUint16(call FunctionCall) Value {
 	var (
 		result uint16
@@ -2049,6 +2112,13 @@ func (v Uint8) Min(vals ...uint8) uint8 {
 	}
 	return result
 }
+func (r *Runtime) builtinGo_isUint8(call FunctionCall) Value {
+	_, result := call.Argument(0).Export().(Uint8)
+	if result {
+		return valueTrue
+	}
+	return valueFalse
+}
 func (r *Runtime) builtinGo_NewUint8(call FunctionCall) Value {
 	var (
 		result uint8
@@ -2204,6 +2274,13 @@ func (v Float64) Min(vals ...float64) float64 {
 	}
 	return result
 }
+func (r *Runtime) builtinGo_isFloat64(call FunctionCall) Value {
+	_, result := call.Argument(0).Export().(Float64)
+	if result {
+		return valueTrue
+	}
+	return valueFalse
+}
 func (r *Runtime) builtinGo_NewFloat64(call FunctionCall) Value {
 	var (
 		result float64
@@ -2352,6 +2429,13 @@ func (v Float32) Min(vals ...float32) float32 {
 	}
 	return result
 }
+func (r *Runtime) builtinGo_isFloat32(call FunctionCall) Value {
+	_, result := call.Argument(0).Export().(Float32)
+	if result {
+		return valueTrue
+	}
+	return valueFalse
+}
 func (r *Runtime) builtinGo_NewFloat32(call FunctionCall) Value {
 	var (
 		result float32
@@ -2468,6 +2552,13 @@ func (a sortIntArray) Len() int           { return len(a) }
 func (a sortIntArray) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a sortIntArray) Less(i, j int) bool { return a[i] > a[j] }
 
+func (r *Runtime) builtinGo_isIntArray(call FunctionCall) Value {
+	_, result := call.Argument(0).Export().(IntArray)
+	if result {
+		return valueTrue
+	}
+	return valueFalse
+}
 func (r *Runtime) builtinGo_NewIntArray(call FunctionCall) Value {
 	var (
 		result []int
@@ -2591,6 +2682,13 @@ func (a sortInt64Array) Len() int           { return len(a) }
 func (a sortInt64Array) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a sortInt64Array) Less(i, j int) bool { return a[i] > a[j] }
 
+func (r *Runtime) builtinGo_isInt64Array(call FunctionCall) Value {
+	_, result := call.Argument(0).Export().(Int64Array)
+	if result {
+		return valueTrue
+	}
+	return valueFalse
+}
 func (r *Runtime) builtinGo_NewInt64Array(call FunctionCall) Value {
 	var (
 		result []int64
@@ -2714,6 +2812,13 @@ func (a sortInt32Array) Len() int           { return len(a) }
 func (a sortInt32Array) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a sortInt32Array) Less(i, j int) bool { return a[i] > a[j] }
 
+func (r *Runtime) builtinGo_isInt32Array(call FunctionCall) Value {
+	_, result := call.Argument(0).Export().(Int32Array)
+	if result {
+		return valueTrue
+	}
+	return valueFalse
+}
 func (r *Runtime) builtinGo_NewInt32Array(call FunctionCall) Value {
 	var (
 		result []int32
@@ -2837,6 +2942,13 @@ func (a sortInt16Array) Len() int           { return len(a) }
 func (a sortInt16Array) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a sortInt16Array) Less(i, j int) bool { return a[i] > a[j] }
 
+func (r *Runtime) builtinGo_isInt16Array(call FunctionCall) Value {
+	_, result := call.Argument(0).Export().(Int16Array)
+	if result {
+		return valueTrue
+	}
+	return valueFalse
+}
 func (r *Runtime) builtinGo_NewInt16Array(call FunctionCall) Value {
 	var (
 		result []int16
@@ -2960,6 +3072,13 @@ func (a sortInt8Array) Len() int           { return len(a) }
 func (a sortInt8Array) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a sortInt8Array) Less(i, j int) bool { return a[i] > a[j] }
 
+func (r *Runtime) builtinGo_isInt8Array(call FunctionCall) Value {
+	_, result := call.Argument(0).Export().(Int8Array)
+	if result {
+		return valueTrue
+	}
+	return valueFalse
+}
 func (r *Runtime) builtinGo_NewInt8Array(call FunctionCall) Value {
 	var (
 		result []int8
@@ -3083,6 +3202,13 @@ func (a sortUintArray) Len() int           { return len(a) }
 func (a sortUintArray) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a sortUintArray) Less(i, j int) bool { return a[i] > a[j] }
 
+func (r *Runtime) builtinGo_isUintArray(call FunctionCall) Value {
+	_, result := call.Argument(0).Export().(UintArray)
+	if result {
+		return valueTrue
+	}
+	return valueFalse
+}
 func (r *Runtime) builtinGo_NewUintArray(call FunctionCall) Value {
 	var (
 		result []uint
@@ -3206,6 +3332,13 @@ func (a sortUint64Array) Len() int           { return len(a) }
 func (a sortUint64Array) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a sortUint64Array) Less(i, j int) bool { return a[i] > a[j] }
 
+func (r *Runtime) builtinGo_isUint64Array(call FunctionCall) Value {
+	_, result := call.Argument(0).Export().(Uint64Array)
+	if result {
+		return valueTrue
+	}
+	return valueFalse
+}
 func (r *Runtime) builtinGo_NewUint64Array(call FunctionCall) Value {
 	var (
 		result []uint64
@@ -3329,6 +3462,13 @@ func (a sortUint32Array) Len() int           { return len(a) }
 func (a sortUint32Array) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a sortUint32Array) Less(i, j int) bool { return a[i] > a[j] }
 
+func (r *Runtime) builtinGo_isUint32Array(call FunctionCall) Value {
+	_, result := call.Argument(0).Export().(Uint32Array)
+	if result {
+		return valueTrue
+	}
+	return valueFalse
+}
 func (r *Runtime) builtinGo_NewUint32Array(call FunctionCall) Value {
 	var (
 		result []uint32
@@ -3452,6 +3592,13 @@ func (a sortUint16Array) Len() int           { return len(a) }
 func (a sortUint16Array) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a sortUint16Array) Less(i, j int) bool { return a[i] > a[j] }
 
+func (r *Runtime) builtinGo_isUint16Array(call FunctionCall) Value {
+	_, result := call.Argument(0).Export().(Uint16Array)
+	if result {
+		return valueTrue
+	}
+	return valueFalse
+}
 func (r *Runtime) builtinGo_NewUint16Array(call FunctionCall) Value {
 	var (
 		result []uint16
@@ -3575,6 +3722,13 @@ func (a sortUint8Array) Len() int           { return len(a) }
 func (a sortUint8Array) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a sortUint8Array) Less(i, j int) bool { return a[i] > a[j] }
 
+func (r *Runtime) builtinGo_isUint8Array(call FunctionCall) Value {
+	_, result := call.Argument(0).Export().(Uint8Array)
+	if result {
+		return valueTrue
+	}
+	return valueFalse
+}
 func (r *Runtime) builtinGo_NewUint8Array(call FunctionCall) Value {
 	var (
 		result []uint8
@@ -3698,6 +3852,13 @@ func (a sortFloat64Array) Len() int           { return len(a) }
 func (a sortFloat64Array) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a sortFloat64Array) Less(i, j int) bool { return a[i] > a[j] }
 
+func (r *Runtime) builtinGo_isFloat64Array(call FunctionCall) Value {
+	_, result := call.Argument(0).Export().(Float64Array)
+	if result {
+		return valueTrue
+	}
+	return valueFalse
+}
 func (r *Runtime) builtinGo_NewFloat64Array(call FunctionCall) Value {
 	var (
 		result []float64
@@ -3821,6 +3982,13 @@ func (a sortFloat32Array) Len() int           { return len(a) }
 func (a sortFloat32Array) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a sortFloat32Array) Less(i, j int) bool { return a[i] > a[j] }
 
+func (r *Runtime) builtinGo_isFloat32Array(call FunctionCall) Value {
+	_, result := call.Argument(0).Export().(Float32Array)
+	if result {
+		return valueTrue
+	}
+	return valueFalse
+}
 func (r *Runtime) builtinGo_NewFloat32Array(call FunctionCall) Value {
 	var (
 		result []float32
@@ -3891,4 +4059,29 @@ func (r *Runtime) pp_expand_init_number() {
 	r.addToGlobal(`NewUint8Array`, r.newNativeFunc(r.builtinGo_NewUint8Array, nil, "NewUint8Array", nil, 2))
 	r.addToGlobal(`NewFloat64Array`, r.newNativeFunc(r.builtinGo_NewFloat64Array, nil, "NewFloat64Array", nil, 2))
 	r.addToGlobal(`NewFloat32Array`, r.newNativeFunc(r.builtinGo_NewFloat32Array, nil, "NewFloat32Array", nil, 2))
+
+	r.addToGlobal(`isInt`, r.newNativeFunc(r.builtinGo_isInt, nil, "isInt", nil, 1))
+	r.addToGlobal(`isIntArray`, r.newNativeFunc(r.builtinGo_isIntArray, nil, "isIntArray", nil, 1))
+	r.addToGlobal(`isInt64`, r.newNativeFunc(r.builtinGo_isInt64, nil, "isInt64", nil, 1))
+	r.addToGlobal(`isInt64Array`, r.newNativeFunc(r.builtinGo_isInt64Array, nil, "isInt64Array", nil, 1))
+	r.addToGlobal(`isInt32`, r.newNativeFunc(r.builtinGo_isInt32, nil, "isInt32", nil, 1))
+	r.addToGlobal(`isInt32Array`, r.newNativeFunc(r.builtinGo_isInt32Array, nil, "isInt32Array", nil, 1))
+	r.addToGlobal(`isInt16`, r.newNativeFunc(r.builtinGo_isInt16, nil, "isInt16", nil, 1))
+	r.addToGlobal(`isInt16Array`, r.newNativeFunc(r.builtinGo_isInt16Array, nil, "isInt16Array", nil, 1))
+	r.addToGlobal(`isInt8`, r.newNativeFunc(r.builtinGo_isInt8, nil, "isInt8", nil, 1))
+	r.addToGlobal(`isInt8Array`, r.newNativeFunc(r.builtinGo_isInt8Array, nil, "isInt8Array", nil, 1))
+	r.addToGlobal(`isUint`, r.newNativeFunc(r.builtinGo_isUint, nil, "isUint", nil, 1))
+	r.addToGlobal(`isUintArray`, r.newNativeFunc(r.builtinGo_isUintArray, nil, "isUintArray", nil, 1))
+	r.addToGlobal(`isUint64`, r.newNativeFunc(r.builtinGo_isUint64, nil, "isUint64", nil, 1))
+	r.addToGlobal(`isUint64Array`, r.newNativeFunc(r.builtinGo_isUint64Array, nil, "isUint64Array", nil, 1))
+	r.addToGlobal(`isUint32`, r.newNativeFunc(r.builtinGo_isUint32, nil, "isUint32", nil, 1))
+	r.addToGlobal(`isUint32Array`, r.newNativeFunc(r.builtinGo_isUint32Array, nil, "isUint32Array", nil, 1))
+	r.addToGlobal(`isUint16`, r.newNativeFunc(r.builtinGo_isUint16, nil, "isUint16", nil, 1))
+	r.addToGlobal(`isUint16Array`, r.newNativeFunc(r.builtinGo_isUint16Array, nil, "isUint16Array", nil, 1))
+	r.addToGlobal(`isUint8`, r.newNativeFunc(r.builtinGo_isUint8, nil, "isUint8", nil, 1))
+	r.addToGlobal(`isUint8Array`, r.newNativeFunc(r.builtinGo_isUint8Array, nil, "isUint8Array", nil, 1))
+	r.addToGlobal(`isFloat64`, r.newNativeFunc(r.builtinGo_isFloat64, nil, "isFloat64", nil, 1))
+	r.addToGlobal(`isFloat64Array`, r.newNativeFunc(r.builtinGo_isFloat64Array, nil, "isFloat64Array", nil, 1))
+	r.addToGlobal(`isFloat32`, r.newNativeFunc(r.builtinGo_isFloat32, nil, "isFloat32", nil, 1))
+	r.addToGlobal(`isFloat32Array`, r.newNativeFunc(r.builtinGo_isFloat32Array, nil, "isFloat32Array", nil, 1))
 }

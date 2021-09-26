@@ -132,6 +132,7 @@ class Go{{.Name}} extends GoNumber {
 }
 function New{{.Name}}(val: NumberLike): Go{{.Name}}
 function New{{.Name}}(val: string{{if .Integer}}, base: number | string{{end}}): Go{{.Name}}
+function is{{.Name}}(v: any): boolean
 {{end}}{{range.}}
 class Go{{.Name}}Array extends GoSlice {
     private readonly __Go{{.Name}}Array: Go{{.Name}}Array
@@ -153,4 +154,5 @@ class Go{{.Name}}Array extends GoSlice {
 }
 function New{{.Name}}Array(): Go{{.Name}}Array
 function New{{.Name}}Array(len: NumberLike): Go{{.Name}}Array
-function New{{.Name}}Array(len: NumberLike, cap: NumberLike): Go{{.Name}}Array{{end}}{{end}}
+function New{{.Name}}Array(len: NumberLike, cap: NumberLike): Go{{.Name}}Array
+function is{{.Name}}Array(v: any): boolean{{end}}{{end}}
