@@ -73,6 +73,8 @@ class GoRune extends Native {
 class GoErrorNative extends Native {
     private readonly __GoErrorNative: GoErrorNative
     private constructor()
+    Error(): string
+    Error(scheduler: Scheduler): Promise<string>
 }
 class GoError extends Native {
     private readonly __GoError: GoError
