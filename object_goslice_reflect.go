@@ -49,7 +49,7 @@ func (o *objectGoSliceReflect) _getIdx(idx int) Value {
 	if (v.Kind() == reflect.Ptr || v.Kind() == reflect.Interface) && v.IsNil() {
 		return _null
 	}
-	return o.val.runtime.ToValue(v.Interface())
+	return o._getIdx_zpp(v)
 }
 
 func (o *objectGoSliceReflect) getIdx(idx valueInt, receiver Value) Value {

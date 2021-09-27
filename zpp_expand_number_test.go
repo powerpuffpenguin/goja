@@ -34,6 +34,36 @@ type Number struct {
 	Value int64
 }
 
+func TestExpandAA(t *testing.T) {
+	vm := goja.New()
+	vm.Set(`print`, print)
+	vm.Set(`printType`, printType)
+
+	vm.Set(`make`, func() [][]byte {
+		x := make([][]byte, 5)
+		for i := range x {
+			x[i] = make([]byte, i)
+		}
+		return x
+	})
+	_, e := vm.RunScript("number_aa.js", `
+function check(ok,msg){
+	if(!ok){
+		if(msg){
+			throw new Error("not pass -> "+msg)
+		}else{
+			throw new Error("not pass")
+		}
+	}
+}
+var m=make()
+check(isUint8Array(m[0]))
+check(isUint8Array(m[1]))
+`)
+	if e != nil {
+		t.Fatal(e)
+	}
+}
 func TestExpandNumberField(t *testing.T) {
 	vm := goja.New()
 	vm.Set(`print`, print)
