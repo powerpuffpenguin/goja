@@ -69,7 +69,7 @@ func (impl *promiseImpl) register(executor Callable) {
 		runtime.newNativeFunc(impl.reject, nil, "reject", nil, 1),
 	)
 	if e != nil {
-		panic(runtime.NewGoError(e))
+		impl.rejectHandle(runtime.NewGoError(e))
 	}
 }
 func (impl *promiseImpl) String() string {

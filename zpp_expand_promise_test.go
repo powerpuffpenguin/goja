@@ -46,6 +46,11 @@ Promise.reject(123).then(() => {
 }, (e) => {
 	check(false,'unexpected catch')
 })
+Promise.resolve(123).then(() => {
+    throw 123
+}).catch((e)=>{
+	print("err->",e)
+})
 
 var result = {
 	val:0
