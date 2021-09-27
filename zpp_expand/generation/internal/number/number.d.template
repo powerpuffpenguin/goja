@@ -157,3 +157,4 @@ function is{{.Name}}Array(v: any): boolean{{end}}{{end}}
 
 type GoRune = GoInt32
 type GoBytes = GoUint8Array
+type GoByte = GoUint8

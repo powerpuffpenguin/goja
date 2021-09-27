@@ -66,13 +66,11 @@ class Scheduler extends Native {
     private constructor() { }
 }
 const DefaultScheduler: Scheduler
-class GoRune extends Native {
-    private readonly __GoRune: GoRune
-    private constructor()
-}
 class GoErrorNative extends Native {
     private readonly __GoErrorNative: GoErrorNative
     private constructor()
+    Error(): string
+    Error(scheduler: Scheduler): Promise<string>
 }
 class GoError extends Native {
     private readonly __GoError: GoError
@@ -825,3 +823,7 @@ function NewFloat32Array(): GoFloat32Array
 function NewFloat32Array(len: NumberLike): GoFloat32Array
 function NewFloat32Array(len: NumberLike, cap: NumberLike): GoFloat32Array
 function isFloat32Array(v: any): boolean
+
+type GoRune = GoInt32
+type GoBytes = GoUint8Array
+type GoByte = GoUint8
