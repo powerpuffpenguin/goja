@@ -18,6 +18,44 @@ func (s promiseState) String() string {
 	return `pending`
 }
 
+// Callable represents a JavaScript function that can be called from Go.
+type JSCallable func(this Value, args ...Value) (Value, Value)
+
+// AssertFunction checks if the Value is a function and returns a Callable.
+func AssertJSFunction(v Value) (JSCallable, bool) {
+	if obj, ok := v.(*Object); ok {
+		if f, ok := obj.self.assertCallable(); ok {
+			return func(this Value, args ...Value) (ret, err Value) {
+				defer func() {
+					if x := recover(); x != nil {
+						if ex, ok := x.(*uncatchableException); ok {
+							err = obj.runtime.NewGoError(ex.err)
+						} else {
+							panic(x)
+						}
+					}
+				}()
+				ex := obj.runtime.vm.try(func() {
+					ret = f(FunctionCall{
+						This:      this,
+						Arguments: args,
+					})
+				})
+				if ex != nil {
+					err = ex.val
+				}
+				vm := obj.runtime.vm
+				vm.clearStack()
+				if len(vm.callStack) == 0 {
+					obj.runtime.leave()
+				}
+				return
+			}, true
+		}
+	}
+	return nil, false
+}
+
 type promiseImpl struct {
 	runtime   *Runtime
 	ctor      *Object
@@ -42,7 +80,7 @@ func newPromiseImpl(runtime *Runtime, ctor *Object, self *Object) *promiseImpl {
 		err:     _undefined,
 	}
 }
-func (impl *promiseImpl) register(executor Callable) {
+func (impl *promiseImpl) register(executor JSCallable) {
 	self := impl.self
 	runtime := impl.runtime
 	e := self.Set(`toString`, impl.toString)
@@ -61,15 +99,13 @@ func (impl *promiseImpl) register(executor Callable) {
 	if e != nil {
 		panic(runtime.NewGoError(e))
 	}
-	if e != nil {
-		panic(runtime.NewGoError(e))
-	}
-	_, e = executor(_undefined,
+
+	_, err := executor(_undefined,
 		runtime.newNativeFunc(impl.resolve, nil, "resolve", nil, 1),
 		runtime.newNativeFunc(impl.reject, nil, "reject", nil, 1),
 	)
-	if e != nil {
-		impl.rejectHandle(runtime.NewGoError(e))
+	if err != nil {
+		impl.rejectHandle(err)
 	}
 }
 func (impl *promiseImpl) String() string {
@@ -118,8 +154,8 @@ func (impl *promiseImpl) rejectHandle(v Value) {
 	impl.completed = true
 }
 func (impl *promiseImpl) then(call FunctionCall) Value {
-	onFulfilled, _ := AssertFunction(call.Argument(0))
-	onRejected, _ := AssertFunction(call.Argument(1))
+	onFulfilled, _ := AssertJSFunction(call.Argument(0))
+	onRejected, _ := AssertJSFunction(call.Argument(1))
 	executor := newPromiseExecutor(impl.runtime, impl.ctor, onFulfilled, onRejected, nil)
 	callback := promiseCallback{
 		onFulfilled: executor.resolve,
@@ -137,7 +173,7 @@ func (impl *promiseImpl) then(call FunctionCall) Value {
 	return executor.result
 }
 func (impl *promiseImpl) catch(call FunctionCall) Value {
-	onRejected, _ := AssertFunction(call.Argument(0))
+	onRejected, _ := AssertJSFunction(call.Argument(0))
 	executor := newPromiseExecutor(impl.runtime, impl.ctor, nil, onRejected, nil)
 	callback := promiseCallback{
 		onFulfilled: executor.resolve,
@@ -155,7 +191,7 @@ func (impl *promiseImpl) catch(call FunctionCall) Value {
 	return executor.result
 }
 func (impl *promiseImpl) finally(call FunctionCall) Value {
-	onFinally, _ := AssertFunction(call.Argument(0))
+	onFinally, _ := AssertJSFunction(call.Argument(0))
 	executor := newPromiseExecutor(impl.runtime, impl.ctor, nil, nil, onFinally)
 	callback := promiseCallback{
 		onFulfilled: executor.resolve,
@@ -175,7 +211,7 @@ func (impl *promiseImpl) finally(call FunctionCall) Value {
 
 type promiseExecutor struct {
 	runtime                                  *Runtime
-	onFulfilled, onRejected, onFinally       Callable
+	onFulfilled, onRejected, onFinally       JSCallable
 	argResolve, argReject                    Value
 	selfResolve, selfReject, resolve, reject Callable
 	result                                   Value
@@ -190,20 +226,19 @@ func (p *promiseExecutor) handle(call FunctionCall) Value {
 }
 func (p *promiseExecutor) resolveHandle(call FunctionCall) Value {
 	var (
-		runtime       = p.runtime
-		result  Value = _undefined
-		e       error
+		result Value = _undefined
+		e      Value
 	)
 	if p.onFinally != nil {
 		result, e = p.onFinally(_undefined)
 		if e != nil {
-			p.selfReject(_undefined, runtime.NewGoError(e))
+			p.selfReject(_undefined, e)
 			return _undefined
 		}
 	} else if p.onFulfilled != nil {
 		result, e = p.onFulfilled(_undefined, call.Argument(0))
 		if e != nil {
-			p.selfReject(_undefined, runtime.NewGoError(e))
+			p.selfReject(_undefined, e)
 			return _undefined
 		}
 	}
@@ -212,20 +247,19 @@ func (p *promiseExecutor) resolveHandle(call FunctionCall) Value {
 }
 func (p *promiseExecutor) rejectHandle(call FunctionCall) Value {
 	var (
-		runtime       = p.runtime
-		result  Value = _undefined
-		e       error
+		result Value = _undefined
+		e      Value
 	)
 	if p.onFinally != nil {
 		result, e = p.onFinally(_undefined)
 		if e != nil {
-			p.selfReject(_undefined, runtime.NewGoError(e))
+			p.selfReject(_undefined, e)
 			return _undefined
 		}
 	} else if p.onRejected != nil {
 		result, e = p.onRejected(_undefined, call.Argument(0))
 		if e != nil {
-			p.selfReject(_undefined, runtime.NewGoError(e))
+			p.selfReject(_undefined, e)
 			return _undefined
 		}
 	} else {
@@ -237,13 +271,13 @@ func (p *promiseExecutor) rejectHandle(call FunctionCall) Value {
 }
 func (p *promiseExecutor) resolveResult(val Value) {
 	if obj, ok := val.(*Object); ok {
-		if callable, ok := AssertFunction(obj.Get(`then`)); ok {
+		if callable, ok := AssertJSFunction(obj.Get(`then`)); ok {
 			_, e := callable(_undefined,
 				p.argResolve,
 				p.argReject,
 			)
 			if e != nil {
-				p.selfReject(_undefined, p.runtime.NewGoError(e))
+				p.selfReject(_undefined, e)
 			}
 			return
 		}
@@ -251,7 +285,7 @@ func (p *promiseExecutor) resolveResult(val Value) {
 	p.selfResolve(_undefined, val)
 }
 func newPromiseExecutor(runtime *Runtime, ctor *Object,
-	onFulfilled, onRejected, onFinally Callable,
+	onFulfilled, onRejected, onFinally JSCallable,
 ) (executor *promiseExecutor) {
 	executor = &promiseExecutor{
 		runtime:     runtime,
@@ -269,7 +303,7 @@ func newPromiseExecutor(runtime *Runtime, ctor *Object,
 
 func (f *factoryPromise) constructor(call ConstructorCall) *Object {
 	runtime := f.runtime
-	executor, ok := AssertFunction(call.Argument(0))
+	executor, ok := AssertJSFunction(call.Argument(0))
 	if !ok {
 		panic(runtime.NewTypeError(`Promise executor is not a function`))
 	}

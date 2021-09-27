@@ -6,6 +6,37 @@ import (
 	"github.com/powerpuffpenguin/goja"
 )
 
+func TestExpandPromiseErr(t *testing.T) {
+	vm := goja.New()
+	vm.Set(`print`, print)
+	vm.Set(`err`, func(args ...interface{}) {
+		t.Fatal(args...)
+	})
+	_, e := vm.RunScriptAndServe("promise.js", `
+function check(ok,msg){
+	if(!ok){
+		if(msg){
+			err("not pass -> "+msg)
+		}else{
+			err("not pass")
+		}
+	}
+}
+new Promise((resolve, reject) => {
+    throw 123
+}).catch((e) => {
+    check(typeof e==="number")
+})
+Promise.resolve(123).then((v)=>{
+	throw v.toString()
+}).catch((e) => {
+    check(typeof e==="string")
+})
+`)
+	if e != nil {
+		t.Fatal(e)
+	}
+}
 func TestExpandPromise(t *testing.T) {
 	vm := goja.New()
 	vm.Set(`print`, print)
@@ -45,11 +76,6 @@ Promise.reject(123).then(() => {
 	check(v==456,'then not equal')
 }, (e) => {
 	check(false,'unexpected catch')
-})
-Promise.resolve(123).then(() => {
-    throw 123
-}).catch((e)=>{
-	print("err->",e)
 })
 
 var result = {
