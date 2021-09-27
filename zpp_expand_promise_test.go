@@ -16,16 +16,37 @@ func TestExpandPromise(t *testing.T) {
 		}
 		return result
 	})
+	vm.Set(`err`, func(args ...interface{}) {
+		t.Fatal(args...)
+	})
 	result, e := vm.RunScriptAndServe("promise.js", `
 function check(ok,msg){
 	if(!ok){
 		if(msg){
-			throw new Error("not pass -> "+msg)
+			err("not pass -> "+msg)
 		}else{
-			throw new Error("not pass")
+			err("not pass")
 		}
 	}
 }
+Promise.reject(123).then(() => {
+    check(false,'unexpected then')
+}).then((v) => {
+	check(false,'err then')
+}, (e) => {
+	 check(e==123,'catch not equal')
+})
+Promise.reject(123).then(() => {
+    check(false,'unexpected then')
+},(e)=>{
+	check(e==123,'catch not equal')
+	return 456
+}).then((v) => {
+	check(v==456,'then not equal')
+}, (e) => {
+	check(false,'unexpected catch')
+})
+
 var result = {
 	val:0
 };

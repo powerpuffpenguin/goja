@@ -228,6 +228,9 @@ func (p *promiseExecutor) rejectHandle(call FunctionCall) Value {
 			p.selfReject(_undefined, runtime.NewGoError(e))
 			return _undefined
 		}
+	} else {
+		p.selfReject(_undefined, call.Argument(0))
+		return _undefined
 	}
 	p.resolveResult(result)
 	return _undefined
