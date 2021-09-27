@@ -283,7 +283,7 @@ func (o *objectGoReflect) hasOwnPropertyStr(name unistring.String) bool {
 	return o._has(name.String())
 }
 
-func (o *objectGoReflect) _toNumber_moveto_zpp() Value {
+func (o *objectGoReflect) _toNumber() Value {
 	switch o.value.Kind() {
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
 		return intToValue(o.value.Int())
