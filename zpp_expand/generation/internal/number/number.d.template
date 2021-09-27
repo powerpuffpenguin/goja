@@ -66,10 +66,6 @@ class Scheduler extends Native {
     private constructor() { }
 }
 const DefaultScheduler: Scheduler
-class GoRune extends Native {
-    private readonly __GoRune: GoRune
-    private constructor()
-}
 class GoErrorNative extends Native {
     private readonly __GoErrorNative: GoErrorNative
     private constructor()
@@ -158,3 +154,6 @@ function New{{.Name}}Array(): Go{{.Name}}Array
 function New{{.Name}}Array(len: NumberLike): Go{{.Name}}Array
 function New{{.Name}}Array(len: NumberLike, cap: NumberLike): Go{{.Name}}Array
 function is{{.Name}}Array(v: any): boolean{{end}}{{end}}
+
+type GoRune = GoInt32
+type GoBytes = GoUint8Array
