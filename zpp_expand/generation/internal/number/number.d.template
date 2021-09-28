@@ -130,7 +130,7 @@ class Go{{.Name}} extends GoNumber {
 }
 function New{{.Name}}(val: NumberLike): Go{{.Name}}
 function New{{.Name}}(val: string{{if .Integer}}, base: number | string{{end}}): Go{{.Name}}
-function is{{.Name}}(v: any): boolean
+function is{{.Name}}(v: any): v is {{.Name}}
 {{end}}{{range.}}
 class Go{{.Name}}Array extends GoSlice {
     private readonly __Go{{.Name}}Array: Go{{.Name}}Array
@@ -153,7 +153,7 @@ class Go{{.Name}}Array extends GoSlice {
 function New{{.Name}}Array(): Go{{.Name}}Array
 function New{{.Name}}Array(len: NumberLike): Go{{.Name}}Array
 function New{{.Name}}Array(len: NumberLike, cap: NumberLike): Go{{.Name}}Array
-function is{{.Name}}Array(v: any): boolean{{end}}{{end}}
+function is{{.Name}}Array(v: any): v is {{.Name}}Array{{end}}{{end}}
 
 type GoRune = GoInt32
 type GoBytes = GoUint8Array

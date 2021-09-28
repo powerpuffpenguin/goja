@@ -152,7 +152,7 @@ class GoInt extends GoNumber {
 }
 function NewInt(val: NumberLike): GoInt
 function NewInt(val: string, base: number | string): GoInt
-function isInt(v: any): boolean
+function isInt(v: any): v is Int
 
 class GoInt64 extends GoNumber {
     private readonly __GoInt64: GoInt64
@@ -191,7 +191,7 @@ class GoInt64 extends GoNumber {
 }
 function NewInt64(val: NumberLike): GoInt64
 function NewInt64(val: string, base: number | string): GoInt64
-function isInt64(v: any): boolean
+function isInt64(v: any): v is Int64
 
 class GoInt32 extends GoNumber {
     private readonly __GoInt32: GoInt32
@@ -230,7 +230,7 @@ class GoInt32 extends GoNumber {
 }
 function NewInt32(val: NumberLike): GoInt32
 function NewInt32(val: string, base: number | string): GoInt32
-function isInt32(v: any): boolean
+function isInt32(v: any): v is Int32
 
 class GoInt16 extends GoNumber {
     private readonly __GoInt16: GoInt16
@@ -269,7 +269,7 @@ class GoInt16 extends GoNumber {
 }
 function NewInt16(val: NumberLike): GoInt16
 function NewInt16(val: string, base: number | string): GoInt16
-function isInt16(v: any): boolean
+function isInt16(v: any): v is Int16
 
 class GoInt8 extends GoNumber {
     private readonly __GoInt8: GoInt8
@@ -308,7 +308,7 @@ class GoInt8 extends GoNumber {
 }
 function NewInt8(val: NumberLike): GoInt8
 function NewInt8(val: string, base: number | string): GoInt8
-function isInt8(v: any): boolean
+function isInt8(v: any): v is Int8
 
 class GoUint extends GoNumber {
     private readonly __GoUint: GoUint
@@ -345,7 +345,7 @@ class GoUint extends GoNumber {
 }
 function NewUint(val: NumberLike): GoUint
 function NewUint(val: string, base: number | string): GoUint
-function isUint(v: any): boolean
+function isUint(v: any): v is Uint
 
 class GoUint64 extends GoNumber {
     private readonly __GoUint64: GoUint64
@@ -382,7 +382,7 @@ class GoUint64 extends GoNumber {
 }
 function NewUint64(val: NumberLike): GoUint64
 function NewUint64(val: string, base: number | string): GoUint64
-function isUint64(v: any): boolean
+function isUint64(v: any): v is Uint64
 
 class GoUint32 extends GoNumber {
     private readonly __GoUint32: GoUint32
@@ -419,7 +419,7 @@ class GoUint32 extends GoNumber {
 }
 function NewUint32(val: NumberLike): GoUint32
 function NewUint32(val: string, base: number | string): GoUint32
-function isUint32(v: any): boolean
+function isUint32(v: any): v is Uint32
 
 class GoUint16 extends GoNumber {
     private readonly __GoUint16: GoUint16
@@ -456,7 +456,7 @@ class GoUint16 extends GoNumber {
 }
 function NewUint16(val: NumberLike): GoUint16
 function NewUint16(val: string, base: number | string): GoUint16
-function isUint16(v: any): boolean
+function isUint16(v: any): v is Uint16
 
 class GoUint8 extends GoNumber {
     private readonly __GoUint8: GoUint8
@@ -493,7 +493,7 @@ class GoUint8 extends GoNumber {
 }
 function NewUint8(val: NumberLike): GoUint8
 function NewUint8(val: string, base: number | string): GoUint8
-function isUint8(v: any): boolean
+function isUint8(v: any): v is Uint8
 
 class GoFloat64 extends GoNumber {
     private readonly __GoFloat64: GoFloat64
@@ -525,7 +525,7 @@ class GoFloat64 extends GoNumber {
 }
 function NewFloat64(val: NumberLike): GoFloat64
 function NewFloat64(val: string): GoFloat64
-function isFloat64(v: any): boolean
+function isFloat64(v: any): v is Float64
 
 class GoFloat32 extends GoNumber {
     private readonly __GoFloat32: GoFloat32
@@ -557,7 +557,7 @@ class GoFloat32 extends GoNumber {
 }
 function NewFloat32(val: NumberLike): GoFloat32
 function NewFloat32(val: string): GoFloat32
-function isFloat32(v: any): boolean
+function isFloat32(v: any): v is Float32
 
 class GoIntArray extends GoSlice {
     private readonly __GoIntArray: GoIntArray
@@ -580,7 +580,7 @@ class GoIntArray extends GoSlice {
 function NewIntArray(): GoIntArray
 function NewIntArray(len: NumberLike): GoIntArray
 function NewIntArray(len: NumberLike, cap: NumberLike): GoIntArray
-function isIntArray(v: any): boolean
+function isIntArray(v: any): v is IntArray
 class GoInt64Array extends GoSlice {
     private readonly __GoInt64Array: GoInt64Array
     private constructor()
@@ -602,7 +602,7 @@ class GoInt64Array extends GoSlice {
 function NewInt64Array(): GoInt64Array
 function NewInt64Array(len: NumberLike): GoInt64Array
 function NewInt64Array(len: NumberLike, cap: NumberLike): GoInt64Array
-function isInt64Array(v: any): boolean
+function isInt64Array(v: any): v is Int64Array
 class GoInt32Array extends GoSlice {
     private readonly __GoInt32Array: GoInt32Array
     private constructor()
@@ -624,7 +624,7 @@ class GoInt32Array extends GoSlice {
 function NewInt32Array(): GoInt32Array
 function NewInt32Array(len: NumberLike): GoInt32Array
 function NewInt32Array(len: NumberLike, cap: NumberLike): GoInt32Array
-function isInt32Array(v: any): boolean
+function isInt32Array(v: any): v is Int32Array
 class GoInt16Array extends GoSlice {
     private readonly __GoInt16Array: GoInt16Array
     private constructor()
@@ -646,7 +646,7 @@ class GoInt16Array extends GoSlice {
 function NewInt16Array(): GoInt16Array
 function NewInt16Array(len: NumberLike): GoInt16Array
 function NewInt16Array(len: NumberLike, cap: NumberLike): GoInt16Array
-function isInt16Array(v: any): boolean
+function isInt16Array(v: any): v is Int16Array
 class GoInt8Array extends GoSlice {
     private readonly __GoInt8Array: GoInt8Array
     private constructor()
@@ -668,7 +668,7 @@ class GoInt8Array extends GoSlice {
 function NewInt8Array(): GoInt8Array
 function NewInt8Array(len: NumberLike): GoInt8Array
 function NewInt8Array(len: NumberLike, cap: NumberLike): GoInt8Array
-function isInt8Array(v: any): boolean
+function isInt8Array(v: any): v is Int8Array
 class GoUintArray extends GoSlice {
     private readonly __GoUintArray: GoUintArray
     private constructor()
@@ -690,7 +690,7 @@ class GoUintArray extends GoSlice {
 function NewUintArray(): GoUintArray
 function NewUintArray(len: NumberLike): GoUintArray
 function NewUintArray(len: NumberLike, cap: NumberLike): GoUintArray
-function isUintArray(v: any): boolean
+function isUintArray(v: any): v is UintArray
 class GoUint64Array extends GoSlice {
     private readonly __GoUint64Array: GoUint64Array
     private constructor()
@@ -712,7 +712,7 @@ class GoUint64Array extends GoSlice {
 function NewUint64Array(): GoUint64Array
 function NewUint64Array(len: NumberLike): GoUint64Array
 function NewUint64Array(len: NumberLike, cap: NumberLike): GoUint64Array
-function isUint64Array(v: any): boolean
+function isUint64Array(v: any): v is Uint64Array
 class GoUint32Array extends GoSlice {
     private readonly __GoUint32Array: GoUint32Array
     private constructor()
@@ -734,7 +734,7 @@ class GoUint32Array extends GoSlice {
 function NewUint32Array(): GoUint32Array
 function NewUint32Array(len: NumberLike): GoUint32Array
 function NewUint32Array(len: NumberLike, cap: NumberLike): GoUint32Array
-function isUint32Array(v: any): boolean
+function isUint32Array(v: any): v is Uint32Array
 class GoUint16Array extends GoSlice {
     private readonly __GoUint16Array: GoUint16Array
     private constructor()
@@ -756,7 +756,7 @@ class GoUint16Array extends GoSlice {
 function NewUint16Array(): GoUint16Array
 function NewUint16Array(len: NumberLike): GoUint16Array
 function NewUint16Array(len: NumberLike, cap: NumberLike): GoUint16Array
-function isUint16Array(v: any): boolean
+function isUint16Array(v: any): v is Uint16Array
 class GoUint8Array extends GoSlice {
     private readonly __GoUint8Array: GoUint8Array
     private constructor()
@@ -778,7 +778,7 @@ class GoUint8Array extends GoSlice {
 function NewUint8Array(): GoUint8Array
 function NewUint8Array(len: NumberLike): GoUint8Array
 function NewUint8Array(len: NumberLike, cap: NumberLike): GoUint8Array
-function isUint8Array(v: any): boolean
+function isUint8Array(v: any): v is Uint8Array
 class GoFloat64Array extends GoSlice {
     private readonly __GoFloat64Array: GoFloat64Array
     private constructor()
@@ -800,7 +800,7 @@ class GoFloat64Array extends GoSlice {
 function NewFloat64Array(): GoFloat64Array
 function NewFloat64Array(len: NumberLike): GoFloat64Array
 function NewFloat64Array(len: NumberLike, cap: NumberLike): GoFloat64Array
-function isFloat64Array(v: any): boolean
+function isFloat64Array(v: any): v is Float64Array
 class GoFloat32Array extends GoSlice {
     private readonly __GoFloat32Array: GoFloat32Array
     private constructor()
@@ -822,7 +822,7 @@ class GoFloat32Array extends GoSlice {
 function NewFloat32Array(): GoFloat32Array
 function NewFloat32Array(len: NumberLike): GoFloat32Array
 function NewFloat32Array(len: NumberLike, cap: NumberLike): GoFloat32Array
-function isFloat32Array(v: any): boolean
+function isFloat32Array(v: any): v is Float32Array
 
 type GoRune = GoInt32
 type GoBytes = GoUint8Array
