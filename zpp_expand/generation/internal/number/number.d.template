@@ -156,5 +156,6 @@ function New{{.Name}}Array(len: NumberLike, cap: NumberLike): Go{{.Name}}Array
 function is{{.Name}}Array(v: any): v is {{.Name}}Array{{end}}{{end}}
 
 type GoRune = GoInt32
-type GoBytes = GoUint8Array
+type GoRunes = GoInt32Array
 type GoByte = GoUint8
+type GoBytes = GoUint8Array

@@ -825,5 +825,6 @@ function NewFloat32Array(len: NumberLike, cap: NumberLike): GoFloat32Array
 function isFloat32Array(v: any): v is Float32Array
 
 type GoRune = GoInt32
-type GoBytes = GoUint8Array
+type GoRunes = GoInt32Array
 type GoByte = GoUint8
+type GoBytes = GoUint8Array
