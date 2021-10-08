@@ -179,8 +179,8 @@ type Runtime struct {
 	vm    *vm
 	hash  *maphash.Hash
 	idSeq uint64
-	*loop.Loop
-	opts *options
+	loop  *loop.Loop
+	opts  *options
 }
 
 type StackFrame struct {
@@ -384,7 +384,7 @@ func (r *Runtime) init() {
 
 	r.initMath()
 	r.initJSON()
-	r.initPromise()
+	r.expand_init()
 
 	r.initTypedArrays()
 	r.initSymbol()
@@ -1148,7 +1148,7 @@ func New(opt ...Option) *Runtime {
 	}
 	r := &Runtime{
 		opts: &opts,
-		Loop: loop.New(opts.scheduler),
+		loop: loop.New(opts.scheduler),
 	}
 	r.init()
 	return r

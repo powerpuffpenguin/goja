@@ -26,7 +26,7 @@ func New(scheduler Scheduler) *Loop {
 	}
 	ctx, cancel := context.WithCancel(context.Background())
 	return &Loop{
-		ch:        make(chan AsyncResult, 128),
+		ch:        make(chan AsyncResult),
 		cancel:    cancel,
 		ctx:       ctx,
 		scheduler: scheduler,
@@ -67,26 +67,43 @@ func (l *Loop) exitServe() {
 }
 
 // Create an asynchronous event, can only be called in the goroutine running by js
-func (l *Loop) Async(w Worker) {
+func (l *Loop) Async(w Worker) error {
+	if l.closed != 0 {
+		return ErrLoopClosed
+	}
 	l.wait++
 	if w != nil {
 		l.scheduler.Go(w)
 	}
+	return nil
 }
 
 // go w.Serve()
-func (l *Loop) Go(w Worker) {
+func (l *Loop) Go(w Worker) error {
+	if l.closed != 0 {
+		return ErrLoopClosed
+	}
 	l.scheduler.Go(w)
+	return nil
 }
 
 // Complete an asynchronous event, can only be called in the goroutine running by js
-func (l *Loop) Complete() {
+func (l *Loop) Complete() error {
+	if l.closed != 0 {
+		return ErrLoopClosed
+	}
 	l.wait--
+	return nil
 }
 
 // Send the result of an asynchronous event to js
-func (l *Loop) Result(result AsyncResult) {
-	l.ch <- result
+func (l *Loop) Result(result AsyncResult) bool {
+	select {
+	case l.ch <- result:
+		return true
+	case <-l.ctx.Done():
+		return false
+	}
 }
 func (l *Loop) TryResult(result AsyncResult) (ok bool) {
 	select {
