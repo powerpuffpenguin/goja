@@ -20,13 +20,16 @@ type Loop struct {
 	ctx       context.Context
 }
 
-func NewLoop() *Loop {
+func New(scheduler Scheduler) *Loop {
+	if scheduler == nil {
+		scheduler = defaultScheduler
+	}
 	ctx, cancel := context.WithCancel(context.Background())
 	return &Loop{
 		ch:        make(chan AsyncResult, 128),
 		cancel:    cancel,
 		ctx:       ctx,
-		scheduler: defaultScheduler,
+		scheduler: scheduler,
 	}
 }
 func (l *Loop) Close() (e error) {
