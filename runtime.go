@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"github.com/powerpuffpenguin/goja/file"
 	"go/ast"
 	"hash/maphash"
 	"math"
@@ -14,6 +13,8 @@ import (
 	"runtime"
 	"strconv"
 	"time"
+
+	"github.com/powerpuffpenguin/goja/file"
 
 	"golang.org/x/text/collate"
 
@@ -1141,7 +1142,6 @@ func (r *Runtime) toBoolean(b bool) Value {
 func New() *Runtime {
 	r := &Runtime{}
 	r.init()
-	r.pp_expand_init()
 	return r
 }
 
@@ -1675,7 +1675,7 @@ func (r *Runtime) ToValue(i interface{}) Value {
 		return obj
 	case reflect.Func:
 		name := unistring.NewFromString(runtime.FuncForPC(reflect.ValueOf(i).Pointer()).Name())
-		return r.newNativeFunc(r.wrapReflectFunc_pp(value), nil, name, nil, value.Type().NumIn())
+		return r.newNativeFunc(r.wrapReflectFunc(value), nil, name, nil, value.Type().NumIn())
 	}
 
 	obj := &Object{runtime: r}
