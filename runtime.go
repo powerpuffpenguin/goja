@@ -383,6 +383,7 @@ func (r *Runtime) init() {
 
 	r.initMath()
 	r.initJSON()
+	r.initPromise()
 
 	r.initTypedArrays()
 	r.initSymbol()
