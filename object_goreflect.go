@@ -159,11 +159,17 @@ func (o *objectGoReflect) getAddr(v reflect.Value) reflect.Value {
 func (o *objectGoReflect) _get(name string) Value {
 	if o.value.Kind() == reflect.Struct {
 		if v := o._getField(name); v.IsValid() {
+			if getter := o.proto().runtime.opts.fieldGetter; getter != nil {
+				return o.val.runtime.ToValue(getter(v).Interface())
+			}
 			return o.val.runtime.ToValue(o.getAddr(v).Interface())
 		}
 	}
 
 	if v := o._getMethod(name); v.IsValid() {
+		if getter := o.proto().runtime.opts.fieldGetter; getter != nil {
+			return o.val.runtime.ToValue(getter(v).Interface())
+		}
 		return o.val.runtime.ToValue(v.Interface())
 	}
 

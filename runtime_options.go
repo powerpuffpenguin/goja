@@ -25,9 +25,11 @@ type CallerFactory interface {
 	// If you want to reuse, you can implement the Put function, otherwise save it as an empty implementation.
 	Put(caller Caller)
 }
+
 type options struct {
 	callerFactory CallerFactory
 	scheduler     loop.Scheduler
+	fieldGetter   func(reflect.Value) reflect.Value
 }
 type funcOption struct {
 	f func(*options)
@@ -49,5 +51,10 @@ func WithCallerFactory(callerFactory CallerFactory) Option {
 func WithScheduler(scheduler loop.Scheduler) Option {
 	return newFuncOption(func(o *options) {
 		o.scheduler = scheduler
+	})
+}
+func WithFieldGetter(getter func(reflect.Value) reflect.Value) Option {
+	return newFuncOption(func(o *options) {
+		o.fieldGetter = getter
 	})
 }

@@ -2,6 +2,7 @@ package goja_test
 
 import (
 	"errors"
+	"math"
 	"reflect"
 	"sync"
 	"testing"
@@ -81,6 +82,56 @@ if(!checkErr(e,s0)){
 	throw new Error("not error")
 }
 
+`)
+	if e != nil {
+		t.Fatal(e)
+	}
+}
+
+// Automatically box when go passes data to js
+func wrap(v reflect.Value) reflect.Value {
+	i := v.Interface()
+	switch i := i.(type) {
+	case uint64:
+		return reflect.ValueOf(Uint64(i))
+	}
+	return reflect.Value{}
+}
+
+type Uint64 uint64
+
+func TestOptionBox(t *testing.T) {
+	var obj struct {
+		ID uint64
+	}
+	obj.ID = 456
+	r := goja.New(goja.WithFieldGetter(wrap))
+	// r := goja.New()
+	r.Set(`MaxUint64`, func() Uint64 {
+		return Uint64(math.MaxUint64)
+	})
+	r.Set(`checkType`, func(call goja.FunctionCall) goja.Value {
+		arg0 := call.Argument(0)
+		if _, ok := arg0.Export().(Uint64); !ok {
+			t.Fatal(`checkType: type not Uint64`, arg0.ExportType())
+		}
+		return goja.Undefined()
+	})
+	r.Set(`checkValue`, func(call goja.FunctionCall) goja.Value {
+		if v, ok := call.Argument(0).Export().(Uint64); !ok {
+			t.Fatal(`checkValue: type not Uint64`)
+		} else if v != math.MaxUint64 {
+			t.Fatal(`checkValue: not equal`)
+		}
+		return goja.Undefined()
+	})
+	r.Set(`obj`, &obj)
+
+	_, e := r.RunString(`
+checkType(obj.ID)
+checkType(MaxUint64())
+obj.ID=MaxUint64()
+checkValue(obj.ID)
 `)
 	if e != nil {
 		t.Fatal(e)
