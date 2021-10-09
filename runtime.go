@@ -384,7 +384,7 @@ func (r *Runtime) init() {
 
 	r.initMath()
 	r.initJSON()
-	r.expand_init()
+	r.initExpand()
 
 	r.initTypedArrays()
 	r.initSymbol()

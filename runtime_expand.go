@@ -73,7 +73,19 @@ func (r *Runtime) RunStringAndServe(source string) (val Value, e error) {
 	return
 }
 
-func (r *Runtime) expand_init() {
+func Boolean(v bool) Value {
+	if v {
+		return valueTrue
+	}
+	return valueFalse
+}
+func Int(v int64) Value {
+	return intToValue(v)
+}
+func Float(v float64) Value {
+	return floatToValue(v)
+}
+func (r *Runtime) initExpand() {
 	r.initPromise()
 	r.initTimer()
 }
