@@ -2,6 +2,8 @@ package goja
 
 import (
 	"time"
+
+	"github.com/powerpuffpenguin/goja/loop"
 )
 
 type timeoutImpl struct {
@@ -27,7 +29,9 @@ func (t *timeoutImpl) serve(duration time.Duration) (e error) {
 		return
 	}
 	if duration <= 0 {
-		t.Result(t)
+		t.Go(loop.NewWorker(func() {
+			t.Result(t)
+		}))
 		return nil
 	}
 	t.timer = time.NewTimer(duration)
