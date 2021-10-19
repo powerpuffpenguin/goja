@@ -89,7 +89,7 @@ GoJS
 
 goja is just a js engine. If there is no api extension, it will be difficult to use it in other places other than the calculation logic. For this reason, I also started a new project to import the go standard library into goja for js to call
 
-[https://github.com/powerpuffpenguin/gojs](https://github.com/powerpuffpenguin/gojs)
+[https://github.com/powerpuffpenguin/goja_go](https://github.com/powerpuffpenguin/goja_go)
 
 NodeJS Compatibility
 ====
