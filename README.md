@@ -5,7 +5,7 @@ ECMAScript 5.1(+) implementation in Go.
 
 Minimum required Go version is 1.14.
 
-This is a version of the extended function after [github.com/dop251/goja](https://github.com/dop251/goja) fork. The usage method is consistent with the original version. For more api details, please refer to the original project. The following text only explains the features of extensions and additional extensions .
+This is a version of the extended function after [github.com/powerpuffpenguin/goja](https://github.com/powerpuffpenguin/goja) fork. The usage method is consistent with the original version. For more api details, please refer to the original project. The following text only explains the features of extensions and additional extensions .
 
 Features
 ====
